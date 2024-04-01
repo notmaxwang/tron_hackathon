@@ -4,7 +4,7 @@
 ### How to run (locally)
 ```
 // Go to the directory
-cd google_ai_hackathon/chat
+cd google_ai_hackathon/chat-backend
 
 // Install dependencies
 go mod download
