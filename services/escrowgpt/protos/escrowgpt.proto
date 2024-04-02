@@ -1,0 +1,15 @@
+syntax = "proto3";
+package escrowgpt;
+option go_package="escrowgpt/protos";
+
+message SinglePromptRequest {
+    string prompt = 1;
+}
+
+message SinglePromptResponse {
+    string response = 1;
+}
+
+service EscrowGPTService{
+    rpc SinglePrompt(SinglePromptRequest) returns (SinglePromptResponse);
+}

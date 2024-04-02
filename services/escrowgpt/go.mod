@@ -1,6 +1,6 @@
-module chat
+module escrowgpt
 
-go 1.21.2
+go 1.22
 
 require (
 	cloud.google.com/go v0.110.8 // indirect
