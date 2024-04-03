@@ -1,15 +1,16 @@
 package main
 
 import (
+	"keyfi-backend/apis/chat/ai"
+	pb "keyfi-backend/protos"
 	"log"
 	"net"
 	"os"
-	"keyfi-backend/apis/chat/ai"
-	pb "keyfi-backend/protos"
+
 	"google.golang.org/grpc"
 )
 
-const GOOGLE_AI_API_PATH = "./.googleai_apikey"
+const GOOGLE_AI_API_PATH = "./googleai_apikey"
 
 func main() {
 	// Read API key for Google AI

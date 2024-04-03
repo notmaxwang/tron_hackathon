@@ -1,4 +1,6 @@
 .vscode/
-.googleai_apikey
+googleai_apikey
 *.pem
 */node_modules/
+*/.DS_Store
+.DS_Store
