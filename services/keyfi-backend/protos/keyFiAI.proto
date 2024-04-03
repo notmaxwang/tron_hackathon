@@ -1,0 +1,15 @@
+syntax = "proto3";
+package keyfiai;
+option go_package="keyfi-backend/apis/chat/ai";
+
+message SinglePromptRequest {
+    string prompt = 1;
+}
+
+message SinglePromptResponse {
+    string response = 1;
+}
+
+service KeyFiAIService{
+    rpc SinglePrompt(SinglePromptRequest) returns (SinglePromptResponse);
+}

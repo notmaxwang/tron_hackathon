@@ -2,11 +2,12 @@ package main
 
 import (
 	"keyfi-backend/apis/chat/ai"
+	pb "keyfi-backend/protos"
 	"log"
-	"net/http"
+	"net"
 	"os"
 
-	"github.com/gorilla/mux"
+	"google.golang.org/grpc"
 )
 
 const GOOGLE_AI_API_PATH = "./googleai_apikey"
@@ -19,9 +20,19 @@ func main() {
 	}
 	os.Setenv("GOOGLEAI_API_KEY", string(dat))
 
-	router := mux.NewRouter()
+	// set a port for the server
+	port := ":50051"
 
-	router.HandleFunc("/singlePrompt", ai.SinglePrompt).Methods("GET")
+	// listen for requests on port
+	listener, err := net.Listen("tcp", port)
+	if err != nil {
+		log.Fatal("listen error: ", err)
+	}
 
-	log.Fatal(http.ListenAndServe(":8080", router))
+	grpcServer := grpc.NewServer()
+	pb.RegisterKeyFiAIServiceServer(grpcServer, &ai.Server{})
+	log.Printf("starting server on port %s\n", port)
+	if err := grpcServer.Serve(listener); err != nil {
+		log.Fatal("Failed to serve: %v", err)
+	}
 }

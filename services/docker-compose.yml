@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  gateway-envoy:
+    build:
+      context: ./config
+      dockerfile: Dockerfile-gateway
+    ports:
+      - '8080:8080'
+  keyfi-backend:
+    build:
+      context: ./keyfi-backend
+      dockerfile: Dockerfile
+    ports:
+      - '50051:50051'
+  keyfi-frontend:
+    build:
+      context: ./keyfi-frontend
+      dockerfile: Dockerfile
+    ports:
+      - '3000:5173'
+
+  
