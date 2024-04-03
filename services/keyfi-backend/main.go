@@ -2,12 +2,9 @@ package main
 
 import (
 	"keyfi-backend/apis/chat/ai"
-	pb "keyfi-backend/protos"
 	"log"
-	"net"
+	"net/http"
 	"os"
-
-	"google.golang.org/grpc"
 )
 
 const GOOGLE_AI_API_PATH = "./googleai_apikey"
@@ -20,19 +17,10 @@ func main() {
 	}
 	os.Setenv("GOOGLEAI_API_KEY", string(dat))
 
-	// set a port for the server
-	port := ":8080"
+	http.HandleFunc("/simplePrompt", ai.SinglePrompt)
 
-	// listen for requests on 8080
-	listener, err := net.Listen("tcp", port)
-	if err != nil {
-		log.Fatal("listen error: ", err)
+	log.Println("Starting server on :8080...")
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		log.Fatalf("Server failed to start: %v", err)
 	}
-
-	grpcServer := grpc.NewServer()
-	pb.RegisterKeyFiAIServiceServer(grpcServer, &ai.Server{})
-	if err := grpcServer.Serve(listener); err != nil {
-		log.Fatal("Failed to serve: %v", err)
-	}
-
 }
