@@ -7,19 +7,17 @@ import (
 	"keyfi-backend/models/chat/ai"
 	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func SinglePrompt(w http.ResponseWriter, r *http.Request) {
 	// Parse request
-	var request ai.SinglePromptRequest
-	err := json.NewDecoder(r.Body).Decode(&request)
-	if err != nil {
-		log.Fatal("Failed to parse request: %v", err)
-	}
-	log.Printf("Incoming prompt: %s\n", request.Prompt)
+	params := mux.Vars(r)
+	prompt := params["prompt"]
 
 	// Format response
-	response := interfaces.SendTextPrompt(request.Prompt)
+	response := interfaces.SendTextPrompt(prompt)
 	partString := ""
 	for i := range response.Candidates[0].Content.Parts {
 		partString = fmt.Sprintf("%s%s", partString, response.Candidates[0].Content.Parts[i])
@@ -31,7 +29,7 @@ func SinglePrompt(w http.ResponseWriter, r *http.Request) {
 		Response: partString,
 	}
 	w.Header().Set("Content-Type", "application/json")
-	err = json.NewEncoder(w).Encode(reply)
+	err := json.NewEncoder(w).Encode(reply)
 	if err != nil {
 		log.Fatal("Failed to encode response: %v", err)
 	}

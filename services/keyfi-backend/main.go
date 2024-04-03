@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/gorilla/mux"
 )
 
 const GOOGLE_AI_API_PATH = "./googleai_apikey"
@@ -17,10 +19,9 @@ func main() {
 	}
 	os.Setenv("GOOGLEAI_API_KEY", string(dat))
 
-	http.HandleFunc("/simplePrompt", ai.SinglePrompt)
+	router := mux.NewRouter()
 
-	log.Println("Starting server on :8080...")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		log.Fatalf("Server failed to start: %v", err)
-	}
+	router.HandleFunc("/singlePrompt", ai.SinglePrompt).Methods("GET")
+
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
