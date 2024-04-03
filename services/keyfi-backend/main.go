@@ -1,24 +1,36 @@
 package main
 
 import (
+	"bufio"
 	"keyfi-backend/apis/chat/ai"
 	pb "keyfi-backend/protos"
 	"log"
 	"net"
 	"os"
+	"strings"
 
 	"google.golang.org/grpc"
 )
 
-const GOOGLE_AI_API_PATH = "./googleai_apikey"
+const APIKEY_MAPPINGS_PATH = "./apikey_mappings.key"
 
 func main() {
 	// Read API key for Google AI
-	dat, err := os.ReadFile(GOOGLE_AI_API_PATH)
+	file, err := os.Open(APIKEY_MAPPINGS_PATH)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
-	os.Setenv("GOOGLEAI_API_KEY", string(dat))
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	// optionally, resize scanner's capacity for lines over 64K, see next example
+	for scanner.Scan() {
+		words := strings.Fields(scanner.Text())
+		os.Setenv(words[0], words[1])
+	}
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
 
 	// set a port for the server
 	port := ":50051"
@@ -30,7 +42,11 @@ func main() {
 	}
 
 	grpcServer := grpc.NewServer()
-	pb.RegisterKeyFiAIServiceServer(grpcServer, &ai.Server{})
+
+	// Register different services
+	pb.RegisterAIServiceServer(grpcServer, &ai.Server{})
+
+
 	log.Printf("starting server on port %s\n", port)
 	if err := grpcServer.Serve(listener); err != nil {
 		log.Fatal("Failed to serve: %v", err)

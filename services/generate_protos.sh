@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # Copy and generate protos for go backend
-rm keyfi-backend/protos/*
-cp protos_main/* keyfi-backend/protos
+rm -r keyfi-backend/protos
+cp -r keyfi_protos keyfi-backend/protos
 cd keyfi-backend
 ./generate_protos.sh
 
 # Copy and generate protos for react frontend
 cd ../
-rm keyfi-frontend/protos/*
-cp protos_main/* keyfi-frontend/protos
+rm -r  keyfi-frontend/protos
+cp -r  keyfi_protos keyfi-frontend/protos
 cd keyfi-frontend
 ./generate_protos.sh
 

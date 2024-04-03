@@ -4,12 +4,12 @@ import (
 	"context"
 	"fmt"
 	"keyfi-backend/apis/util/interfaces"
-	pb "keyfi-backend/protos"
+	pb "keyfi-backend/protos/ai"
 	"log"
 )
 
 type Server struct {
-	pb.UnimplementedKeyFiAIServiceServer
+	pb.UnimplementedAIServiceServer
 }
 
 func (s *Server) SinglePrompt(ctx context.Context, request *pb.SinglePromptRequest) (*pb.SinglePromptResponse, error) {

@@ -1,5 +1,5 @@
 .vscode/
-googleai_apikey
+*.key
 *.pem
 */node_modules/
 */.DS_Store
