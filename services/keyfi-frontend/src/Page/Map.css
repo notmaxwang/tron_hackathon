@@ -1,0 +1,17 @@
+.map{
+  margin-left: 10px;
+}
+
+.topSection{
+  display: flex;
+  flex-direction: row;
+}
+
+.listing{
+  margin-left: 2vmin;
+  width: 25vw;
+  .listingTitle{
+    align-items: center;
+  }
+}
+

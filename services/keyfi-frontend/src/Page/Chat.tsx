@@ -52,11 +52,11 @@ export default function Chat() {
         ))}
       </div>
       <form onSubmit={onFormSubmit}>
-        <label>Prompt:</label> 
+        <label>Type your Message:</label> 
         <br/>
         <input type="text" onChange={handleUpdatePrompt} />
         <br/>
-        <button onClick={handleButtonClick}>Submit</button>
+        <button onClick={handleButtonClick}>Send</button>
       </form>
     </div>
   );
