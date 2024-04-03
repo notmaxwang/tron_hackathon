@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "@types/node": "^20.12.3"
+  },
+  "dependencies": {
+    "@protobuf-ts/grpcweb-transport": "^2.9.4",
+    "@protobuf-ts/plugin": "^2.9.4",
+    "@protobuf-ts/runtime": "^2.9.4"
+  }
+}

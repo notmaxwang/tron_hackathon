@@ -1,3 +1,4 @@
 .vscode/
 .googleai_apikey
 *.pem
+*/node_modules/

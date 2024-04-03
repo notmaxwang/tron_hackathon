@@ -12,3 +12,13 @@ go mod download
 // Run server on port 1122 or whatever is specified in main.go
 go run main.go
 ```
+
+### Common issues
+You may see```protoc-gen-grpc-web: program not found or is not executable``` or something similar
+
+```
+// these are the ones I remember
+brew install protoc-gen-grpc-web
+
+npm install -g protoc-gen-js
+```
