@@ -1,0 +1,23 @@
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  min-height: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow-y: auto;
+  margin: 20px;
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.message {
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: 1px solid black;
+}
