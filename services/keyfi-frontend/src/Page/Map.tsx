@@ -12,11 +12,27 @@ export default function Map() {
     height: '70vh',
   };
   const center = {
+    name:'center',
+    position: {
     lat: 37.7937, // default latitude
     lng: -122.431297, // default longitude
-  };
+  }};
 
   let GOOGLE_MAP_API_KEY:string = '';
+
+  let listings = [{name: 'Ferry Building', position:{lat: 37.7955, lng: -122.3937,}},
+    {name: 'Coit Tower', position:{lat: 37.8024, lng: -122.4058}}];
+
+  const listComponents:any = [];
+  listings.forEach((listing, idx) => {
+    listComponents.push(<MarkerF key={idx} position={listing.position} />);
+  });
+
+  const listName:any = [];
+  listings.forEach((listing, idx) => {
+    listName.push(<li key={idx}>{listing.name}</li>);
+  });
+
 
   useEffect(() => {
     async function getAPIKey() {
@@ -51,11 +67,11 @@ export default function Map() {
     return <div>Loading maps</div>;
   }
 
-  function handleClick() {
-    console.log('popup window for listing');
-    console.log(GOOGLE_MAP_API_KEY);
+  function handleClick(locationName:any) {
+    console.log(locationName);
   }
 
+  
   return (
     <div>
       <div className='topSection'>
@@ -63,12 +79,14 @@ export default function Map() {
           mapContainerClassName='map'
           mapContainerStyle={mapContainerStyle}
           zoom={13}
-          center={center}
+          center={center.position}
         >
-          <MarkerF position={center} onClick={handleClick}/>
+          <MarkerF position={center.position} onClick={handleClick(center.name)}/>
+          {listComponents}
         </GoogleMap>
         <div className='listing'>
           <p className='listingTitle'>Listings</p>
+          <ul>{listName}</ul>
         </div>
       </div>
       
