@@ -1,22 +1,12 @@
 import { GoogleMap, useLoadScript, MarkerF } from '@react-google-maps/api';
 import { QueryServiceClient } from '../../protos/query/query.client';
 import { KeyValuePair, GetValuesRequest, GetValuesResponse } from '../../protos/query/query';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport';
+import Mapbox from '../Component/MapBox';
 import './Map.css';
 
 export default function Map() {
-  const libraries:any = ['places'];
-  const mapContainerStyle = {
-    width: '70vw',
-    height: '70vh',
-  };
-  const center = {
-    name:'center',
-    position: {
-    lat: 37.7937, // default latitude
-    lng: -122.431297, // default longitude
-  }};
 
   let GOOGLE_MAP_API_KEY:string = '';
 
@@ -25,7 +15,7 @@ export default function Map() {
 
   const listComponents:any = [];
   listings.forEach((listing, idx) => {
-    listComponents.push(<MarkerF key={idx} position={listing.position} />);
+    listComponents.push(<MarkerF key={idx} position={listing.position} onClick={() => handleClick(listing.name)}/>);
   });
 
   const listName:any = [];
@@ -54,36 +44,16 @@ export default function Map() {
     getAPIKey();
   }, [])
 
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: GOOGLE_MAP_API_KEY,
-    libraries,
-  });
-
-  if (loadError) {
-    return <div>Error loading maps</div>;
-  }
-
-  if (!isLoaded) {
-    return <div>Loading maps</div>;
-  }
-
   function handleClick(locationName:any) {
     console.log(locationName);
+    console.log(GOOGLE_MAP_API_KEY);
   }
 
   
   return (
     <div>
       <div className='topSection'>
-        <GoogleMap
-          mapContainerClassName='map'
-          mapContainerStyle={mapContainerStyle}
-          zoom={13}
-          center={center.position}
-        >
-          <MarkerF position={center.position} onClick={handleClick(center.name)}/>
-          {listComponents}
-        </GoogleMap>
+        <Mapbox GOOGLE_MAP_API_KEY={GOOGLE_MAP_API_KEY} listComponents={listComponents}/>
         <div className='listing'>
           <p className='listingTitle'>Listings</p>
           <ul>{listName}</ul>
