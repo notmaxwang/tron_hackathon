@@ -3,7 +3,9 @@ package main
 import (
 	"bufio"
 	"keyfi-backend/apis/chat/ai"
-	pb "keyfi-backend/protos"
+	"keyfi-backend/apis/query"
+	ai_pb "keyfi-backend/protos/ai"
+	query_pb "keyfi-backend/protos/query"
 	"log"
 	"net"
 	"os"
@@ -23,9 +25,9 @@ func main() {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-	// optionally, resize scanner's capacity for lines over 64K, see next example
 	for scanner.Scan() {
 		words := strings.Fields(scanner.Text())
+		log.Printf("%v", words)
 		os.Setenv(words[0], words[1])
 	}
 	if err := scanner.Err(); err != nil {
@@ -44,8 +46,8 @@ func main() {
 	grpcServer := grpc.NewServer()
 
 	// Register different services
-	pb.RegisterAIServiceServer(grpcServer, &ai.Server{})
-
+	ai_pb.RegisterAIServiceServer(grpcServer, &ai.Server{})
+	query_pb.RegisterQueryServiceServer(grpcServer, &query.Server{})
 
 	log.Printf("starting server on port %s\n", port)
 	if err := grpcServer.Serve(listener); err != nil {
