@@ -4,7 +4,7 @@ import './Header.css';
 export default function Header() {
   return(
     <header>
-      <h1>KeyFi</h1>
+      <p>KeyFi</p>
       <nav>
         <ul>
           <li><a href="/">Home</a></li>

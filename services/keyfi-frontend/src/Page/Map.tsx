@@ -1,4 +1,8 @@
 import { GoogleMap, useLoadScript, MarkerF } from '@react-google-maps/api';
+import { QueryServiceClient } from '../../protos/query/query.client';
+import { KeyValuePair, GetValuesRequest, GetValuesResponse } from '../../protos/query/query';
+import { useEffect } from 'react';
+import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport';
 import './Map.css';
 
 export default function Map() {
@@ -12,7 +16,27 @@ export default function Map() {
     lng: -122.431297, // default longitude
   };
 
+  let GOOGLE_MAP_API_KEY:string = '';
 
+  useEffect(() => {
+    async function getAPIKey() {
+      let transport = new GrpcWebFetchTransport({
+        baseUrl: "http://localhost:8080"
+      });
+      const client = new QueryServiceClient(transport);
+      const request = GetValuesRequest.create({
+        keys: ['GOOGLE_MAPS_KEY']
+      })
+      const call = await client.getValues(request);
+      let response = await call.response;
+      let status = await call.status;
+      console.log("status: " + status)
+      if(response.keyValuePairs){
+        GOOGLE_MAP_API_KEY = response.keyValuePairs[0].value;
+      }
+    }
+    getAPIKey();
+  }, [])
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: GOOGLE_MAP_API_KEY,
@@ -29,6 +53,7 @@ export default function Map() {
 
   function handleClick() {
     console.log('popup window for listing');
+    console.log(GOOGLE_MAP_API_KEY);
   }
 
   return (
@@ -43,7 +68,7 @@ export default function Map() {
           <MarkerF position={center} onClick={handleClick}/>
         </GoogleMap>
         <div className='listing'>
-          <h3 className='listingTitle'>Listings</h3>
+          <p className='listingTitle'>Listings</p>
         </div>
       </div>
       
