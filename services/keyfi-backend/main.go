@@ -6,12 +6,14 @@ import (
 	"keyfi-backend/apis/query"
 	ai_pb "keyfi-backend/protos/ai"
 	query_pb "keyfi-backend/protos/query"
+	"keyfi-backend/util/chat"
 	"log"
 	"net"
 	"net/http"
 	"os"
 	"strings"
 
+	"github.com/gorilla/websocket"
 	"google.golang.org/grpc"
 )
 
@@ -40,6 +42,10 @@ func listenOnGrpc() {
 }
 
 func listenOnWebSocket() {
+	webSocketHandler := chat.WebSocketHandler{
+		Upgrader: websocket.Upgrader{},
+	}
+	http.Handle("/", webSocketHandler)
 	log.Print("starting websocket on port 50052")
 	log.Fatal(http.ListenAndServe("localhost:50052", nil))
 }

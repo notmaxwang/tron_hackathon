@@ -11,11 +11,11 @@ import (
 )
 
 type WebSocketHandler struct {
-	upgrader websocket.Upgrader
+	Upgrader websocket.Upgrader
 }
 
 func (wsh WebSocketHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	c, err := wsh.upgrader.Upgrade(w, r, nil)
+	c, err := wsh.Upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Printf("error %s when upgrading connection to websocket", err)
 		return
