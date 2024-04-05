@@ -7,9 +7,12 @@ import Mapbox from '../Component/MapBox';
 import Listing from '../Component/Listing';
 import './Map.css';
 
+
 export default class Map extends React.Component {
 
-  GOOGLE_MAP_API_KEY:any = '';
+  state = {
+    mapKey : '',
+  }
 
   listings = [{name: 'Ferry Building', position:{lat: 37.7955, lng: -122.3937,}},
     {name: 'Coit Tower', position:{lat: 37.8024, lng: -122.4058}}];
@@ -24,9 +27,6 @@ export default class Map extends React.Component {
     });
   }
   
-  
-
-
   componentWillMount() {
     this.addToList();
     this.getAPIKey();
@@ -45,13 +45,13 @@ export default class Map extends React.Component {
     let status = await call.status;
     console.log("status: " + status)
     if(response.keyValuePairs){
-      this.GOOGLE_MAP_API_KEY = response.keyValuePairs[0].value;
+      this.state.mapKey = response.keyValuePairs[0].value;
     }
   }
 
   handleClick(locationName:any) {
     console.log(locationName);
-    console.log(this.GOOGLE_MAP_API_KEY);
+    console.log(this.state.mapKey);
   }
 
   
@@ -59,7 +59,7 @@ export default class Map extends React.Component {
     return (
       <div>
         <div className='topSection'>
-          <Mapbox GOOGLE_MAP_API_KEY={this.GOOGLE_MAP_API_KEY} listComponents={this.listComponents}/>
+          <Mapbox GOOGLE_MAP_API_KEY={this.state.mapKey} listComponents={this.listComponents}/>
           <div className='listing'>
             <p className='listingTitle'>Listings</p>
             <ul className='listings-container'>{this.listName}</ul>

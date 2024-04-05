@@ -1,10 +1,8 @@
 import { GoogleMap, useLoadScript, MarkerF } from '@react-google-maps/api';
-import { useEffect } from 'react';
 
 export default function Mapbox(props : any){
-  const GOOGLE_MAP_API_KEY = props.GOOGLE_MAP_API_KEY;
+  const GOOGLE_MAP_API_KEY:any = process.env.REACT_APP_MAP_KEY;
   const listComponents = props.listComponents;
-
   const libraries:any = ['places'];
   const mapContainerStyle = {
     width: '70vw',
@@ -31,14 +29,12 @@ export default function Mapbox(props : any){
     return <div>Loading maps</div>;
   }
 
-
-
-  return(<GoogleMap
+  return isLoaded ? (<GoogleMap
     mapContainerClassName='map'
     mapContainerStyle={mapContainerStyle}
     zoom={13}
     center={center.position}
     >
       {listComponents}
-    </GoogleMap>);
+    </GoogleMap>) : <></>;
 }
