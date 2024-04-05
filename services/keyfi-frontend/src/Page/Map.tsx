@@ -1,7 +1,7 @@
-import { GoogleMap, useLoadScript, MarkerF } from '@react-google-maps/api';
+import {  MarkerF } from '@react-google-maps/api';
 import { QueryServiceClient } from '../../protos/query/query.client';
-import { KeyValuePair, GetValuesRequest, GetValuesResponse } from '../../protos/query/query';
-import React, { useState, useEffect } from 'react';
+import { GetValuesRequest } from '../../protos/query/query';
+import React from 'react';
 import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport';
 import Mapbox from '../Component/MapBox';
 import Listing from '../Component/Listing';

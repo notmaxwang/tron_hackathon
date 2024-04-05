@@ -13,6 +13,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - '50051:50051'
+      - '8081:50052'
   keyfi-frontend:
     build:
       context: ./keyfi-frontend

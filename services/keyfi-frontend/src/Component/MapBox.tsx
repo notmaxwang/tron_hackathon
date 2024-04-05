@@ -1,4 +1,4 @@
-import { GoogleMap, useLoadScript, MarkerF } from '@react-google-maps/api';
+import { GoogleMap, useLoadScript } from '@react-google-maps/api';
 
 export default function Mapbox(props : any){
   const GOOGLE_MAP_API_KEY:any = process.env.REACT_APP_MAP_KEY;

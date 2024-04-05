@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 // import { KeyFiAIServiceClient} from '../../protos/keyFiAI.client'
 // import { SinglePromptRequest } from '../../protos/keyFiAI';
-import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport';
+// import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport';
 // import keyFiAIService from '../protos/keyFiAI_pb'
 import './Chat.css'
 
@@ -22,9 +22,9 @@ export default function Chat() {
 
   const onFormSubmit = async (e: any) => {
     e.preventDefault();
-    let transport = new GrpcWebFetchTransport({
-      baseUrl: "http://localhost:8080"
-    });
+    // let transport = new GrpcWebFetchTransport({
+    //   baseUrl: "http://localhost:8080"
+    // });
     // const client = new KeyFiAIServiceClient(transport);
     // const request = SinglePromptRequest.create({
     //   prompt: currentValue
