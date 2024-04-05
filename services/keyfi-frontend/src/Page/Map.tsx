@@ -4,6 +4,7 @@ import { KeyValuePair, GetValuesRequest, GetValuesResponse } from '../../protos/
 import React, { useState, useEffect } from 'react';
 import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport';
 import Mapbox from '../Component/MapBox';
+import Listing from '../Component/Listing';
 import './Map.css';
 
 export default class Map extends React.Component {
@@ -18,8 +19,8 @@ export default class Map extends React.Component {
 
   addToList() {
     this.listings.forEach((listing, idx) => {
-      this.listComponents.push(<MarkerF key={idx} position={listing.position} onClick={() => handleClick(listing.name)}/>);
-      this.listName.push(<li key={idx}>{listing.name}</li>);
+      this.listComponents.push(<MarkerF key={idx} position={listing.position} onClick={() => this.handleClick(listing.name)}/>);
+      this.listName.push(<Listing key={idx} name={listing.name} />);
     });
   }
   
@@ -61,7 +62,7 @@ export default class Map extends React.Component {
           <Mapbox GOOGLE_MAP_API_KEY={this.GOOGLE_MAP_API_KEY} listComponents={this.listComponents}/>
           <div className='listing'>
             <p className='listingTitle'>Listings</p>
-            <ul>{this.listName}</ul>
+            <ul className='listings-container'>{this.listName}</ul>
           </div>
         </div>
         
