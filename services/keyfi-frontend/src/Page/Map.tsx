@@ -51,7 +51,6 @@ export default class Map extends React.Component {
 
   handleClick(locationName:any) {
     console.log(locationName);
-    console.log(this.state.mapKey);
   }
 
   
