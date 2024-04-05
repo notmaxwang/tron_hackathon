@@ -8,6 +8,7 @@ import (
 	query_pb "keyfi-backend/protos/query"
 	"log"
 	"net"
+	"net/http"
 	"os"
 	"strings"
 
@@ -16,24 +17,7 @@ import (
 
 const APIKEY_MAPPINGS_PATH = "./apikey_mappings.key"
 
-func main() {
-	// Read API key for Google AI
-	file, err := os.Open(APIKEY_MAPPINGS_PATH)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		words := strings.Fields(scanner.Text())
-		log.Printf("%v", words)
-		os.Setenv(words[0], words[1])
-	}
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-
+func listenOnGrpc() {
 	// set a port for the server
 	port := ":50051"
 
@@ -53,4 +37,30 @@ func main() {
 	if err := grpcServer.Serve(listener); err != nil {
 		log.Fatal("Failed to serve: %v", err)
 	}
+}
+
+func listenOnWebSocket() {
+	log.Print("starting websocket on port 50052")
+	log.Fatal(http.ListenAndServe("localhost:50052", nil))
+}
+
+func main() {
+	// Read API key for Google AI
+	file, err := os.Open(APIKEY_MAPPINGS_PATH)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		words := strings.Fields(scanner.Text())
+		os.Setenv(words[0], words[1])
+	}
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	go listenOnGrpc()
+	listenOnWebSocket()
 }
