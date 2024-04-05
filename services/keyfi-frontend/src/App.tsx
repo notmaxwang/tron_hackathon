@@ -16,7 +16,6 @@ function App() {
       <Header />
       <Router>
           <div>
-            <Header />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/chat" element={<Chat />} />

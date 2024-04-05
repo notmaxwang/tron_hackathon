@@ -7,7 +7,7 @@ import './Chat.css'
 
 export default function Chat() {
 
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<string[]>(['hi', 'im good', 'bye']);
 
   const [currentValue, setCurrentValue] = useState('');
 
@@ -43,21 +43,27 @@ export default function Chat() {
   };
 
   return(
-    <div className="chat-container">
-      <div className="chat-messages">
-        {messages.map((message, index) => (
-          <div key={index} className="message">
-            {message}
+    <>
+      <div className='chat-page-container'>
+        <div className="chat-container">
+          <div className="chat-message-container">
+            <div className='chat-messages'>
+              {messages.map((message, index) => (
+                <div key={index} className="message">
+                  {message}
+                </div>
+              ))}
+            </div>
           </div>
-        ))}
+        </div>
+          <form onSubmit={onFormSubmit} className='input-container'>
+            <label>Type your Message:</label> 
+            <br/>
+            <input type="text" className='chat-input' onChange={handleUpdatePrompt} />
+            <br/>
+            <button className='chat-send-button' onClick={handleButtonClick}>Send</button>
+          </form>
       </div>
-      <form onSubmit={onFormSubmit}>
-        <label>Type your Message:</label> 
-        <br/>
-        <input type="text" onChange={handleUpdatePrompt} />
-        <br/>
-        <button onClick={handleButtonClick}>Send</button>
-      </form>
-    </div>
+    </>
   );
 }

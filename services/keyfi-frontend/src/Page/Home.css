@@ -1,0 +1,9 @@
+.home-page-container {
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+}
+
+.home-title {
+  font-size: 50px;
+}

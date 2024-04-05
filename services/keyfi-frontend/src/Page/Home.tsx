@@ -1,4 +1,4 @@
-
+import './Home.css'
 
 
 export default function Home() {
@@ -6,7 +6,9 @@ export default function Home() {
 
   return(
     <>
-      <h1>Welcome to KeyFi</h1>
+      <div className='home-page-container'>
+        <p className='home-title'>Welcome to KeyFi</p>
+      </div>
     </>
   );
 }

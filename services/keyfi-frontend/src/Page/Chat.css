@@ -1,5 +1,14 @@
+.chat-page-container {
+  position:absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
 .chat-container {
   display: flex;
+  justify-content: flex-end;
   flex-direction: column;
   width: 90vw;
   height: 70vh;
@@ -7,6 +16,7 @@
   border-radius: 5px;
   overflow-y: auto;
   margin: 20px;
+  margin-top: 45px;
 }
 
 .chat-messages {
@@ -20,4 +30,23 @@
   padding: 8px 12px;
   border-radius: 20px;
   border: 1px solid black;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  height: 5vh;
+  width: 100%;
+  margin-bottom: 2vmin;
+  .chat-input {
+    height: 5vh;
+    width: 35vw;
+  }
+  .chat-send-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+  }
 }
