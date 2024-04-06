@@ -1,69 +1,62 @@
-import { useState } from 'react'
-// import { KeyFiAIServiceClient} from '../../protos/keyFiAI.client'
-// import { SinglePromptRequest } from '../../protos/keyFiAI';
-// import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport';
-// import keyFiAIService from '../protos/keyFiAI_pb'
+import React, { useState, useEffect } from 'react';
 import './Chat.css'
 
-export default function Chat() {
+const Chat: React.FC = () => {
+  const [ws, setWs] = useState<WebSocket | null>(null);
+  const [messages, setMessages] = useState<string[]>([]);
+  const [inputValue, setInputValue] = useState<string>('');
 
-  const [messages, setMessages] = useState<string[]>(['hi', 'im good', 'bye']);
+  useEffect(() => {
+    // Create a new WebSocket connection when the component mounts
+    const newWs = new WebSocket('ws://localhost:50052');
 
-  const [currentValue, setCurrentValue] = useState('');
+    newWs.onopen = () => {
+      console.log('WebSocket connected');
+    };
 
+    newWs.onmessage = (event) => {
+      // Add received message to the messages state
+      setMessages((prevMessages) => [...prevMessages, event.data]);
+    };
 
-  const handleUpdatePrompt = (e: any) => {
-    setCurrentValue(e.target.value);
-  }
+    newWs.onclose = () => {
+      console.log('WebSocket disconnected');
+    };
 
-  const handleButtonClick = () => {
-    setMessages([...messages, currentValue]);
-  }
+    // Update ws state with the new WebSocket connection
+    setWs(newWs);
 
-  const onFormSubmit = async (e: any) => {
-    e.preventDefault();
-    // let transport = new GrpcWebFetchTransport({
-    //   baseUrl: "http://localhost:8080"
-    // });
-    // const client = new KeyFiAIServiceClient(transport);
-    // const request = SinglePromptRequest.create({
-    //   prompt: currentValue
-    // })
-    // const call = await client.singlePrompt(request);
-    // let response = await call.response;
-    // let status = await call.status;
-    // console.log("status: " + status)
-    // console.log(response);
-    // setMessages([ 
-    //   ...messages,
-    //   response.response
-    // ])
-    // e.target.reset();
-    console.log("refresh prevented");
+    // Close the WebSocket connection when the component unmounts
+    return () => {
+      newWs.close();
+    };
+  }, []);
+
+  const sendMessage = () => {
+    if (ws && inputValue.trim() !== '') {
+      // Send the message through the WebSocket connection
+      ws.send(inputValue);
+      setInputValue('');
+    }
   };
 
-  return(
-    <>
-      <div className='chat-page-container'>
-        <div className="chat-container">
-          <div className="chat-message-container">
-            <div className='chat-messages'>
-              {messages.map((message, index) => (
-                <div key={index} className="message">
-                  {message}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-          <form onSubmit={onFormSubmit} className='input-container'>
-            <label>Type your Message:</label> 
-            <br/>
-            <input type="text" className='chat-input' onChange={handleUpdatePrompt} />
-            <br/>
-            <button className='chat-send-button' onClick={handleButtonClick}>Send</button>
-          </form>
+  return (
+    <div>
+      <h2>Chat</h2>
+      <div>
+        {messages.map((message, index) => (
+          <div key={index}>{message}</div>
+        ))}
       </div>
-    </>
+      <input
+        type="text"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        placeholder="Type a message..."
+      />
+      <button onClick={sendMessage}>Send</button>
+    </div>
   );
-}
+};
+
+export default Chat;

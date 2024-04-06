@@ -53,7 +53,7 @@ export default function Map() {
 
 
   function handleClickMarker(event:any, listing:any) {
-    console.log(listing.name);
+    console.log(listing.name, showPopup);
     // const { screenX, screenY } = event;
     console.log(event.domEvent, event.domEvent.clientX, event.domEvent.clientY);
     setPopupValue([event.domEvent.clientX, event.domEvent.clientY, listing.name ]);;
