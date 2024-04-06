@@ -17,7 +17,7 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 		CheckOrigin: func(r *http.Request) bool {
 			// Implement your origin check logic here
 			// For example, allow connections only from example.com
-			return true
+			return true // Should change this to our own VPC or something.
 		},
 	}
 

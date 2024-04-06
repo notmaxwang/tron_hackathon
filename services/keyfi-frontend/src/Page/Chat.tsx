@@ -8,7 +8,7 @@ const Chat: React.FC = () => {
 
   useEffect(() => {
     // Create a new WebSocket connection when the component mounts
-    const newWs = new WebSocket('ws://localhost:50052');
+    const newWs = new WebSocket('ws://localhost:8081');
 
     newWs.onopen = () => {
       console.log('WebSocket connected');

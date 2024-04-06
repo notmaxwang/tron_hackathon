@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - '50051:50051'
-      - '50052:50052'
+      - '8081:50052'
   gateway-envoy:
     build:
       context: ./config
@@ -19,11 +19,12 @@ services:
       context: ./keyfi-frontend
       dockerfile: Dockerfile
     ports:
-      - '3000:5173'
-  nginx-proxy:
-      build:
-        context: ./config
-        dockerfile: Dockerfile-nginx
-      ports:
-        - '80:80'   # Expose Nginx HTTP port
+      - '80:5173'
+  # No need for now
+  # nginx-proxy:
+  #     build:
+  #       context: ./config
+  #       dockerfile: Dockerfile-nginx
+  #     ports:
+  #       - '8081:8081'   # Expose Nginx HTTP port
   

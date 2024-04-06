@@ -16,7 +16,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-const APIKEY_MAPPINGS_PATH = "./apikey_mappings.key"
+const CONFIG_MAPPINGS_PATH = "./config_mappings.key"
 
 func listenOnGrpc() {
 	// set a port for the server
@@ -47,8 +47,8 @@ func listenOnWebSocket() {
 }
 
 func main() {
-	// Read API key for Google AI
-	file, err := os.Open(APIKEY_MAPPINGS_PATH)
+	// Read Configs
+	file, err := os.Open(CONFIG_MAPPINGS_PATH)
 	if err != nil {
 		log.Fatal(err)
 	}
