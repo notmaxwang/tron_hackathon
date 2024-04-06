@@ -1,11 +1,8 @@
 package chat
 
 import (
-	"fmt"
 	"log"
 	"net/http"
-	"strings"
-	"time"
 
 	"github.com/gorilla/websocket"
 )
@@ -14,47 +11,39 @@ type WebSocketHandler struct {
 	Upgrader websocket.Upgrader
 }
 
-func (wsh WebSocketHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	c, err := wsh.Upgrader.Upgrade(w, r, nil)
+func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
+	// Configure WebSocket upgrader
+	upgrader := websocket.Upgrader{
+		CheckOrigin: func(r *http.Request) bool {
+			// Implement your origin check logic here
+			// For example, allow connections only from example.com
+			return true
+		},
+	}
+
+	// Upgrade HTTP connection to WebSocket
+	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		log.Printf("error %s when upgrading connection to websocket", err)
+		log.Println("Upgrade:", err)
 		return
 	}
-	defer func() {
-		log.Println("closing connection")
-		c.Close()
-	}()
+	defer conn.Close()
+
+	// WebSocket connection handling
 	for {
-		mt, message, err := c.ReadMessage()
+		// Read message from WebSocket client
+		_, msg, err := conn.ReadMessage()
 		if err != nil {
-			return
+			log.Println("Read:", err)
+			break
 		}
-		if mt == websocket.BinaryMessage {
-			err = c.WriteMessage(websocket.TextMessage, []byte("server doesn't support binary messages"))
-			if err != nil {
-				log.Printf("Error %s when sending message to client", err)
-			}
-			return
-		}
-		log.Printf("Receive message %s", string(message))
-		if strings.Trim(string(message), "\n") != "start" {
-			err = c.WriteMessage(websocket.TextMessage, []byte("You did not say the magic word!"))
-			if err != nil {
-				log.Printf("Error %s when sending message to client", err)
-				return
-			}
-			continue
-		}
-		log.Println("start responding to client...")
-		i := 1
-		for {
-			response := fmt.Sprintf("Notification %d", i)
-			err = c.WriteMessage(websocket.TextMessage, []byte(response))
-			if err != nil {
-				return
-			}
-			i = i + 1
-			time.Sleep(2 * time.Second)
+		log.Printf("Received message: %s\n", msg)
+
+		// Echo message back to client
+		err = conn.WriteMessage(websocket.TextMessage, msg)
+		if err != nil {
+			log.Println("Write:", err)
+			break
 		}
 	}
 }
