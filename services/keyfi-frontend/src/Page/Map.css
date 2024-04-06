@@ -21,3 +21,7 @@
   flex-wrap: wrap;
 }
 
+.popupListing {
+  z-index: 1000;
+}
+
