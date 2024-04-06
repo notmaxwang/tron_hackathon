@@ -47,7 +47,7 @@ func listenOnWebSocket() {
 	}
 	http.Handle("/", webSocketHandler)
 	log.Print("starting websocket on port 50052")
-	log.Fatal(http.ListenAndServe("localhost:50052", nil))
+	log.Fatal(http.ListenAndServe("0.0.0.0:50052", nil))
 }
 
 func main() {
