@@ -40,7 +40,8 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Received message: %s\n", msg)
 
 		// Echo message back to client
-		err = conn.WriteMessage(websocket.TextMessage, msg)
+		suffix := " idk"
+		err = conn.WriteMessage(websocket.TextMessage, append(msg, suffix...))
 		if err != nil {
 			log.Println("Write:", err)
 			break

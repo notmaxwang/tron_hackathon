@@ -36,6 +36,7 @@ const Chat: React.FC = () => {
     if (ws && inputValue.trim() !== '') {
       // Send the message through the WebSocket connection
       ws.send(inputValue);
+      setMessages((prevMessages) => [...prevMessages, inputValue]);
       setInputValue('');
     }
   };
