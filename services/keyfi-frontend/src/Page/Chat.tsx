@@ -1,14 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import './Chat.css'
+import { QueryServiceClient } from '../../protos/query/query.client';
+import { GetValuesRequest } from '../../protos/query/query';
+import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport';
 
 const Chat: React.FC = () => {
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [messages, setMessages] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
 
+  const makeCallToBackend = async () => {
+    let transport = new GrpcWebFetchTransport({
+      baseUrl: "http://ec2-34-236-81-43.compute-1.amazonaws.com:8080"
+    });
+    const client = new QueryServiceClient(transport);
+    const request = GetValuesRequest.create({
+      keys: ["yaobin", "foo"]
+    })
+    const call = client.getValues(request);
+    let response = await call.response;
+    let status = await call.status;
+    console.log("status: " + status)
+    console.log(response.keyValuePairs);
+  }
+
   useEffect(() => {
+    
+    makeCallToBackend();
+
     // Create a new WebSocket connection when the component mounts
-    const newWs = new WebSocket('ws://localhost:8081');
+    const newWs = new WebSocket('ws://ec2-34-236-81-43.compute-1.amazonaws.com:8081');
 
     newWs.onopen = () => {
       console.log('WebSocket connected');
