@@ -38,7 +38,7 @@ export default function Map() {
     {name: 'Coit Tower', position:{lat: 37.8024, lng: -122.4058}}];
   let listComponents:any = [];
   let listName:any = [];
-  
+
 
   listings.forEach((listing, idx) => {
     listComponents.push(
@@ -62,20 +62,44 @@ export default function Map() {
 
   
   return (
-    <div>
-      <div className='topSection'>
-        <div className='listing'>
-          <p className='listingTitle'>Listings</p>
-          <ul className='listings-container'>{listName}</ul>
+    <div className='container'>
+      <div className='search-bar-container'>
+        <div className='top-nav'>
+          <input className='home-search' type='search' placeholder="search thing" />
+          <div className='filter-dropdown'>
+            <select id='price-filter'>
+              <option value='price'>Price</option>
+              <option value='price2'>Price 2</option>
+              <option value='price3'>Price 3</option>
+            </select>
+            <select id='bedbath-filter'>
+              <option value='bedbath'>Beds & Baths</option>
+              <option value='bedbath2'>BedBath 2</option>
+              <option value='bedbath3'>BedBath 3</option>
+            </select>
+            <select name="make">
+              <option value="all">All</option>
+              <option value="type1">Type 1</option>
+              <option value="type2">Type 2</option>
+            </select>
+          </div>
         </div>
-        <GoogleMap
-          mapContainerClassName='map'
-          mapContainerStyle={mapContainerStyle}
-          zoom={13}
-          center={center.position}
-          >
-            {listComponents}
-        </GoogleMap>
+      </div>
+      <div className='bottom-container'>
+        <div className='bottom-section'>
+          <div className='listing'>
+            <p className='listingTitle'>Listings</p>
+            <ul className='listings-container'>{listName}</ul>
+          </div>
+          <GoogleMap
+            mapContainerClassName='map'
+            mapContainerStyle={mapContainerStyle}
+            zoom={13}
+            center={center.position}
+            >
+              {listComponents}
+          </GoogleMap>
+        </div>
       </div>
     </div>
   );

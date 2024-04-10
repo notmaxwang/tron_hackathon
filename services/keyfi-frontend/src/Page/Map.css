@@ -1,17 +1,46 @@
-.map {
-  /* margin-left: 10px; */
-  min-height: 1000px;
-  min-width: 1000px;
+.search-filter-container {
+  display: flex;
+  align-items: center;
 }
 
-.topSection {
+.top-nav {
+  display: flex;
+  align-items: center;
+}
+
+.home-search {
+  width:300px;
+  height: 50px;
+  border: black;
+  border-radius: 7px;
+}
+
+.filter-dropdown select {
+  margin-right: 21px;
+}
+
+.container-bottom {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.map {
+  flex: 1;
+  height: 300px;
+}
+
+.bottom-section {
   display: flex;
   flex-direction: row;
   flex: 50%;
+  margin-top: 370px;
  } 
 
 .listing {
-  margin-left: 2vmin;
+  flex: 1;
+  margin-right: 20px;
+  margin-left: 20px;
   width: 25vw;
   .listingTitle{
     align-items: center;
