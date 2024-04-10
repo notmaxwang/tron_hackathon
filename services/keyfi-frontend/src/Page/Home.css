@@ -14,12 +14,18 @@
 
 .gradient-text {
   font-size: 70px;
-  background: -webkit-linear-gradient(#eee, #333);
+  background: -webkit-linear-gradient(#0096FF, #40B5AD);
+  /* background-image: conic-gradient(#0096FF, #40B5AD); */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
 }
 
 .home-description {
   font-size: 20px;
   text-align: center;
+}
+
+.search {
+  
 }
