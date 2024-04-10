@@ -38,7 +38,7 @@ export default function Map() {
     {name: 'Coit Tower', position:{lat: 37.8024, lng: -122.4058}}];
   let listComponents:any = [];
   let listName:any = [];
-
+  
 
   listings.forEach((listing, idx) => {
     listComponents.push(
@@ -64,6 +64,10 @@ export default function Map() {
   return (
     <div>
       <div className='topSection'>
+        <div className='listing'>
+          <p className='listingTitle'>Listings</p>
+          <ul className='listings-container'>{listName}</ul>
+        </div>
         <GoogleMap
           mapContainerClassName='map'
           mapContainerStyle={mapContainerStyle}
@@ -72,10 +76,6 @@ export default function Map() {
           >
             {listComponents}
         </GoogleMap>
-        <div className='listing'>
-          <p className='listingTitle'>Listings</p>
-          <ul className='listings-container'>{listName}</ul>
-        </div>
       </div>
     </div>
   );

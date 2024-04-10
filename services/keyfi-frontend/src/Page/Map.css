@@ -1,13 +1,16 @@
-.map{
-  margin-left: 10px;
+.map {
+  /* margin-left: 10px; */
+  min-height: 1000px;
+  min-width: 1000px;
 }
 
-.topSection{
+.topSection {
   display: flex;
   flex-direction: row;
-}
+  flex: 50%;
+ } 
 
-.listing{
+.listing {
   margin-left: 2vmin;
   width: 25vw;
   .listingTitle{
