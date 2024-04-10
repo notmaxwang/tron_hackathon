@@ -15,7 +15,7 @@
 .gradient-text {
   font-size: 70px;
   background: -webkit-linear-gradient(#0096FF, #40B5AD);
-  /* background-image: conic-gradient(#0096FF, #40B5AD); */
+  /* background-image: conic-gradient(#0096FF, #40B5AD); in the case that the browse doesn't support linear gradient*/
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   -moz-text-fill-color: transparent;
@@ -26,6 +26,20 @@
   text-align: center;
 }
 
-.search {
-  
+.home-search {
+  width: 900px;
+  height: 50px;
+  border: none;
+  border-radius: 7px;
+  outline: none;
+  background: white;
+  color: black;
+  padding: 0.25rem;
+  padding-left: 5rem; /* space in front of placeholder */
+  font-size: 20px;
+}
+
+.home-search::placeholder {
+  opacity: 1;
+  color: black;
 }
