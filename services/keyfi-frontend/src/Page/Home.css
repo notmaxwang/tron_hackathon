@@ -1,9 +1,25 @@
 .home-page-container {
   display: flex;
-  width: 100vw;
+  flex-direction: column;
+  /* width: 100vw; */
   justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .home-title {
-  font-size: 50px;
+  font-size: 70px;
+  text-align: center;
+}
+
+.gradient-text {
+  font-size: 70px;
+  background: -webkit-linear-gradient(#eee, #333);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.home-description {
+  font-size: 20px;
+  text-align: center;
 }

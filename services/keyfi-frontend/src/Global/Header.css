@@ -30,13 +30,15 @@ nav ul li {
 }
 
 nav ul li a {
-  color: #fff;
+  color: #000;
   text-decoration: none;
   padding: 20px;
 }
 
 nav ul li a:hover {
   background-color: #555;
+  color: white;
+  text-decoration: none;
 }
 
 .logo-image {

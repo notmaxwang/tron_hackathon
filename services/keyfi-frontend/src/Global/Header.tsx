@@ -8,7 +8,7 @@ export default function Header() {
         <ul>
           <li><a href="/"><img src={logo} alt="Website logo" className="logo-image" /></a></li>
           <li><a href="/">Home</a></li>
-          <li><a href="/chat">Chat</a></li>
+          <li><a href="/chat">AI Chatbot</a></li>
           <li><a href="/map">Map</a></li>
         </ul>
       </nav>
