@@ -1,0 +1,26 @@
+syntax = "proto3";
+package keyfi_protos.auth;
+option go_package="keyfi-backend/apis/auth";
+
+message KeyValuePair {
+    string key = 1;
+    string value = 2;
+}
+
+message GetValuesRequest {
+    repeated string keys = 1;
+}
+
+message GetValuesResponse {
+    repeated KeyValuePair keyValuePairs = 1;
+}
+
+message AccountRegistrationRequest {
+    string firstName = 1;
+    string lastName = 2;
+    string middleName = 3;
+}
+
+service AuthenticationService{
+    rpc GetValues(GetValuesRequest) returns (GetValuesResponse);
+}
