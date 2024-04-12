@@ -25,6 +25,7 @@ func (model *UserProfileModel) ToDaoItem() *map[string]types.AttributeValue {
 	}
 
 	return &map[string]types.AttributeValue{
+		"wallet_address":     &types.AttributeValueMemberS{Value: model.WalletAddress},
 		"signed_message":     &types.AttributeValueMemberS{Value: model.SignedMessage},
 		"signed_message_ttl": &types.AttributeValueMemberN{Value: strconv.FormatInt(model.SignedMessageTTL, 10)},
 		"first_name":         &types.AttributeValueMemberS{Value: model.FirstName},
