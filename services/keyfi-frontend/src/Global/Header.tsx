@@ -9,6 +9,7 @@ export default function Header() {
           <li><a href="/">Home</a></li>
           <li><a href="/chat">AI Chatbot</a></li>
           <li><a href="/map">Map</a></li>
+          <li><a href="/wallet">Connect Wallet</a></li>
         </ul>
       </nav>
     </header>
