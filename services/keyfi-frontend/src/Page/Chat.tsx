@@ -63,20 +63,23 @@ const Chat: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2>Chat</h2>
-      <div>
+    <div className='chat-container'>
+      <h2 className='chat-header'>Chat</h2>
+      <div className='message-container'>
         {messages.map((message, index) => (
           <div key={index}>{message}</div>
         ))}
       </div>
-      <input
-        type="text"
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        placeholder="Type a message..."
-      />
-      <button onClick={sendMessage}>Send</button>
+      <div className='input-container'>
+        <input
+          className='input-field'
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="Type a message..."
+        />
+        <button onClick={sendMessage}>Send</button>
+      </div>
     </div>
   );
 };
