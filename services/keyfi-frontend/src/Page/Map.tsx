@@ -3,6 +3,8 @@ import Listing from '../Component/Listing';
 import { GoogleMap, useLoadScript } from '@react-google-maps/api';
 import './Map.css';
 import { useState } from 'react';
+import Sparkle from '../../../keyfi-frontend/src/assets/sparkle.png'
+
 
 
 export default function Map() {
@@ -60,27 +62,33 @@ export default function Map() {
     setShowPopup(true);
   }
 
+  const filterList = document.querySelector('.filter-dropdown');
+  const filterButtons = filterList?.querySelector('.select-item');
+
   
   return (
     <div className='container'>
       <div className='search-bar-container'>
         <div className='top-nav'>
-          <input className='home-search' type='search' placeholder="search thing" />
+          <div className='search-container'>
+            <input className='home-search' type='search' placeholder="search thing" />
+            <button className='ai-button'><img src={Sparkle} alt="" className="sparkle" />Ask AI</button>
+          </div>
           <div className='filter-dropdown'>
-            <select id='price-filter'>
-              <option value='price'>Price</option>
-              <option value='price2'>Price 2</option>
-              <option value='price3'>Price 3</option>
+            <select className='price-filter' id='price-filter'>
+                <option className='select-item' value='select'>Price</option>
+                <option className='select-item' value='price2'>Price 2</option>
+                <option className='select-item' value='price3'>Price 3</option>
             </select>
-            <select id='bedbath-filter'>
-              <option value='bedbath'>Beds & Baths</option>
-              <option value='bedbath2'>BedBath 2</option>
-              <option value='bedbath3'>BedBath 3</option>
+            <select className='bedbath-filter' id='bedbath-filter'>
+              <option className='select-item' value='select'>Beds & Baths</option>
+              <option className='select-item' value='bedbath2'>BedBath 2</option>
+              <option className='select-item' value='bedbath3'>BedBath 3</option>
             </select>
-            <select name="make">
-              <option value="all">All</option>
-              <option value="type1">Type 1</option>
-              <option value="type2">Type 2</option>
+            <select className="style-filter">
+              <option className='select-item' value="all">Housing Style</option>
+              <option className='select-item' value="type1">Type 1</option>
+              <option className='select-item' value="type2">Type 2</option>
             </select>
           </div>
         </div>
