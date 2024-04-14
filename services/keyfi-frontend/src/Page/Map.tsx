@@ -1,15 +1,16 @@
-import {  MarkerF } from '@react-google-maps/api';
+import { MarkerF } from '@react-google-maps/api';
 import Listing from '../Component/Listing';
 import { GoogleMap, useLoadScript } from '@react-google-maps/api';
 import './Map.css';
-import { useState } from 'react';
+import React ,{ useState } from 'react';
+import { Unstable_Popup as BasePopup } from '@mui/base/Unstable_Popup';
 import Sparkle from '../../../keyfi-frontend/src/assets/sparkle.png'
 
 
 
 export default function Map() {
-  const [popupValue, setPopupValue] = useState<any []>([]);
-  const [showPopup, setShowPopup] = useState(false);
+  const [currListing, setCurrListing] = useState(null);
+  const [anchor, setAnchor] = React.useState<null | HTMLElement>(null);
   const GOOGLE_MAP_API_KEY:any = process.env.REACT_APP_MAP_KEY;
   const libraries:any = ['places'];
   const mapContainerStyle = {
@@ -41,25 +42,32 @@ export default function Map() {
   let listComponents:any = [];
   let listName:any = [];
 
+  function handleClick(event:any) {
+    setAnchor(anchor ? null : event.domEvent.currentTarget);
+  };
+
+  let open = Boolean(anchor);
+  let id = open ? 'simple-popper' : undefined;
+
+  function setNewListing(event:any) {
+    console.log(event);
+  }
 
   listings.forEach((listing, idx) => {
     listComponents.push(
-      <MarkerF 
-        key={idx} 
-        position={listing.position} 
-        onClick={(evt) => handleClickMarker(evt, listing)}>
-          {popupValue[2] === listing.name ? <Listing x={popupValue[0]} y={popupValue[1]} name={popupValue[2]} isPopup={true} className='popupListing' /> : <></>}
-      </MarkerF>);
+        <MarkerF 
+          key={idx} 
+          position={listing.position} 
+          clickable={true}
+          label={listing.name}
+          onClick={handleClick}
+          onMouseOver={setNewListing}>
+        </MarkerF>);
     listName.push(<Listing key={idx} name={listing.name} />);
   });
 
-
-  function handleClickMarker(event:any, listing:any) {
-    console.log(listing.name, showPopup);
-    // const { screenX, screenY } = event;
-    console.log(event.domEvent, event.domEvent.clientX, event.domEvent.clientY);
-    setPopupValue([event.domEvent.clientX, event.domEvent.clientY, listing.name ]);;
-    setShowPopup(true);
+  function reset() {
+    return
   }
  
   return (
@@ -103,6 +111,10 @@ export default function Map() {
             >
               {listComponents}
           </GoogleMap>
+          <BasePopup id={id} open={open} anchor={anchor} className='popup-window'>
+            <button onClick={reset}>X</button>
+            <p>test</p>
+          </BasePopup>
         </div>
       </div>
     </div>
