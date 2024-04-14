@@ -61,11 +61,7 @@ export default function Map() {
     setPopupValue([event.domEvent.clientX, event.domEvent.clientY, listing.name ]);;
     setShowPopup(true);
   }
-
-  const filterList = document.querySelector('.filter-dropdown');
-  const filterButtons = filterList?.querySelector('.select-item');
-
-  
+ 
   return (
     <div className='container'>
       <div className='search-bar-container'>

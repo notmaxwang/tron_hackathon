@@ -33,6 +33,10 @@
   margin-right: 10px;
 }
 
+.home-search::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
 .filter-dropdown {
   margin-left: 41px;
 }
