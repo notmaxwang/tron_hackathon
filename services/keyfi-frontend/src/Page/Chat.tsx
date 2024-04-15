@@ -65,50 +65,33 @@ const Chat: React.FC = () => {
   return (
     <div className='chat-container'>
       <aside className='side-menu'>
+        <div className='loan-header'>
+          Loan Plans
+          <button className='ellipsis-button'>&#x2026;</button>
+        </div>
         <div className='side-menu-button'>
           <span>+</span>
           New Chat
         </div>
       </aside>
       <section className='chatbox'>
-        {/* <div className='chat-log'>
-          <div className='chat-message'>
-
+        <h2 className='chat-header'>Chat</h2>
+          <div className='message-container'>
+            {messages.map((message, index) => (
+              <div key={index}>{message}</div>
+            ))}
           </div>
-        </div> */}
-      <h2 className='chat-header'>Chat</h2>
-        <div className='message-container'>
-          {messages.map((message, index) => (
-            <div key={index}>{message}</div>
-          ))}
-        </div>
-        <div className='input-container'>
-          <input
-            className='input-field'
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Ask me anything..."
-          />
-          <button onClick={sendMessage}>Send</button>
-        </div>
+          <div className='input-container'>
+            <input
+              className='input-field'
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Ask me anything..."
+            />
+            <button onClick={sendMessage}>Send</button>
+          </div>
       </section>
-      {/* <h2 className='chat-header'>Chat</h2>
-      <div className='message-container'>
-        {messages.map((message, index) => (
-          <div key={index}>{message}</div>
-        ))}
-      </div>
-      <div className='input-container'>
-        <input
-          className='input-field'
-          type="text"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          placeholder="Type a message..."
-        />
-        <button onClick={sendMessage}>Send</button>
-      </div> */}
     </div>
   );
 };
