@@ -10,19 +10,13 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 )
 
-// Record holds info about the records returned by Scan
-type Record struct {
-	ID   string
-	URLs []string
-}
-
 type DataAccessObject struct {
 	Client    *dynamodb.Client
 	tableName string
 	region    string
 }
 
-func (dao *DataAccessObject) GetItem(walletAddress string) {
+func (dao *DataAccessObject) GetItem(walletAddress string) *models.UserProfileModel {
 	dynamoDBKey := map[string]types.AttributeValue{
 		"wallet_address": &types.AttributeValueMemberS{Value: walletAddress},
 	}
@@ -35,10 +29,12 @@ func (dao *DataAccessObject) GetItem(walletAddress string) {
 		log.Println(err)
 	}
 
-	log.Println(res)
+	model := models.UserProfileModel{}
+	model.Populate(&res.Item)
+	return &model
 }
 
-func (dao *DataAccessObject) PutItem(item *models.UserProfileModel) {
+func (dao *DataAccessObject) PutItem(item *models.UserProfileModel) error {
 	itemAttr := item.ToDaoItem()
 	input := &dynamodb.PutItemInput{
 		TableName: &dao.tableName,
@@ -49,6 +45,6 @@ func (dao *DataAccessObject) PutItem(item *models.UserProfileModel) {
 
 	if err != nil {
 		log.Printf("Failed to put item for %s in DynamoDB - %s\n", item.WalletAddress, err.Error())
-		// return nil
 	}
+	return err
 }

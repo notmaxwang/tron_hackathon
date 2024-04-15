@@ -13,6 +13,7 @@ message AuthRequest {
 
 message AuthResponse {
     bool success = 1;
+    bool accountExists = 2;
 }
 
 service AuthenticationService{

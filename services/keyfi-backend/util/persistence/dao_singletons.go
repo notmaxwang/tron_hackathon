@@ -12,7 +12,7 @@ const mainTableName string = "main_table"
 const region string = "us-east-1"
 
 var dbClient *dynamodb.Client
-var MainTableDao *DataAccessObject
+var mainTableDao *DataAccessObject
 
 func GetDynamoDBClient() (*dynamodb.Client, error) {
 	if dbClient == nil {
@@ -28,14 +28,17 @@ func GetDynamoDBClient() (*dynamodb.Client, error) {
 }
 
 func GetMainTableDao() (*DataAccessObject, error) {
-	client, err := GetDynamoDBClient()
-	if err != nil {
-		return nil, err
-	}
+	if mainTableDao == nil {
+		client, err := GetDynamoDBClient()
+		if err != nil {
+			return nil, err
+		}
 
-	return &DataAccessObject{
-		Client:  client,
-		tableName: mainTableName,
-		region:    region,
-	}, nil
+		return &DataAccessObject{
+			Client:  client,
+			tableName: mainTableName,
+			region:    region,
+		}, nil
+	}
+	return mainTableDao, nil
 }

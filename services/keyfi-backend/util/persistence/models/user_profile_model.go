@@ -8,15 +8,15 @@ import (
 )
 
 type UserProfileModel struct {
-	WalletAddress    string
-	SignedMessage    string
-	SignedMessageTTL int64
-	FirstName        string
-	LastName         string
-	MiddleName       string
-	Role             string
-	ChatS3Object     string
-	CreationTime     int64
+	WalletAddress   string
+	Signature       string
+	SignatureExpiry int64
+	FirstName       string
+	LastName        string
+	MiddleName      string
+	Role            string
+	ChatS3Object    string
+	CreationTime    int64
 }
 
 func (model *UserProfileModel) ToDaoItem() *map[string]types.AttributeValue {
@@ -25,15 +25,15 @@ func (model *UserProfileModel) ToDaoItem() *map[string]types.AttributeValue {
 	}
 
 	return &map[string]types.AttributeValue{
-		"wallet_address":     &types.AttributeValueMemberS{Value: model.WalletAddress},
-		"signed_message":     &types.AttributeValueMemberS{Value: model.SignedMessage},
-		"signed_message_ttl": &types.AttributeValueMemberN{Value: strconv.FormatInt(model.SignedMessageTTL, 10)},
-		"first_name":         &types.AttributeValueMemberS{Value: model.FirstName},
-		"last_name":          &types.AttributeValueMemberS{Value: model.LastName},
-		"middle_name":        &types.AttributeValueMemberS{Value: model.MiddleName},
-		"role":               &types.AttributeValueMemberS{Value: model.MiddleName},
-		"chat_s3_object":     &types.AttributeValueMemberS{Value: model.ChatS3Object},
-		"creation_time":      &types.AttributeValueMemberN{Value: strconv.FormatInt(model.CreationTime, 10)},
+		"wallet_address":   &types.AttributeValueMemberS{Value: model.WalletAddress},
+		"signature":        &types.AttributeValueMemberS{Value: model.Signature},
+		"signature_expiry": &types.AttributeValueMemberN{Value: strconv.FormatInt(model.SignatureExpiry, 10)},
+		"first_name":       &types.AttributeValueMemberS{Value: model.FirstName},
+		"last_name":        &types.AttributeValueMemberS{Value: model.LastName},
+		"middle_name":      &types.AttributeValueMemberS{Value: model.MiddleName},
+		"role":             &types.AttributeValueMemberS{Value: model.MiddleName},
+		"chat_s3_object":   &types.AttributeValueMemberS{Value: model.ChatS3Object},
+		"creation_time":    &types.AttributeValueMemberN{Value: strconv.FormatInt(model.CreationTime, 10)},
 	}
 }
 
@@ -55,12 +55,12 @@ func (model *UserProfileModel) Populate(item *map[string]types.AttributeValue) {
 	if val, ok := attributes["wallet_address"].(*types.AttributeValueMemberS); ok {
 		model.WalletAddress = val.Value
 	}
-	if val, ok := attributes["signed_message"].(*types.AttributeValueMemberS); ok {
-		model.SignedMessage = val.Value
+	if val, ok := attributes["signature"].(*types.AttributeValueMemberS); ok {
+		model.Signature = val.Value
 	}
-	if val, ok := attributes["signed_message_ttl"].(*types.AttributeValueMemberN); ok {
+	if val, ok := attributes["signature_expiry"].(*types.AttributeValueMemberN); ok {
 		if ttl, err := strconv.ParseInt(val.Value, 10, 64); err == nil {
-			model.SignedMessageTTL = ttl
+			model.SignatureExpiry = ttl
 		}
 	}
 	if val, ok := attributes["first_name"].(*types.AttributeValueMemberS); ok {
