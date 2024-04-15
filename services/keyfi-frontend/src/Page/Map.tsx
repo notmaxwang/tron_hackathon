@@ -44,7 +44,11 @@ export default function Map() {
 
   function handleClick(event:any) {
     setAnchor(anchor ? null : event.domEvent.currentTarget);
-  };
+  }
+
+  function reset() {
+    setAnchor(null);
+  }
 
   let open = Boolean(anchor);
   let id = open ? 'simple-popper' : undefined;
@@ -65,10 +69,6 @@ export default function Map() {
         </MarkerF>);
     listName.push(<Listing key={idx} name={listing.name} />);
   });
-
-  function reset() {
-    return
-  }
  
   return (
     <div className='container'>

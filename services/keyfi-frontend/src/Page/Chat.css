@@ -78,6 +78,9 @@
 
 .message-container div {
   padding: 5px;
+  width: fit-content;
+  display: inline;
+  padding: 0 0.5rem;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
@@ -96,6 +99,8 @@
 .input-field {
   flex: 1;
   width: 90%;
+  /* width: 936px; */
+  /* height: 60px; */
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
