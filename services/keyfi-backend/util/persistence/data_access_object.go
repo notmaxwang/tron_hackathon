@@ -16,7 +16,7 @@ type DataAccessObject struct {
 	region    string
 }
 
-func (dao *DataAccessObject) GetItem(walletAddress string) *models.UserProfileModel {
+func (dao *DataAccessObject) GetItem(walletAddress string) (*models.UserProfileModel, error) {
 	dynamoDBKey := map[string]types.AttributeValue{
 		"wallet_address": &types.AttributeValueMemberS{Value: walletAddress},
 	}
@@ -26,12 +26,12 @@ func (dao *DataAccessObject) GetItem(walletAddress string) *models.UserProfileMo
 		Key:            dynamoDBKey,
 	})
 	if err != nil {
-		log.Println(err)
+		return nil, err
 	}
 
 	model := models.UserProfileModel{}
 	model.Populate(&res.Item)
-	return &model
+	return &model, nil
 }
 
 func (dao *DataAccessObject) PutItem(item *models.UserProfileModel) error {

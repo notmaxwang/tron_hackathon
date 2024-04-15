@@ -9,7 +9,6 @@ import (
 	"log"
 	"time"
 
-	"google.golang.org/genproto/googleapis/rpc/code"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -28,41 +27,41 @@ func (s *Server) Login(ctx context.Context, request *pb.AuthRequest) (*pb.AuthRe
 	dao, err := persistence.GetMainTableDao()
 	if err != nil {
 		log.Fatalf("failed to initialize DB Dao\n")
-		return nil, status.Errorf(code.Code_INTERNAL, "failed to access DB")
+		return nil, status.Errorf(codes.Internal, "failed to access DB")
 	}
 
 	item, err := dao.GetItem(request.WalletAddress)
 	if err != nil {
 		log.Fatalf("failed to read item for %s\n", request.WalletAddress)
-		return nil, status.Errorf(code.Code_INTERNAL, "failed to access DB")
+		return nil, status.Errorf(codes.Internal, "failed to access DB")
 	}
 
 	if item == nil {
 		log.Printf("wallet not found in DB: %s\n", request.WalletAddress)
-		return nil, status.Errorf(code.Code_NOT_FOUND, "walletAddress not found in DB")
+		return nil, status.Errorf(codes.NotFound, "walletAddress not found in DB")
 	}
 
 	if item.SignatureExpiry > request.SignatureExpiry {
 		log.Printf("login attempt denied because expiry date less than saved: %s\n", request.WalletAddress)
-		return nil, status.Errorf(code.Code_PERMISSION_DENIED, "login denied")
+		return nil, status.Errorf(codes.PermissionDenied, "login denied")
 	}
 
 	verify, err := cryptography.ValidateDefaultMessage(item.SignatureExpiry, request.Signature, request.WalletAddress)
 	if err != nil {
 		log.Printf("Error while verifying signature for %s\n", request.WalletAddress)
-		return nil, status.Errorf(code.Code_INTERNAL, "failed to verify signature")
+		return nil, status.Errorf(codes.Internal, "failed to verify signature")
 	}
 
 	if !verify {
 		log.Printf("login attempt denied because signature cannot be verified: %s\n", request.WalletAddress)
-		return nil, status.Errorf(code.Code_PERMISSION_DENIED, "login denied")
+		return nil, status.Errorf(codes.PermissionDenied, "login denied")
 	}
 
 	item.SignatureExpiry = request.SignatureExpiry
 	err = dao.PutItem(item)
 	if err != nil {
 		log.Fatalf("failed to update item for %s\n", request.WalletAddress)
-		return nil, status.Errorf(code.Code_INTERNAL, "failed to update DB")
+		return nil, status.Errorf(codes.Internal, "failed to update DB")
 	}
 
 	return &pb.AuthResponse{
@@ -84,38 +83,38 @@ func (s *Server) Register(ctx context.Context, request *pb.AuthRequest) (*pb.Aut
 	dao, err := persistence.GetMainTableDao()
 	if err != nil {
 		log.Fatalf("failed to initialize DB Dao\n")
-		return nil, status.Errorf(code.Code_INTERNAL, "failed to access DB")
+		return nil, status.Errorf(codes.Internal, "failed to access DB")
 	}
 
 	item, err := dao.GetItem(request.WalletAddress)
 	if err != nil {
 		log.Fatalf("failed to read item for %s\n", request.WalletAddress)
-		return nil, status.Errorf(code.Code_INTERNAL, "failed to access DB")
+		return nil, status.Errorf(codes.Internal, "failed to access DB")
 	}
 
 	if item != nil {
 		log.Printf("wallet already exists: %s\n", request.WalletAddress)
-		return nil, status.Errorf(code.Code_ALREADY_EXISTS, "an account for this address already exists")
+		return nil, status.Errorf(codes.AlreadyExists, "an account for this address already exists")
 	}
 
-	now = time.Now().UTC().Unix()
+	now := time.Now().UTC().Unix()
 	if request.SignatureExpiry <= now {
 		log.Printf("login attempt denied because expiry date has passed: %s\n", request.WalletAddress)
-		return nil, status.Errorf(code.Code_PERMISSION_DENIED, "login denied")
+		return nil, status.Errorf(codes.PermissionDenied, "login denied")
 	}
 
 	verify, err := cryptography.ValidateDefaultMessage(request.SignatureExpiry, request.Signature, request.walletAddress)
 	if err != nil {
 		log.Printf("Error while verifying signature for %s\n", request.WalletAddress)
-		return nil, status.Errorf(code.Code_INTERNAL, "failed to verify signature")
+		return nil, status.Errorf(codes.Internal, "failed to verify signature")
 	}
 
 	if !verify {
 		log.Printf("login attempt denied because signature cannot be verified: %s\n", request.WalletAddress)
-		return nil, status.Errorf(code.Code_PERMISSION_DENIED, "login denied")
+		return nil, status.Errorf(codes.PermissionDenied, "login denied")
 	}
 
-	item = models.UserProfileModel{
+	item = &models.UserProfileModel{
 		WalletAddress:   request.WalletAddress,
 		Signature:       request.Signature,
 		SignatureExpiry: request.SignatureExpiry,
@@ -129,7 +128,7 @@ func (s *Server) Register(ctx context.Context, request *pb.AuthRequest) (*pb.Aut
 	err = dao.PutItem(item)
 	if err != nil {
 		log.Fatalf("failed to update item for %s\n", request.WalletAddress)
-		return nil, status.Errorf(code.Code_INTERNAL, "failed to update DB")
+		return nil, status.Errorf(codes.Internal, "failed to update DB")
 	}
 
 	return &pb.AuthResponse{

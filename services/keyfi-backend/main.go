@@ -7,6 +7,7 @@ import (
 	ai_pb "keyfi-backend/protos/ai"
 	query_pb "keyfi-backend/protos/query"
 	"keyfi-backend/util/chat"
+	"keyfi-backend/util/middleware"
 	"log"
 	"net"
 	"net/http"
@@ -28,7 +29,12 @@ func listenOnGrpc() {
 		log.Fatal("listen error: ", err)
 	}
 
-	grpcServer := grpc.NewServer()
+	grpcServer := grpc.NewServer(
+		grpc.ChainUnaryInterceptor(
+			// Order matters e.g. tracing interceptor have to create span first for the later exemplars to work.
+			middleware.UnaryInterceptor(),
+		),
+	)
 
 	// Register different services
 	ai_pb.RegisterAIServiceServer(grpcServer, &ai.Server{})
