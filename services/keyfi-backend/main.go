@@ -2,9 +2,11 @@ package main
 
 import (
 	"bufio"
+	"keyfi-backend/apis/auth"
 	"keyfi-backend/apis/chat/ai"
 	"keyfi-backend/apis/query"
 	ai_pb "keyfi-backend/protos/ai"
+	auth_pb "keyfi-backend/protos/auth"
 	query_pb "keyfi-backend/protos/query"
 	"keyfi-backend/util/chat"
 	"keyfi-backend/util/middleware"
@@ -39,6 +41,7 @@ func listenOnGrpc() {
 	// Register different services
 	ai_pb.RegisterAIServiceServer(grpcServer, &ai.Server{})
 	query_pb.RegisterQueryServiceServer(grpcServer, &query.Server{})
+	auth_pb.RegisterAuthenticationServiceServer(grpcServer, &auth.Server{})
 
 	log.Printf("starting server on port %s\n", port)
 	if err := grpcServer.Serve(listener); err != nil {

@@ -18,7 +18,7 @@ type Server struct {
 }
 
 func (s *Server) Login(ctx context.Context, request *pb.AuthRequest) (*pb.AuthResponse, error) {
-	if request == nil || request.WalletAddress == nil || request.Signature == nil {
+	if request == nil || request.WalletAddress == "" || request.Signature == "" {
 		return nil, status.Errorf(codes.InvalidArgument, "invalid request: walletAddress and/or signature are empty")
 	}
 
@@ -65,16 +65,16 @@ func (s *Server) Login(ctx context.Context, request *pb.AuthRequest) (*pb.AuthRe
 	}
 
 	return &pb.AuthResponse{
-		Success:       true,
+		Success: true,
 	}, nil
 }
 
 func (s *Server) Register(ctx context.Context, request *pb.AuthRequest) (*pb.AuthResponse, error) {
-	if request == nil || request.WalletAddress == nil || request.Signature == nil {
+	if request == nil || request.WalletAddress == "" || request.Signature == "" {
 		return nil, status.Errorf(codes.InvalidArgument, "invalid request: walletAddress and/or signature are empty")
 	}
 
-	if request.FirstName == nil || request.LastName == nil {
+	if request.FirstName == "" || request.LastName == "" {
 		return nil, status.Errorf(codes.InvalidArgument, "invalid request: no name provided")
 	}
 
@@ -103,7 +103,7 @@ func (s *Server) Register(ctx context.Context, request *pb.AuthRequest) (*pb.Aut
 		return nil, status.Errorf(codes.PermissionDenied, "login denied")
 	}
 
-	verify, err := cryptography.ValidateDefaultMessage(request.SignatureExpiry, request.Signature, request.walletAddress)
+	verify, err := cryptography.ValidateDefaultMessage(request.SignatureExpiry, request.Signature, request.WalletAddress)
 	if err != nil {
 		log.Printf("Error while verifying signature for %s\n", request.WalletAddress)
 		return nil, status.Errorf(codes.Internal, "failed to verify signature")
@@ -132,6 +132,6 @@ func (s *Server) Register(ctx context.Context, request *pb.AuthRequest) (*pb.Aut
 	}
 
 	return &pb.AuthResponse{
-		Success:       true,
+		Success: true,
 	}, nil
 }
