@@ -71,6 +71,11 @@ const Chat: React.FC = () => {
         </div>
       </aside>
       <section className='chatbox'>
+        {/* <div className='chat-log'>
+          <div className='chat-message'>
+
+          </div>
+        </div> */}
       <h2 className='chat-header'>Chat</h2>
         <div className='message-container'>
           {messages.map((message, index) => (
