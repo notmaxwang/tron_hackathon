@@ -4,7 +4,7 @@ import { GoogleMap, useLoadScript } from '@react-google-maps/api';
 import './Map.css';
 import React from 'react';
 import { Unstable_Popup as BasePopup } from '@mui/base/Unstable_Popup';
-import Sparkle from '../../../keyfi-frontend/src/assets/sparkle.png'
+import Sparkle from '../assets/sparkle.png'
 
 
 
