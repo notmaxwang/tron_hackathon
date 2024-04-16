@@ -2,7 +2,7 @@ import { MarkerF } from '@react-google-maps/api';
 import Listing from '../Component/Listing';
 import { GoogleMap, useLoadScript } from '@react-google-maps/api';
 import './Map.css';
-import React ,{ useState } from 'react';
+// import React ,{ useState } from 'react';
 import { Unstable_Popup as BasePopup } from '@mui/base/Unstable_Popup';
 import Sparkle from '../../../keyfi-frontend/src/assets/sparkle.png'
 
