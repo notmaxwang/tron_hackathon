@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"keyfi-backend/apis/auth"
 	"keyfi-backend/apis/chat/ai"
 	"keyfi-backend/apis/query"
@@ -23,10 +24,11 @@ const CONFIG_MAPPINGS_PATH = "./config_mappings.key"
 
 func listenOnGrpc() {
 	// set a port for the server
-	port := ":50051"
+	port := "50051"
+	formattedPort := fmt.Sprintf(":%s", port)
 
 	// listen for requests on port
-	listener, err := net.Listen("tcp", port)
+	listener, err := net.Listen("tcp", formattedPort)
 	if err != nil {
 		log.Fatal("listen error: ", err)
 	}
@@ -43,16 +45,17 @@ func listenOnGrpc() {
 	query_pb.RegisterQueryServiceServer(grpcServer, &query.Server{})
 	auth_pb.RegisterAuthenticationServiceServer(grpcServer, &auth.Server{})
 
-	log.Printf("starting server on port %s\n", port)
+	log.Printf("starting grpc server on port %s\n", port)
 	if err := grpcServer.Serve(listener); err != nil {
 		log.Fatal("Failed to serve: %v", err)
 	}
 }
 
 func listenOnWebSocket() {
+	port := "50052"
 	http.HandleFunc("/", chat.HandleWebSocket)
-	log.Print("starting websocket on port 50052")
-	log.Fatal(http.ListenAndServe("0.0.0.0:50052", nil))
+	log.Printf("starting websocket server on port %s\n", port)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf("0.0.0.0:%s", port), nil))
 }
 
 func main() {

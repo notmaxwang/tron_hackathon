@@ -9,7 +9,7 @@ import Sparkle from '../../../keyfi-frontend/src/assets/sparkle.png'
 
 
 export default function Map() {
-  const [currListing, setCurrListing] = useState(null);
+  // const [currListing, setCurrListing] = useState(null);
   const [anchor, setAnchor] = React.useState<null | HTMLElement>(null);
   const GOOGLE_MAP_API_KEY:any = process.env.REACT_APP_MAP_KEY;
   const libraries:any = ['places'];
