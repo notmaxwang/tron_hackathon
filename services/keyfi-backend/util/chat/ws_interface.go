@@ -31,6 +31,11 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 	}
 	defer conn.Close()
 
+	dao, err := persistence.GetMainTableDao()
+	if err != nil {
+		log.Println("failed to create dao", err)
+	}
+
 	// WebSocket connection handling
 	for {
 		// Read message from WebSocket client
@@ -40,6 +45,21 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		log.Printf("Received message: %s\n", msg)
+
+		log.Printf("command: %s\n", msg[:3])
+		if string(msg[:3]) == "get" {
+			// walletAddress := msg[4:]
+			log.Printf("%sting %s\n", msg[:3], msg[4:])
+			dao.GetItem(string(msg[4:]))
+		} else if string(msg[:3]) == "put" {
+			// walletAddress := msg[4:]
+			log.Printf("%sting %s\n", msg[:3], msg[4:])
+			model := &models.UserProfileModel{
+				WalletAddress: string(msg[4:]),
+			}
+			dao.PutItem(model)
+		}
+
 		// Echo message back to client
 		suffix := " idk"
 		err = conn.WriteMessage(websocket.TextMessage, append(msg, suffix...))
