@@ -39,14 +39,14 @@ func SendTextPrompt(message string) *genai.GenerateContentResponse {
 func StartConvo() (*Conversation, error) {
 	ctx := context.Background()
 	// Access your API key as an environment variable (see "Set up your API key" above)
-	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("API_KEY")))
+	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_AI_KEY")))
 	if err != nil {
 		return nil, err
 	}
 	defer client.Close()
 
 	// For text-and-image input (multimodal), use the gemini-pro-vision model
-	model := client.GenerativeModel("gemini-pro-vision")
+	model := client.GenerativeModel("gemini-pro")
 
 	prompt := genai.Text("Tell me a story about this animal")
 	return &Conversation{

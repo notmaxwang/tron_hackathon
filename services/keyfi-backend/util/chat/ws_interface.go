@@ -33,7 +33,7 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 	// Start connection to AI
 	convo, err := StartConvo()
 	if err != nil {
-		log.Println("Error while trying to establish AI convo session")
+		log.Println("Error while trying to establish AI convo session", err)
 		return
 	}
 
@@ -52,7 +52,7 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 			log.Println("chat ended for some reason")
 		}
 		if err != nil {
-			log.Println("error while trying to send prompt")
+			log.Println("error while trying to send prompt", err)
 			break
 		}
 
