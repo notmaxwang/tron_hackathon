@@ -39,6 +39,7 @@ func SendTextPrompt(message string) *genai.GenerateContentResponse {
 func StartConvo() (*Conversation, error) {
 	ctx := context.Background()
 	// Access your API key as an environment variable (see "Set up your API key" above)
+	log.Printf("key: %s\n", os.Getenv("GEMINI_AI_KEY"))
 	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_AI_KEY")))
 	if err != nil {
 		return nil, err
