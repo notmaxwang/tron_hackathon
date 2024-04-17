@@ -12,7 +12,7 @@ import (
 )
 
 type Conversation struct {
-	chatIter genai.GenerateContentResponseIterator
+	iter *genai.GenerateContentResponseIterator
 }
 
 var once sync.Once
@@ -48,15 +48,18 @@ func StartConvo() (*Conversation, error) {
 
 	// For text-and-image input (multimodal), use the gemini-pro-vision model
 	model := client.GenerativeModel("gemini-pro")
+	cs := model.StartChat()
 
 	prompt := genai.Text("Tell me a story about this animal")
+	iter := cs.SendMessageStream(ctx, prompt)
+
 	return &Conversation{
-		chatIter: *model.GenerateContentStream(ctx, prompt),
+		iter: iter,
 	}, nil
 }
 
 func (convo *Conversation) SendChatPrompt(prompt string) (*genai.GenerateContentResponse, error) {
-	resp, err := convo.chatIter.Next()
+	resp, err := convo.iter.Next()
 	if err == iterator.Done {
 		log.Printf("the chat has ended\n")
 		return nil, nil
