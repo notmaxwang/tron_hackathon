@@ -1,8 +1,6 @@
 package chat
 
 import (
-	"keyfi-backend/util/persistence/models"
-	"keyfi-backend/util/persistence"
 	"log"
 	"net/http"
 
@@ -31,9 +29,11 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 	}
 	defer conn.Close()
 
-	dao, err := persistence.GetMainTableDao()
+	// Start connection to AI
+	convo, err := ai.StartConvo()
 	if err != nil {
-		log.Println("failed to create dao", err)
+		log.Println("Error while trying to establish AI convo session")
+		return nil, err
 	}
 
 	// WebSocket connection handling
@@ -46,23 +46,16 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 		}
 		log.Printf("Received message: %s\n", msg)
 
-		log.Printf("command: %s\n", msg[:3])
-		if string(msg[:3]) == "get" {
-			// walletAddress := msg[4:]
-			log.Printf("%sting %s\n", msg[:3], msg[4:])
-			dao.GetItem(string(msg[4:]))
-		} else if string(msg[:3]) == "put" {
-			// walletAddress := msg[4:]
-			log.Printf("%sting %s\n", msg[:3], msg[4:])
-			model := &models.UserProfileModel{
-				WalletAddress: string(msg[4:]),
-			}
-			dao.PutItem(model)
+		aiResponse, err := convo.SendChatPrompt(msg)
+		if aiResponse == nil && err == nil {
+			log.Println("chat ended for some reason")
+		}
+		if err != nil {
+			log.Println("error while trying to send prompt")
+			break
 		}
 
-		// Echo message back to client
-		suffix := " idk"
-		err = conn.WriteMessage(websocket.TextMessage, append(msg, suffix...))
+		err = conn.WriteMessage(websocket.TextMessage, aiResponse)
 		if err != nil {
 			log.Println("Write:", err)
 			break
