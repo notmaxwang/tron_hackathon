@@ -7,7 +7,7 @@ import (
 	"sync"
 
 	"github.com/google/generative-ai-go/genai"
-	"github.com/google/generative-ai-go/genai/iterator"
+	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 )
 
@@ -50,7 +50,7 @@ func StartConvo() (*Conversation, error) {
 
 	prompt := genai.Text("Tell me a story about this animal")
 	return &Conversation{
-		chatIter: model.GenerateContentStream(ctx, prompt),
+		chatIter: *model.GenerateContentStream(ctx, prompt),
 	}, nil
 }
 
