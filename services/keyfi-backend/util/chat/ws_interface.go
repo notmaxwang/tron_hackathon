@@ -1,6 +1,7 @@
 package chat
 
 import (
+	"context"
 	"log"
 	"net/http"
 
@@ -30,7 +31,8 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 	defer conn.Close()
 
 	// Start connection to AI
-	convo, starter, err := StartConvo()
+	ctx := context.Background()
+	convo, starter, err := StartConvo(&ctx)
 	if err != nil {
 		log.Println("Error while trying to establish AI convo session", err)
 		return
@@ -52,7 +54,7 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 		}
 		log.Printf("Received message: %s\n", msg)
 
-		reply, err := convo.SendChatPrompt(string(msg))
+		reply, err := convo.SendChatPrompt(string(msg), &ctx)
 		if err != nil {
 			log.Println("error while trying to send prompt", err)
 			break

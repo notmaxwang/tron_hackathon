@@ -37,9 +37,9 @@ func SendTextPrompt(message string) *genai.GenerateContentResponse {
 	return resp
 }
 
-func StartConvo(ctx context.Context) (*Conversation, string, error) {
+func StartConvo(ctx *context.Context) (*Conversation, string, error) {
 	// Access your API key as an environment variable (see "Set up your API key" above)
-	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_AI_KEY")))
+	client, err := genai.NewClient(*ctx, option.WithAPIKey(os.Getenv("GEMINI_AI_KEY")))
 	if err != nil {
 		return nil, "", err
 	}
@@ -57,7 +57,7 @@ func StartConvo(ctx context.Context) (*Conversation, string, error) {
 	promptContext := "you are a real estate chatbot, you will answer the user's questions about real estate. now, please greet the user with a warm welcoming"
 
 	prompt := genai.Text(promptContext)
-	iter := cs.SendMessageStream(ctx, prompt)
+	iter := cs.SendMessageStream(*ctx, prompt)
 
 	fullResponse := ""
 	for {
@@ -81,9 +81,9 @@ func StartConvo(ctx context.Context) (*Conversation, string, error) {
 	}, fullResponse, nil
 }
 
-func (convo *Conversation) SendChatPrompt(promptString string, ctx context.Context) (string, error) {
+func (convo *Conversation) SendChatPrompt(promptString string, ctx *context.Context) (string, error) {
 	prompt := genai.Text(promptString)
-	iter := convo.session.SendMessageStream(ctx, prompt)
+	iter := convo.session.SendMessageStream(*ctx, prompt)
 
 	fullResponse := ""
 	for {
