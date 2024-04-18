@@ -14,7 +14,6 @@ import (
 
 type Conversation struct {
 	session *genai.ChatSession
-	ctx     *context.Context
 }
 
 var once sync.Once
@@ -80,13 +79,13 @@ func StartConvo() (*Conversation, string, error) {
 
 	return &Conversation{
 		session: cs,
-		ctx:     &ctx,
 	}, fullResponse, nil
 }
 
 func (convo *Conversation) SendChatPrompt(promptString string) (string, error) {
+	ctx := context.Background()
 	prompt := genai.Text(promptString)
-	iter := convo.session.SendMessageStream(*convo.ctx, prompt)
+	iter := convo.session.SendMessageStream(ctx, prompt)
 
 	fullResponse := ""
 	for {
