@@ -37,8 +37,7 @@ func SendTextPrompt(message string) *genai.GenerateContentResponse {
 	return resp
 }
 
-func StartConvo() (*Conversation, string, error) {
-	ctx := context.Background()
+func StartConvo(ctx context.Context) (*Conversation, string, error) {
 	// Access your API key as an environment variable (see "Set up your API key" above)
 	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_AI_KEY")))
 	if err != nil {
@@ -82,8 +81,7 @@ func StartConvo() (*Conversation, string, error) {
 	}, fullResponse, nil
 }
 
-func (convo *Conversation) SendChatPrompt(promptString string) (string, error) {
-	ctx := context.Background()
+func (convo *Conversation) SendChatPrompt(promptString string, ctx context.Context) (string, error) {
 	prompt := genai.Text(promptString)
 	iter := convo.session.SendMessageStream(ctx, prompt)
 
