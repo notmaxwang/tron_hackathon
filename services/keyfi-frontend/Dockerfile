@@ -13,6 +13,9 @@ RUN npm install
 # Copy the entire project directory into the container
 COPY . .
 
+# Need more heap space
+ENV NODE_OPTIONS=--max_old_space_size=2048
+
 # Build React app
 RUN npm run build
 
