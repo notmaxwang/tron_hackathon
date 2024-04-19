@@ -2,10 +2,14 @@ package chat
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 
+	"github.com/google/generative-ai-go/genai"
 	"github.com/gorilla/websocket"
+	"google.golang.org/api/option"
 )
 
 type WebSocketHandler struct {
@@ -32,11 +36,31 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 
 	// Start connection to AI
 	ctx := context.Background()
-	convo, starter, err := StartConvo(&ctx)
+	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_AI_KEY")))
 	if err != nil {
-		log.Println("Error while trying to establish AI convo session", err)
-		return
+		log.Fatal(err)
 	}
+	defer client.Close()
+
+	model := client.GenerativeModel("gemini-1.0-pro")
+	cs := model.StartChat()
+
+	sendMessageToGemini := func(msg string) string {
+		fmt.Printf("== Me: %s\n== Model:\n", msg)
+		res, err := cs.SendMessage(ctx, genai.Text(msg))
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		result := ""
+		for i := range res.Candidates[0].Content.Parts {
+			result = fmt.Sprintf("%s%s", result, res.Candidates[0].Content.Parts[i])
+		}
+		return result
+	}
+
+	starterPrompt := "you are a real estate chat bot, who answers questions real estate questions for users. your response will be sent directly to the user, so please format it as such. now, please welcome the user."
+	starter := sendMessageToGemini(starterPrompt)
 
 	err = conn.WriteMessage(websocket.TextMessage, []byte(starter))
 	if err != nil {
@@ -54,11 +78,7 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 		}
 		log.Printf("Received message: %s\n", msg)
 
-		reply, err := convo.SendChatPrompt(string(msg), &ctx)
-		if err != nil {
-			log.Println("error while trying to send prompt", err)
-			break
-		}
+		reply := sendMessageToGemini(string(msg))
 
 		err = conn.WriteMessage(websocket.TextMessage, []byte(reply))
 		if err != nil {

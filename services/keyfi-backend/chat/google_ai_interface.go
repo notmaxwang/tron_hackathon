@@ -8,7 +8,6 @@ import (
 	"sync"
 
 	"github.com/google/generative-ai-go/genai"
-	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 )
 
@@ -37,9 +36,9 @@ func SendTextPrompt(message string) *genai.GenerateContentResponse {
 	return resp
 }
 
-func StartConvo(ctx *context.Context) (*Conversation, string, error) {
+func StartConvo(ctx context.Context) (*Conversation, string, error) {
 	// Access your API key as an environment variable (see "Set up your API key" above)
-	client, err := genai.NewClient(*ctx, option.WithAPIKey(os.Getenv("GEMINI_AI_KEY")))
+	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_AI_KEY")))
 	if err != nil {
 		return nil, "", err
 	}
@@ -57,23 +56,15 @@ func StartConvo(ctx *context.Context) (*Conversation, string, error) {
 	promptContext := "you are a real estate chatbot, you will answer the user's questions about real estate. now, please greet the user with a warm welcoming"
 
 	prompt := genai.Text(promptContext)
-	iter := cs.SendMessageStream(*ctx, prompt)
+	resp, err := cs.SendMessage(ctx, prompt)
+	if err != nil {
+		log.Println("couldn't send first prompt to gemini", err)
+		return nil, "", err
+	}
 
 	fullResponse := ""
-	for {
-		resp, err := iter.Next()
-		if err == iterator.Done {
-			log.Println("the chat has ended\n")
-			break
-		}
-		if err != nil {
-			log.Println("error parsing AI response", err)
-			break
-		}
-		log.Println(resp)
-		for i := range resp.Candidates[0].Content.Parts {
-			fullResponse = fmt.Sprintf("%s%s", fullResponse, resp.Candidates[0].Content.Parts[i])
-		}
+	for i := range resp.Candidates[0].Content.Parts {
+		fullResponse = fmt.Sprintf("%s%s", fullResponse, resp.Candidates[0].Content.Parts[i])
 	}
 
 	return &Conversation{
@@ -81,25 +72,17 @@ func StartConvo(ctx *context.Context) (*Conversation, string, error) {
 	}, fullResponse, nil
 }
 
-func (convo *Conversation) SendChatPrompt(promptString string, ctx *context.Context) (string, error) {
+func (convo *Conversation) SendChatPrompt(ctx context.Context, promptString string) (string, error) {
 	prompt := genai.Text(promptString)
-	iter := convo.session.SendMessageStream(*ctx, prompt)
+	resp, err := convo.session.SendMessage(ctx, prompt)
+	if err != nil {
+		log.Println("couldn't send first prompt to gemini", err)
+		return "", err
+	}
 
 	fullResponse := ""
-	for {
-		resp, err := iter.Next()
-		if err == iterator.Done {
-			log.Println("the chat has ended\n")
-			break
-		}
-		if err != nil {
-			log.Println("error parsing AI response", err)
-			break
-		}
-		log.Println(resp)
-		for i := range resp.Candidates[0].Content.Parts {
-			fullResponse = fmt.Sprintf("%s%s", fullResponse, resp.Candidates[0].Content.Parts[i])
-		}
+	for i := range resp.Candidates[0].Content.Parts {
+		fullResponse = fmt.Sprintf("%s%s", fullResponse, resp.Candidates[0].Content.Parts[i])
 	}
 
 	return fullResponse, nil

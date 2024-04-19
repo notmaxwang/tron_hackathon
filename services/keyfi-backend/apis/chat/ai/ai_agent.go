@@ -3,8 +3,8 @@ package ai
 import (
 	"context"
 	"fmt"
+	"keyfi-backend/chat"
 	pb "keyfi-backend/protos/ai"
-	"keyfi-backend/util/chat"
 	"log"
 )
 
