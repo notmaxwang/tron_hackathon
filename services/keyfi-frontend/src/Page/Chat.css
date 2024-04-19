@@ -93,6 +93,10 @@
   display: flex;
 }
 
+.sparkle {
+  width: 15px;
+}
+
 .input-container {
   display: flex;
   align-items: center;

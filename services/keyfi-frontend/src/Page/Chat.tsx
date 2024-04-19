@@ -82,19 +82,12 @@ const Chat: React.FC = () => {
       </aside>
       <section className='chatbox'>
         <h2 className='chat-header'>Chat</h2>
-          {/* <div className='message-container'>
-            {messages.map((message, index) => (
-              <div key={index} className={message.sender === 'AI' ? 'ai-message' : 'user-message'}>
-                <p>{message.sender === 'AI' ? 'AI' : 'You'}</p> {message.content}
-              </div>
-            ))}
-          </div> */}
           <div className='message-container'>
             {messages.map((message, index) => (
               <div key={index} className={message.sender === 'AI' ? 'ai-message-container' : 'user-message-container'}>
                 {message.sender === 'AI' && (
                   <div className='ai-message'>
-              <img src={Sparkle} alt="" className="sparkle" />
+                    <img src={Sparkle} alt="" className="sparkle" />
                     <p className='sender'>Steve.ai</p> {message.content}
                   </div>
                 )}
