@@ -22,7 +22,6 @@
   font-size: 70px;
   font-weight: bold;
   background: -webkit-linear-gradient(#0096FF, #40B5AD);
-  /* background-image: conic-gradient(#0096FF, #40B5AD); in the case that the browse doesn't support linear gradient*/
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   -moz-text-fill-color: transparent;

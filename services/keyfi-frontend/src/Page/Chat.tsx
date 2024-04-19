@@ -12,6 +12,7 @@ interface Message {
 
 const Chat: React.FC = () => {
   const [ws, setWs] = useState<WebSocket | null>(null);
+  const [showInterface, setShowInterface] = useState(true);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
 
@@ -61,6 +62,10 @@ const Chat: React.FC = () => {
 
   const sendMessage = () => {
     if (ws && inputValue.trim() !== '') {
+      if (showInterface) {
+        // Hide the initial interface when the user sends the first message
+        setShowInterface(false);
+      }
       // Send the message through the WebSocket connection
       ws.send(inputValue);
       setMessages((prevMessages) => [...prevMessages, {sender: 'You', content: inputValue}]);
@@ -82,6 +87,34 @@ const Chat: React.FC = () => {
       </aside>
       <section className='chatbox'>
         <h2 className='chat-header'>Chat</h2>
+        {showInterface && (
+          <div className="initial-interface">
+            <div className='steve-ai'>
+              Hi! I'm <span className='gradient-ai-text'>Steve.ai <img src={Sparkle} alt="" className="sparkle-interface" /></span>
+            </div>
+            <p>Your AI-powered real estate agent. Ask me anything real estate and I’ll do my best to answer. I can help you with...</p>
+            <ul className="flex-container">
+              <li className="flex1-item">
+                Finding your best home
+                <li className='small-item'>Find a place that fits you</li>
+                <li className='small-item'>Neighborhood rating</li>
+                <li className='small-item'>Home rating</li>
+              </li>
+              <li className="flex2-item">
+                Contracts
+                <li className='small-item'>Generating optimal contracts</li>
+                <li className='small-item'>Negotiating purchase price</li>
+                <li className='small-item'>Verify MLS</li>
+              </li>
+              <li className="flex3-item">
+                Mortgage and Loans
+                <li className='small-item'>Pre-verify loans</li>
+                <li className='small-item'>Best mortgage plan for you</li>
+                <li className='small-item'>Loan calculator</li>
+              </li>
+            </ul>
+          </div>
+        )}
           <div className='message-container'>
             {messages.map((message, index) => (
               <div key={index} className={message.sender === 'AI' ? 'ai-message-container' : 'user-message-container'}>
