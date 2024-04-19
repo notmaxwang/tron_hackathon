@@ -94,6 +94,11 @@ export default function Map() {
               <option className='select-item' value="type1">Type 1</option>
               <option className='select-item' value="type2">Type 2</option>
             </select>
+            <select className="filter">
+              <option className='select-item' value="filter">Filter</option>
+              <option className='select-item' value="filter1">Filter 1</option>
+              <option className='select-item' value="filter2">Filter 2</option>
+            </select>
           </div>
         </div>
       </div>

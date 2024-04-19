@@ -72,17 +72,24 @@
   text-align: center;
 }
 
+.filter {
+  width: 88px;
+  height: 48px;
+  border-radius: 8px;
+  border: 2px solid rgb(212, 212, 212);
+  padding: 16px, 18px, 16px, 18px;
+  text-align: center;
+  margin-left: 930px;
+}
+
 .map {
   flex: 1;
-  height: 300px;
 }
 
 .bottom-section {
   display: flex;
   flex-direction: row;
-  flex: 50%;
-  margin-top: 310px;
- } 
+}
 
 .listing {
   flex: 1;
