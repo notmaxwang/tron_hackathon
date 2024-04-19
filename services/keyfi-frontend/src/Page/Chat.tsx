@@ -71,13 +71,13 @@ const Chat: React.FC = () => {
   return (
     <div className='chat-container'>
       <aside className='side-menu'>
-        <div className='loan-header'>
-          Loan Plans
-          <button className='ellipsis-button'>&#x2026;</button>
-        </div>
         <div className='side-menu-button'>
           <span>+</span>
           New Chat
+        </div>
+        <div className='loan-header'>
+          Loan Plans
+          <button className='ellipsis-button'>&#x2026;</button>
         </div>
       </aside>
       <section className='chatbox'>
