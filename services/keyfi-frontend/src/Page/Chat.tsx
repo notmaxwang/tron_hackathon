@@ -3,10 +3,16 @@ import './Chat.css'
 import { QueryServiceClient } from '../../protos/query/query.client';
 import { GetValuesRequest } from '../../protos/query/query';
 import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport';
+import Sparkle from '../assets/sparkle.png';
+
+interface Message {
+  sender: 'AI' | 'You';
+  content: string;
+}
 
 const Chat: React.FC = () => {
   const [ws, setWs] = useState<WebSocket | null>(null);
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
 
   const makeCallToBackend = async () => {
@@ -37,7 +43,7 @@ const Chat: React.FC = () => {
 
     newWs.onmessage = (event) => {
       // Add received message to the messages state
-      setMessages((prevMessages) => [...prevMessages, event.data]);
+      setMessages((prevMessages) => [...prevMessages, {sender: 'AI', content: event.data}]);
     };
 
     newWs.onclose = () => {
@@ -57,7 +63,7 @@ const Chat: React.FC = () => {
     if (ws && inputValue.trim() !== '') {
       // Send the message through the WebSocket connection
       ws.send(inputValue);
-      setMessages((prevMessages) => [...prevMessages, inputValue]);
+      setMessages((prevMessages) => [...prevMessages, {sender: 'You', content: inputValue}]);
       setInputValue('');
     }
   };
@@ -76,9 +82,28 @@ const Chat: React.FC = () => {
       </aside>
       <section className='chatbox'>
         <h2 className='chat-header'>Chat</h2>
+          {/* <div className='message-container'>
+            {messages.map((message, index) => (
+              <div key={index} className={message.sender === 'AI' ? 'ai-message' : 'user-message'}>
+                <p>{message.sender === 'AI' ? 'AI' : 'You'}</p> {message.content}
+              </div>
+            ))}
+          </div> */}
           <div className='message-container'>
             {messages.map((message, index) => (
-              <div key={index}>{message}</div>
+              <div key={index} className={message.sender === 'AI' ? 'ai-message-container' : 'user-message-container'}>
+                {message.sender === 'AI' && (
+                  <div className='ai-message'>
+              <img src={Sparkle} alt="" className="sparkle" />
+                    <p className='sender'>Steve.ai</p> {message.content}
+                  </div>
+                )}
+                {message.sender === 'You' && (
+                  <div className='user-message'>
+                    <p className='sender'>You</p> {message.content}
+                  </div>
+                )}
+              </div>
             ))}
           </div>
           <div className='input-container'>

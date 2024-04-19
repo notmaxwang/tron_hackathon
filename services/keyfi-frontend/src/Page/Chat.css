@@ -82,8 +82,15 @@
   width: fit-content;
   display: inline;
   padding: 0 0.5rem;
-  border: 1px solid #ccc;
   border-radius: 5px;
+  color: black;
+}
+
+.message-container p {
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  display: flex;
 }
 
 .input-container {
