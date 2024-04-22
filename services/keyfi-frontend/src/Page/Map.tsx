@@ -2,9 +2,10 @@ import { MarkerF } from '@react-google-maps/api';
 import Listing from '../Component/Listing';
 import { GoogleMap, useLoadScript } from '@react-google-maps/api';
 import './Map.css';
-import React from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { Unstable_Popup as BasePopup } from '@mui/base/Unstable_Popup';
 import Sparkle from '../assets/sparkle.png'
+import mapboxgl from 'mapbox-gl';
 
 
 
@@ -12,6 +13,8 @@ export default function Map() {
   // const [currListing, setCurrListing] = useState(null);
   const [anchor, setAnchor] = React.useState<null | HTMLElement>(null);
   const GOOGLE_MAP_API_KEY:any = process.env.REACT_APP_MAP_KEY;
+  const MAPBOX_MAP_API_KEY:any = process.env.MAPBOX_MAP_KEY;
+  mapboxgl.accessToken = MAPBOX_MAP_API_KEY;
   const libraries:any = ['places'];
   const mapContainerStyle = {
     width: '70vw',
@@ -27,6 +30,27 @@ export default function Map() {
   useLoadScript({
     googleMapsApiKey: GOOGLE_MAP_API_KEY,
     libraries,
+  });
+  const mapContainer = useRef(null);
+  const map:any = useRef(null);
+  const [lng, setLng] = useState(-122.4);
+  const [lat, setLat] = useState(37.76);
+  const [zoom, setZoom] = useState(11);
+
+  useEffect(() => {
+    if (!map.current && mapContainer.current) { // Check if map is not initialized and mapContainer exists
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: 'mapbox://styles/mapbox/streets-v12',
+        center: [lng, lat],
+        zoom: zoom
+      });
+      map.current.on('move', () => {
+        setLng(map.current.getCenter().lng.toFixed(4));
+        setLat(map.current.getCenter().lat.toFixed(4));
+        setZoom(map.current.getZoom().toFixed(2));
+      });  
+    }
   });
 
   if (loadError) {
@@ -108,18 +132,7 @@ export default function Map() {
             <p className='listingTitle'>Listings</p>
             <ul className='listings-container'>{listName}</ul>
           </div>
-          <GoogleMap
-            mapContainerClassName='map'
-            mapContainerStyle={mapContainerStyle}
-            zoom={13}
-            center={center.position}
-            >
-              {listComponents}
-          </GoogleMap>
-          <BasePopup id={id} open={open} anchor={anchor} className='popup-window'>
-            <button onClick={reset}>X</button>
-            <p>test</p>
-          </BasePopup>
+          <div ref={mapContainer} className="map-container" />
         </div>
       </div>
     </div>

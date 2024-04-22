@@ -7,7 +7,8 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return {
     define: {
-      'process.env.REACT_APP_MAP_KEY': JSON.stringify(env.REACT_APP_MAP_KEY)
+      'process.env.REACT_APP_MAP_KEY': JSON.stringify(env.REACT_APP_MAP_KEY),
+      'process.env.MAPBOX_MAP_KEY': JSON.stringify(env.MAPBOX_MAP_KEY),
     },
     plugins: [react()],
   }
