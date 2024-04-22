@@ -120,8 +120,7 @@ const Chat: React.FC = () => {
               <div key={index} className={message.sender === 'AI' ? 'ai-message-container' : 'user-message-container'}>
                 {message.sender === 'AI' && (
                   <div className='ai-message'>
-                    <img src={Sparkle} alt="" className="sparkle" />
-                    <p className='sender'>Steve.ai</p> {message.content}
+                    <p className='sender'><img src={Sparkle} alt="" className="sparkle" /> Steve.ai</p> {message.content}
                   </div>
                 )}
                 {message.sender === 'You' && (
