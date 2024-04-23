@@ -4,10 +4,17 @@ import { QueryServiceClient } from '../../protos/query/query.client';
 import { GetValuesRequest } from '../../protos/query/query';
 import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport';
 import Sparkle from '../assets/sparkle.png';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 interface Message {
   sender: 'AI' | 'You';
   content: string;
+}
+
+interface Chat {
+  id: number;
+  topic: string;
+  messages: Message[];
 }
 
 const Chat: React.FC = () => {
@@ -15,6 +22,7 @@ const Chat: React.FC = () => {
   const [showInterface, setShowInterface] = useState(true);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
+  const [chats, setChats] = useState<number[]>([0]);
 
   const makeCallToBackend = async () => {
     let transport = new GrpcWebFetchTransport({
@@ -73,20 +81,57 @@ const Chat: React.FC = () => {
     }
   };
 
+  const handleNewChat = () => {
+    const newChatId = chats.length;
+    setChats((prevChats) => [...prevChats, newChatId]);
+  };
+
   return (
     <div className='chat-container'>
       <aside className='side-menu'>
-        <div className='side-menu-button'>
+        <div className='side-menu-button' onClick={handleNewChat}>
           <span>+</span>
           New Chat
         </div>
-        <div className='loan-header'>
-          Loan Plans
-          <button className='ellipsis-button'>&#x2026;</button>
-        </div>
+        {chats.map((chatId) => (
+          <div key={chatId} className='chat-list-item'>
+            {chatId}
+            {/* <button className='ellipsis-button'>&#x2026;</button> */}
+            {/* <div className="dropdown">
+              <button className="btn btndropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                &#x2026;
+              </button>
+              <ul className="dropdown-menu">
+                <li><a className="dropdown-item" href="#">Action</a></li>
+                <li><a className="dropdown-item" href="#">Another action</a></li>
+                <li><a className="dropdown-item" href="#">Something else here</a></li>
+              </ul>
+            </div> */}
+            <div className="dropdown">
+              <button className="btn btndropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                &#x2026;
+              </button>
+              <ul className="dropdown-menu">
+                <li><a className="dropdown-item" href="#">Action</a></li>
+                <li><a className="dropdown-item" href="#">Another action</a></li>
+                <li><a className="dropdown-item" href="#">Something else here</a></li>
+              </ul>
+            </div>
+              {/* <div className='dropdown'>
+                <div id='myDropdown' className='dropdown-content'>
+                  <a>Rename</a>
+                  <a>Delete</a>
+                </div>
+              </div> */}
+          </div>
+        ))}
       </aside>
       <section className='chatbox'>
-        <h2 className='chat-header'>Chat</h2>
+        <h2 className='chat-header'>
+          <h2> 
+            <h2></h2>
+          </h2>
+        </h2>
         {showInterface && (
           <div className="initial-interface">
             <div className='steve-ai'>
