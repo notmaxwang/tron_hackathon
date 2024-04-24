@@ -83,7 +83,6 @@
   border: 2px solid rgb(212, 212, 212);
   padding: 16px, 18px, 16px, 18px;
   text-align: center;
-  margin-left: 930px;
 }
 
 .map {
@@ -134,7 +133,7 @@
   margin-top: 2vh;
   margin-right: 2vw;
   height: 70vh;
-  width: 60vw;
+  width: 50vw;
 }
 
 .sidebar {
