@@ -21,7 +21,7 @@ const Chat: React.FC = () => {
   const [showInterface, setShowInterface] = useState(true);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
-  const [chats, setChats] = useState<number[]>([0]);
+  const [chats, setChats] = useState<number[]>([1]);
 
   const makeCallToBackend = async () => {
     let transport = new GrpcWebFetchTransport({
@@ -81,8 +81,12 @@ const Chat: React.FC = () => {
   };
 
   const handleNewChat = () => {
-    const newChatId = chats.length;
+    const newChatId = chats.length + 1;
     setChats((prevChats) => [...prevChats, newChatId]);
+  };
+  
+  const handleDeleteChat = (chatId: number) => {
+    setChats((prevChats) => prevChats.filter((id) => id !== chatId));
   };
 
   return (
@@ -100,8 +104,7 @@ const Chat: React.FC = () => {
                 &#x2026;
               </button>
               <ul className='dropdown-menu'>
-                <li><a className='dropdown-item'>Rename</a></li>
-                <li><a className='dropdown-item'>Delete</a></li>
+                <li><a className='dropdown-item' onClick={() => handleDeleteChat(chatId)}>Delete</a></li>
               </ul>
             </div>
           </div>

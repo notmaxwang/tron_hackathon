@@ -37,10 +37,12 @@
 
 .chat-list-item {
   display: flex;
+  padding-left: 2vw;
+
 }
 
 .chat-list-item .dropdown {
-  margin-left: auto; /* Push the dropdown button to the right side */
+  margin-left: auto;
 }
 
 .loan-header {
@@ -224,7 +226,7 @@
 
 @media screen and (max-width: 900px) and (max-height: 700px) {
   .side-menu {
-    width: 20%; /* Adjust side menu width for smaller viewport */
+    width: 20%;
   }
 
   .steve-description {
@@ -234,7 +236,7 @@
   }
 
   .message-container {
-    max-width: 100%; /* Allow message container to take full width */
+    max-width: 100%;
   }
 
   .flex-container {
@@ -256,6 +258,6 @@
   }
 
   .input-container {
-    padding: 12px; /* Reduce padding for input container on smaller viewport */
+    padding: 12px;
   }
 }
