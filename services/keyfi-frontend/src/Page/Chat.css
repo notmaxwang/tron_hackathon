@@ -10,7 +10,7 @@
 }
 
 .side-menu {
-  width: 400px;
+  width: 15vw;
   padding: 10px;
   background-color: #FFFFFF;
 }
@@ -20,8 +20,9 @@
   text-align: left;
   font-size: 14px;
   margin-top: 100px;
-  margin-left: 40px;
+  /* margin-left: 40px; */
   transition: ease 0.25s all;
+  width: 20vw;
 }
 
 .side-menu-button:hover {
@@ -33,6 +34,16 @@
 .side-menu-button span {
   padding-left: 6px;
   padding-right: 12px;
+}
+
+.chat-list-item {
+  display: flex;
+  /* justify-content: space-between;  */
+  /* align-items: center; */
+}
+
+.chat-list-item .dropdown {
+  margin-left: auto; /* Push the dropdown button to the right side */
 }
 
 .loan-header {
@@ -49,19 +60,13 @@
   cursor: pointer;
 }
 
-.ellipsis-button {
-  background-color: transparent;
-  border: none;
-  color: #8D8D8D;
-  font-size: 16px;
-  margin-left: 100px;
-  cursor: pointer;
-}
-
 .chatbox {
   flex: 1;
+  width: 100%;
   background-color: #FFFFFF;
   position: relative;
+  height: calc(100vh - 100px);
+  overflow-y: auto;
 }
 
 .chat-header {
@@ -101,24 +106,28 @@
 .steve-description {
   position: flex;
   justify-content: flex-start;
-  padding-right: 44%;
+  padding-right: 1%;
+  max-width: 48vw;
 }
 
 .flex-container {
+  padding-left: -1vw;
   display: flex;
-  justify-content: space-evenly;
-  padding: 30px;
   list-style: none;
-  width: 1500px;
+  margin-top: 5vw;
 }
 
-.flex1-item {
-  margin-left: -170px;
+.flex1-item,
+.flex2-item,
+.flex3-item {
+  width: 50%;
+  margin: 10px;
+  padding: 10px;
+  margin-top: -1vw;
+  margin-bottom: 1vh;
   border-radius: 8px;
   border: 1px solid #ccc;
-  padding: 20px;
   font-weight: bold;
-  text-align: center;
 }
 
 .f1-item {
@@ -128,29 +137,11 @@
   -moz-text-fill-color: transparent;
 }
 
-.flex2-item {
-  margin-left: -205px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  padding: 20px;
-  font-weight: bold;
-  text-align: center;
-}
-
 .f2-item {
   background: -webkit-linear-gradient(45deg, #36711d, #224810);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   -moz-text-fill-color: transparent;
-}
-
-.flex3-item {
-  margin-left: -205px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  padding: 20px;
-  font-weight: bold;
-  text-align: center;
 }
 
 .f3-item {
@@ -171,8 +162,8 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-width: 480px;
-  padding: 0;
+  max-height: calc(92% - 100px);
+  overflow-y: auto;
 }
 
 .message-container div {
@@ -232,4 +223,42 @@
 
 .send-button:hover {
   background-color: #0056b3;
+}
+
+@media screen and (max-width: 900px) and (max-height: 700px) {
+  .side-menu {
+    width: 20%; /* Adjust side menu width for smaller viewport */
+  }
+
+  .steve-description {
+    width: 90%;
+    margin: 0 auto 20px;
+    font-size: 14px;
+  }
+
+  .message-container {
+    max-width: 100%; /* Allow message container to take full width */
+  }
+
+  .flex-container {
+    padding-left: -1vw;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 10vw;
+  }
+
+  .flex1-item,
+  .flex2-item,
+  .flex3-item {
+    width: 50%;
+    margin: 0 auto;
+    padding: 10px;
+    font-size: 15px;
+    margin-top: -1vw;
+    margin-bottom: 1vh;
+  }
+
+  .input-container {
+    padding: 12px; /* Reduce padding for input container on smaller viewport */
+  }
 }

@@ -96,33 +96,11 @@ const Chat: React.FC = () => {
         {chats.map((chatId) => (
           <div key={chatId} className='chat-list-item'>
             {chatId}
-            {/* <button className='ellipsis-button'>&#x2026;</button> */}
-            {/* <div className="dropdown">
-              <button className="btn btndropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                &#x2026;
-              </button>
-              <ul className="dropdown-menu">
-                <li><a className="dropdown-item" href="#">Action</a></li>
-                <li><a className="dropdown-item" href="#">Another action</a></li>
-                <li><a className="dropdown-item" href="#">Something else here</a></li>
-              </ul>
-            </div> */}
             <div className="dropdown">
               <button className="btn btndropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 &#x2026;
               </button>
-              <ul className="dropdown-menu">
-                <li><a className="dropdown-item" href="#">Action</a></li>
-                <li><a className="dropdown-item" href="#">Another action</a></li>
-                <li><a className="dropdown-item" href="#">Something else here</a></li>
-              </ul>
             </div>
-              {/* <div className='dropdown'>
-                <div id='myDropdown' className='dropdown-content'>
-                  <a>Rename</a>
-                  <a>Delete</a>
-                </div>
-              </div> */}
           </div>
         ))}
       </aside>
@@ -160,32 +138,32 @@ const Chat: React.FC = () => {
             </ul>
           </div>
         )}
-          <div className='message-container'>
-            {messages.map((message, index) => (
-              <div key={index} className={message.sender === 'AI' ? 'ai-message-container' : 'user-message-container'}>
-                {message.sender === 'AI' && (
-                  <div className='ai-message'>
-                    <p className='sender'><img src={Sparkle} alt="" className="sparkle" /> Steve.ai</p> {message.content}
-                  </div>
-                )}
-                {message.sender === 'You' && (
-                  <div className='user-message'>
-                    <p className='sender'>You</p> {message.content}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-          <div className='input-container'>
-            <input
-              className='input-field'
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Ask me anything..."
-            />
-            <button onClick={sendMessage}>Send</button>
-          </div>
+        <div className='message-container'>
+          {messages.map((message, index) => (
+            <div key={index} className={message.sender === 'AI' ? 'ai-message-container' : 'user-message-container'}>
+              {message.sender === 'AI' && (
+                <div className='ai-message'>
+                  <p className='sender'><img src={Sparkle} alt="" className="sparkle" /> Steve.ai</p> {message.content}
+                </div>
+              )}
+              {message.sender === 'You' && (
+                <div className='user-message'>
+                  <p className='sender'>You</p> {message.content}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        <div className='input-container'>
+          <input
+            className='input-field'
+            type="text"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder="Ask me anything..."
+          />
+          <button onClick={sendMessage}>Send</button>
+        </div>
       </section>
     </div>
   );
