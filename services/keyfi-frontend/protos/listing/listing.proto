@@ -1,0 +1,53 @@
+syntax = "proto3";
+package keyfi_protos.listing;
+option go_package="keyfi-backend/apis/listing";
+
+message Listing {
+    string address = 1;
+    string city = 2;
+    string state = 3;
+    string zipcode = 4;
+    string price = 5;
+    string imageKey = 6;
+    string listingId = 7;
+}
+
+message ListingDetail {
+  string listingId = 1;
+  string walletAddress = 2;
+  string area = 3;
+  string schoolDistrict = 4;
+  string bed = 5;
+  string bath = 6;
+  string houseType = 7;
+}
+
+message GetListingsRequest {
+    repeated string zipcodes = 1;
+}
+
+message GetListingsResponse {
+    repeated Listing listings = 1;
+}
+
+message GetListingByAddressRequest {
+    string address = 1;
+}
+
+message GetListingByAddressResponse {
+    repeated Listing listings = 1;
+}
+
+message GetListingDetailRequest {
+    string listingId = 1;
+}
+
+message GetListingDetailResponse {
+    ListingDetail listingDetails = 1;
+}
+
+service ListingService{
+    rpc GetListings(GetListingsRequest) returns (GetListingsResponse);
+    rpc GetListingByAddress(GetListingByAddressRequest) returns (GetListingByAddressResponse);
+    rpc GetListingDetail(GetListingDetailRequest) returns (GetListingDetailResponse);
+}
