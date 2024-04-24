@@ -1,6 +1,8 @@
 .listing-container {
-  height: 100px;
-  width: 100px;
+  height: 18vh;
+  width: 14vw;
+  margin-right: 1vw;
+  margin-bottom: 1vh;
   border: 1px solid black;
   z-index: 9999999;
 }
