@@ -4,6 +4,8 @@ import Chat from './Page/Chat';
 import Home from './Page/Home';
 import MapComponent from './Page/Map';
 import Wallet from './Page/Wallet';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import './App.css'
 
 

@@ -4,7 +4,6 @@ import { QueryServiceClient } from '../../protos/query/query.client';
 import { GetValuesRequest } from '../../protos/query/query';
 import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport';
 import Sparkle from '../assets/sparkle.png';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 interface Message {
   sender: 'AI' | 'You';
@@ -100,6 +99,10 @@ const Chat: React.FC = () => {
               <button className="btn btndropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 &#x2026;
               </button>
+              <ul className='dropdown-menu'>
+                <li><a className='dropdown-item'>Rename</a></li>
+                <li><a className='dropdown-item'>Delete</a></li>
+              </ul>
             </div>
           </div>
         ))}
