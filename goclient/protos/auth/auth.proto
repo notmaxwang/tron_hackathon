@@ -1,0 +1,21 @@
+syntax = "proto3";
+package keyfi_protos.auth;
+option go_package="keyfi-backend/apis/auth";
+
+message AuthRequest {
+    string walletAddress = 1;
+    string signature = 2;
+    int64 signatureExpiry = 3;
+    string firstName = 4;
+    string lastName = 5;
+    string middleName = 6;
+}
+
+message AuthResponse {
+    bool success = 1;
+}
+
+service AuthenticationService{
+    rpc Login(AuthRequest) returns (AuthResponse);
+    rpc Register(AuthRequest) returns (AuthResponse);
+}

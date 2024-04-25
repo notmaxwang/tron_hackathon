@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	pb "goclient/protos/ai" // Import generated protobuf code
+	pb "goclient/protos/listing" // Import generated protobuf code
 	pb2 "goclient/protos/query"
 
 	"google.golang.org/grpc"
@@ -12,20 +12,20 @@ import (
 
 func main() {
 	// Set up a connection to the server.
-	conn, err := grpc.Dial("34.236.81.43:8080", grpc.WithInsecure())
+	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
 	// Create a gRPC client
-	client := pb.NewAIServiceClient(conn)
+	client := pb.NewListingServiceClient(conn)
 
 	// Contact the server and print out its response.
-	response, err := client.SinglePrompt(context.Background(), &pb.SinglePromptRequest{Prompt: "yaobin is a nice guy :)"})
+	response, err := client.GetListingDetail(context.Background(), &pb.GetListingDetailRequest{ListingId: "listingId"})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
-	log.Printf("Response: %s", response.Response)
+	log.Printf("Response: %s", response.ListingDetails)
 
 	client2 := pb2.NewQueryServiceClient(conn)
 
