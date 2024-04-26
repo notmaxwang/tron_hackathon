@@ -35,6 +35,7 @@ export async function fetchAllListings(): Promise<any[]> {
   const listings: any[] = [];
 
   const listingId = await realEstateMarket.listingId().call();
+  console.log(listingId)
   // iterate from 0 till bookId
   for (let i = 0; i < listingId; i++) {
     const listing = await realEstateMarket.homeListings(i).call();

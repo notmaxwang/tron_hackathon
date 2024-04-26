@@ -5,6 +5,7 @@ import mapboxgl from 'mapbox-gl';
 import ListingCard from '../Component/ListingCard';
 import Map, { Popup, Marker } from 'react-map-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'; 
+import { setRealEstateMarketContract, fetchAllListings } from '../utils/tron';
 
 export default function MapComponent() {
   const MAPBOX_MAP_API_KEY:any = process.env.MAPBOX_MAP_KEY;
@@ -18,6 +19,7 @@ export default function MapComponent() {
   let listings = [{name: 'Ferry Building', position:{lat: 37.7955, lng: -122.3937,}},
   {name: 'Coit Tower', position:{lat: 37.8024, lng: -122.4058}}];
   let listName:any = [];
+  let testListings:any = [];
 
   listings.forEach((listing, idx) => {
     listName.push(<ListingCard key={idx} listing={listing} />)
@@ -25,6 +27,15 @@ export default function MapComponent() {
 
   const popup = useMemo(() => {
     return new mapboxgl.Popup().setText('Hello world!');
+  }, [])
+
+  useEffect(() => {
+    let test = async() => {
+      await setRealEstateMarketContract();
+      return await fetchAllListings();
+    };
+    let testListings = test();
+    console.log(testListings);
   }, [])
 
   useEffect(() => {

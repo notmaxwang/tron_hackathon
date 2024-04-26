@@ -1,6 +1,6 @@
 import './Listing.css';
-import React from 'react';
-import { addHomeListing } from '../utils/tron.ts';
+import React, { useEffect } from 'react';
+import { setRealEstateMarketContract, addHomeListing, fetchAllListings } from '../utils/tron.ts';
 
 export default function ListingCard(props: any) {
   const listing = props.listing;
@@ -14,11 +14,16 @@ export default function ListingCard(props: any) {
     border: '1px solid black',
   };
 
+  useEffect(() => {
+    setRealEstateMarketContract();
+  }, [])
+
   return(
     <>
       <div className="listing-container" style={props.isPopup ? popupStyle : {}}>
         <p>{listing.name}</p>
-        <button>test</button>
+        <button onClick={()=> addHomeListing('test2.url', '222 Market St', 500)}>test</button>
+        <button onClick={()=> fetchAllListings()}>fetch</button>
       </div>
     </>
   );
