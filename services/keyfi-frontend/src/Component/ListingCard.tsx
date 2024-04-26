@@ -1,5 +1,6 @@
 import './Listing.css';
 import React from 'react';
+import { addHomeListing } from '../utils/tron.ts';
 
 export default function ListingCard(props: any) {
   const listing = props.listing;
