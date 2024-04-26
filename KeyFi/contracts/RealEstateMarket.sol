@@ -70,6 +70,7 @@ contract RealEstateMarket {
     event SellerApproved();
     event SellerRevoked();
     event HomeListingAdded(address owner, string detailsLink, string streetAddress, uint listingPrice);
+    event HomeListingRemoved(uint256 listingId);
 
     function addHomeListing(string memory _detailsLink, string memory _streetAddress, uint _listingPrice) external returns (uint256) {
         HomeListing memory newListing = HomeListing(msg.sender, _detailsLink, _streetAddress, _listingPrice);
@@ -81,6 +82,13 @@ contract RealEstateMarket {
         emit HomeListingAdded(msg.sender, _detailsLink, _streetAddress, _listingPrice);
 
         return listingId;
+    }
+
+    function removeHomeListing(uint256 _listingId) external {
+        require(msg.sender == homeListings[_listingId].owner, "only the owner of listing can remove it");
+
+        delete homeListings[_listingId];
+        emit HomeListingRemoved(_listingId);
     }
 
     function startSaleContract(uint256 _listingId, address _officialRecorder, uint _price) external returns (uint256) {
