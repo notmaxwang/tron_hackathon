@@ -1,8 +1,8 @@
 import './Listing.css';
 import React from 'react';
 
-export default function Listing(props: any) {
-  const listingName = props.name;
+export default function ListingCard(props: any) {
+  const listing = props.listing;
   const x = props.x;
   const y = props.y;
 
@@ -16,7 +16,8 @@ export default function Listing(props: any) {
   return(
     <>
       <div className="listing-container" style={props.isPopup ? popupStyle : {}}>
-        <p>{listingName}</p>
+        <p>{listing.name}</p>
+        <button>test</button>
       </div>
     </>
   );

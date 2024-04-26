@@ -2,7 +2,7 @@ import './Map.css';
 import React, {useState, useEffect, useRef, useMemo} from 'react';
 import Sparkle from '../assets/sparkle.png'
 import mapboxgl from 'mapbox-gl';
-import Listing from '../Component/Listing';
+import ListingCard from '../Component/ListingCard';
 import Map, { Popup, Marker } from 'react-map-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'; 
 
@@ -20,7 +20,7 @@ export default function MapComponent() {
   let listName:any = [];
 
   listings.forEach((listing, idx) => {
-    listName.push(<Listing key={idx} name={listing.name} />)
+    listName.push(<ListingCard key={idx} listing={listing} />)
   });
 
   const popup = useMemo(() => {
