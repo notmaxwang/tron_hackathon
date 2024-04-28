@@ -17,7 +17,6 @@
     "@protobuf-ts/grpcweb-transport": "^2.9.4",
     "@protobuf-ts/runtime": "^2.9.4",
     "@protobuf-ts/runtime-rpc": "^2.9.4",
-    "@react-google-maps/api": "^2.19.3",
     "@tronweb3/tronwallet-abstract-adapter": "^1.1.6",
     "@tronweb3/tronwallet-adapter-react-hooks": "^1.0.0",
     "@tronweb3/tronwallet-adapter-react-ui": "^1.1.0",
@@ -38,7 +37,6 @@
     "use-places-autocomplete": "^4.0.1"
   },
   "devDependencies": {
-    "@types/google-map-react": "^2.1.10",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",

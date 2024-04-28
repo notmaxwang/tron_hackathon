@@ -1,6 +1,6 @@
-import './Header.css';
+import './Navbar.css';
 
-export default function Header() {
+export default function Navbar() {
   return(
     <header>
       <nav className="navbar-container">
@@ -10,6 +10,7 @@ export default function Header() {
           <li><a href="/chat">AI Chatbot</a></li>
           <li><a href="/map">Map</a></li>
           <li><a href="/wallet">Wallet</a></li>
+          <li><a href="/payment">Payment</a></li>
         </ul>
       </nav>
     </header>
