@@ -1,92 +1,88 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './Chat.css'
-import { QueryServiceClient } from '../../protos/query/query.client';
-import { GetValuesRequest } from '../../protos/query/query';
-import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport';
-import Sparkle from '../assets/sparkle.png';
+// import ChatBox from '../Component/ChatBox';
+
+// const Chat: React.FC = () => {
+//   const [chats, setChats] = useState<number[]>([1]); //instead of number it should be array of chatbox components
+
+//   const handleNewChat = () => { // Adds new chat in sidemenu
+//     const newChatId = chats.length + 1;
+//     setChats((prevChats) => [...prevChats, newChatId]); //append a new chatbox into the array instead of storying the chatId
+//   };
+  
+//   const handleDeleteChat = (chatId: number) => { // Deletes chat in sidemenu
+//     setChats((prevChats) => prevChats.filter((id) => id !== chatId));
+//   };
+
+//   return (
+//     <div className='chat-container'>
+//       <aside className='side-menu'>
+//         <div className='side-menu-button' onClick={handleNewChat}>
+//           <span>+</span>
+//           New Chat
+//         </div>
+//         {chats.map((chatId) => (
+//           <div key={chatId} className='chat-list-item'>
+//             {chatId}
+//             <div className="dropdown">
+//               <button className="btn btndropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+//                 &#x2026;
+//               </button>
+//               <ul className='dropdown-menu'>
+//                 <li><a className='dropdown-item' onClick={() => handleDeleteChat(chatId)}>Delete</a></li>
+//               </ul>
+//             </div>
+//           </div>
+//         ))}
+//       </aside>
+//       <ChatBox />
+//     </div>
+//   );
+// };
+
+// set up to have different chats for 
+
+import ChatBox from '../Component/ChatBox';
 
 interface Message {
   sender: 'AI' | 'You';
   content: string;
 }
 
-interface Chat {
-  id: number;
-  topic: string;
-  messages: Message[];
-}
-
 const Chat: React.FC = () => {
-  const [ws, setWs] = useState<WebSocket | null>(null);
-  const [showInterface, setShowInterface] = useState(true);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [inputValue, setInputValue] = useState<string>('');
-  const [chats, setChats] = useState<number[]>([1]);
+  const [chats, setChats] = useState<Message[][]>([[]]); 
+  const [activeIndex, setActiveIndex] = useState<number>(0);
 
-  const makeCallToBackend = async () => {
-    let transport = new GrpcWebFetchTransport({
-      baseUrl: "http://ec2-34-236-81-43.compute-1.amazonaws.com:8080"
-    });
-    const client = new QueryServiceClient(transport);
-    const request = GetValuesRequest.create({
-      keys: ["yaobin", "foo"]
-    })
-    const call = client.getValues(request);
-    let response = await call.response;
-    let status = await call.status;
-    console.log("status: " + status)
-    console.log(response.keyValuePairs);
-  }
-
-  useEffect(() => {
-    
-    makeCallToBackend();
-
-    // Create a new WebSocket connection when the component mounts
-    const newWs = new WebSocket('ws://ec2-34-236-81-43.compute-1.amazonaws.com:8081');
-
-    newWs.onopen = () => {
-      console.log('WebSocket connected');
-    };
-
-    newWs.onmessage = (event) => {
-      // Add received message to the messages state
-      setMessages((prevMessages) => [...prevMessages, {sender: 'AI', content: event.data}]);
-    };
-
-    newWs.onclose = () => {
-      console.log('WebSocket disconnected');
-    };
-
-    // Update ws state with the new WebSocket connection
-    setWs(newWs);
-
-    // Close the WebSocket connection when the component unmounts
-    return () => {
-      newWs.close();
-    };
-  }, []);
-
-  const sendMessage = () => {
-    if (ws && inputValue.trim() !== '') {
-      if (showInterface) {
-        // Hide the initial interface when the user sends the first message
-        setShowInterface(false);
-      }
-      // Send the message through the WebSocket connection
-      ws.send(inputValue);
-      setMessages((prevMessages) => [...prevMessages, {sender: 'You', content: inputValue}]);
-      setInputValue('');
-    }
-  };
 
   const handleNewChat = () => {
-    const newChatId = chats.length + 1;
-    setChats((prevChats) => [...prevChats, newChatId]);
-  };
+    const newChatIndex = chats.length;
+    setChats(prevChats => [...prevChats, []]); 
+    setActiveIndex(newChatIndex);
+  }
   
-  const handleDeleteChat = (chatId: number) => {
-    setChats((prevChats) => prevChats.filter((id) => id !== chatId));
+  const handleDeleteChat = (chatIndex: number) => {
+    setChats(prevChats => prevChats.filter((_, index) => index !== chatIndex));
+    setActiveIndex(0);
+  };
+
+  const handleSendMessage = (message: string, chatIndex: number) => {
+    setChats(prevChats =>
+      prevChats.map((chat, index) =>
+        index === chatIndex ? [...chat, { sender: 'You', content: message }] : chat
+      )
+    );
+  };
+
+  const handleReceivedMessage = (message: string, chatIndex: number) => {
+    setChats(prevChats =>
+      prevChats.map((chat, index) =>
+        index === chatIndex ? [...chat, { sender: 'AI', content: message }] : chat
+      )
+    );
+  };
+
+  const handleSetActiveChat = (chatIndex: number) => {
+    setActiveIndex(chatIndex); // Set active index to the clicked chat index
   };
 
   return (
@@ -96,81 +92,40 @@ const Chat: React.FC = () => {
           <span>+</span>
           New Chat
         </div>
-        {chats.map((chatId) => (
-          <div key={chatId} className='chat-list-item'>
-            {chatId}
+        {chats.map((_, index) => (
+          <div 
+            key={index} 
+            className={`chat-list-item ${index === activeIndex ? 'active-chat' : ''}`}
+            onClick={() => handleSetActiveChat(index)}
+            >
+            Chat {index + 1}
             <div className="dropdown">
               <button className="btn btndropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 &#x2026;
               </button>
               <ul className='dropdown-menu'>
-                <li><a className='dropdown-item' onClick={() => handleDeleteChat(chatId)}>Delete</a></li>
+                <li><a className='dropdown-item' onClick={() => handleDeleteChat(index)}>Delete</a></li>
               </ul>
             </div>
           </div>
         ))}
       </aside>
-      <section className='chatbox'>
-        <h2 className='chat-header'>
-          <h2> 
-            <h2></h2>
-          </h2>
-        </h2>
-        {showInterface && (
-          <div className="initial-interface">
-            <div className='steve-ai'>
-              Hi! I'm <span className='gradient-ai-text'>Steve.ai <img src={Sparkle} alt="" className="sparkle-interface" /></span>
-            </div>
-            <p className='steve-description'>Your AI-powered real estate agent. Ask me anything real estate and I’ll do my best to answer. I can help you with...</p>
-            <ul className="flex-container">
-              <li className="flex1-item">
-                <span className='f1-item'>Finding your best home</span>
-                <li className='small-item'>Find a place that fits you</li>
-                <li className='small-item'>Neighborhood rating</li>
-                <li className='small-item'>Home rating</li>
-              </li>
-              <li className="flex2-item">
-                <span className='f2-item'>Contracts</span>
-                <li className='small-item'>Generating optimal contracts</li>
-                <li className='small-item'>Negotiating purchase price</li>
-                <li className='small-item'>Verify MLS</li>
-              </li>
-              <li className="flex3-item">
-                <span className='f3-item'>Mortgage and Loans</span>
-                <li className='small-item'>Pre-verify loans</li>
-                <li className='small-item'>Best mortgage plan for you</li>
-                <li className='small-item'>Loan calculator</li>
-              </li>
-            </ul>
-          </div>
-        )}
-        <div className='message-container'>
-          {messages.map((message, index) => (
-            <div key={index} className={message.sender === 'AI' ? 'ai-message-container' : 'user-message-container'}>
-              {message.sender === 'AI' && (
-                <div className='ai-message'>
-                  <p className='sender'><img src={Sparkle} alt="" className="sparkle" /> Steve.ai</p> {message.content}
-                </div>
-              )}
-              {message.sender === 'You' && (
-                <div className='user-message'>
-                  <p className='sender'>You</p> {message.content}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-        <div className='input-container'>
-          <input
-            className='input-field'
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Ask me anything..."
+      <div className="chatbox-container">
+        {/* instead of mapping, dynamically render whichever one is active */}
+        {/* active chat and index, you can pass in index as index => you only show the one where teh active index is equal to the current index.... eerything else oyu hide */}
+        {/* if active index = current index, show it */}
+        {chats.map((chat, index) => (
+          <ChatBox
+            key={index}
+            index={index}
+            activeIndex={activeIndex}
+            messages={chat}
+            onSendMessage={(message) => handleSendMessage(message, index)}
+            onCloseChat={() => handleDeleteChat(index)}
+            onReceivedMessage={(message) => handleReceivedMessage(message, index)}
           />
-          <button onClick={sendMessage}>Send</button>
-        </div>
-      </section>
+        ))}
+      </div>
     </div>
   );
 };
