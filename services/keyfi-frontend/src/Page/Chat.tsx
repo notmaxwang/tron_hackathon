@@ -1,47 +1,5 @@
 import React, { useState } from 'react';
 import './Chat.css'
-// import ChatBox from '../Component/ChatBox';
-
-// const Chat: React.FC = () => {
-//   const [chats, setChats] = useState<number[]>([1]); //instead of number it should be array of chatbox components
-
-//   const handleNewChat = () => { // Adds new chat in sidemenu
-//     const newChatId = chats.length + 1;
-//     setChats((prevChats) => [...prevChats, newChatId]); //append a new chatbox into the array instead of storying the chatId
-//   };
-  
-//   const handleDeleteChat = (chatId: number) => { // Deletes chat in sidemenu
-//     setChats((prevChats) => prevChats.filter((id) => id !== chatId));
-//   };
-
-//   return (
-//     <div className='chat-container'>
-//       <aside className='side-menu'>
-//         <div className='side-menu-button' onClick={handleNewChat}>
-//           <span>+</span>
-//           New Chat
-//         </div>
-//         {chats.map((chatId) => (
-//           <div key={chatId} className='chat-list-item'>
-//             {chatId}
-//             <div className="dropdown">
-//               <button className="btn btndropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-//                 &#x2026;
-//               </button>
-//               <ul className='dropdown-menu'>
-//                 <li><a className='dropdown-item' onClick={() => handleDeleteChat(chatId)}>Delete</a></li>
-//               </ul>
-//             </div>
-//           </div>
-//         ))}
-//       </aside>
-//       <ChatBox />
-//     </div>
-//   );
-// };
-
-// set up to have different chats for 
-
 import ChatBox from '../Component/ChatBox';
 
 interface Message {
