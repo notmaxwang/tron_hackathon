@@ -6,10 +6,14 @@ message Listing {
     string address = 1;
     string city = 2;
     string state = 3;
-    string zipcode = 4;
-    string price = 5;
+    int32 zipcode = 4;
+    int32 price = 5;
     string imageKey = 6;
     string listingId = 7;
+    float coordLat = 8;
+    float coordLong = 9;
+    int32 area = 10;
+    string schoolDistrict = 11;
 }
 
 message ListingDetail {
@@ -24,6 +28,7 @@ message ListingDetail {
 
 message GetListingsRequest {
     repeated string zipcodes = 1;
+    repeated string cities = 2;
 }
 
 message GetListingsResponse {

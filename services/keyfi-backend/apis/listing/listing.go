@@ -45,3 +45,46 @@ func (s *Server) GetListingDetail(ctx context.Context, request *pb.GetListingDet
 		ListingDetails: listingDetails,
 	}, nil
 }
+
+func (s *Server) GetListings(ctx context.Context, request *pb.GetListingsRequest) (*pb.GetListingsResponse, error) {
+	if len(request.Cities) == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "no query params")
+	}
+
+	listingsDao, err := persistence.GetListingsDao()
+	if err != nil {
+		log.Println("couldnt init listings DAO for GetListingsDetail", err)
+		return nil, status.Errorf(codes.Internal, "could not init DB")
+	}
+
+	result := make([]*pb.Listing, 0)
+
+	for _, city := range request.Cities {
+		listings, err := listingsDao.QueryAllListingsInCity(city)
+		if err != nil {
+			log.Println("error querying DB")
+			return nil, status.Errorf(codes.Internal, "failed to query DB")
+		}
+		for _, listing := range *listings {
+			convertedListing := &pb.Listing{
+				ListingId: listing.ListingId,
+				Address: listing.StreetAddress,
+				City: listing.City,
+				State: listing.State,
+				Zipcode: listing.Zipcode,
+				Price: listing.Price,
+				CoordLat: listing.CoordLat,
+				CoordLong: listing.CoordLong,
+				Area: listing.Area,
+				SchoolDistrict: listing.SchoolDistrict,
+				ImageKey: listing.ImageKey,
+			}
+
+			result = append(result, convertedListing)
+		}
+	}
+
+	return &pb.GetListingsResponse{
+		Listings: result,
+	}, nil
+}

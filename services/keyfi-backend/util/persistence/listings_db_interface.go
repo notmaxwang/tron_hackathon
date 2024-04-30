@@ -21,12 +21,14 @@ type ListingObject struct {
 	StreetAddress  string
 	City           string
 	State          string
-	Zipcode        int
-	Area           int
-	Beds           int
-	Baths          int
+	Zipcode        int32
+	CoordLat       float32
+	CoordLong      float32
+	Area           int32
+	Beds           int32
+	Baths          int32
 	HouseType      string
-	Price          int
+	Price          int32
 	ImageKey       string
 }
 
@@ -36,7 +38,7 @@ var (
 )
 
 func GetListingsDao() (*ListingsDao, error) {
-	once.Do(func()  {
+	once.Do(func() {
 		// Connection parameters
 		user := os.Getenv("MYSQL_LOGIN")
 		password := os.Getenv("MYSQL_PASS")
@@ -61,7 +63,7 @@ func GetListingsDao() (*ListingsDao, error) {
 }
 
 func (dao *ListingsDao) QueryListingDetail(listingId string) (*ListingObject, error) {
-	rows, err := dao.Query("SELECT * FROM your_table WHERE listing_id = ?", listingId)
+	rows, err := dao.Query("SELECT * FROM * WHERE listing_id = ?", listingId)
 	if err != nil {
 		log.Println("couldnt query DB", err)
 		return nil, err
@@ -74,7 +76,7 @@ func (dao *ListingsDao) QueryListingDetail(listingId string) (*ListingObject, er
 	for rows.Next() {
 		var listing ListingObject
 		// Scan the values from the row into the struct fields
-		if err := rows.Scan(&listing.ListingId, &listing.WalletAddress, &listing.SchoolDistrict, &listing.StreetAddress, &listing.City, &listing.State, &listing.Zipcode, &listing.Area, &listing.Beds, &listing.Baths, &listing.HouseType, &listing.Price, &listing.ImageKey); err != nil {
+		if err := rows.Scan(&listing.ListingId, &listing.WalletAddress, &listing.SchoolDistrict, &listing.StreetAddress, &listing.City, &listing.State, &listing.Zipcode, &listing.CoordLat, &listing.CoordLong, &listing.Area, &listing.Beds, &listing.Baths, &listing.HouseType, &listing.Price, &listing.ImageKey); err != nil {
 			log.Fatal(err)
 		}
 		// Append the filled struct to the slice
@@ -91,6 +93,34 @@ func (dao *ListingsDao) QueryListingDetail(listingId string) (*ListingObject, er
 	}
 
 	return result, nil
+}
+
+func (dao *ListingsDao) QueryAllListingsInCity(city string) (*[]ListingObject, error) {
+	rows, err := dao.Query("SELECT * FROM * WHERE city = ?", city)
+	if err != nil {
+		log.Println("couldnt query DB", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	// Slice to hold the retrieved listings
+	var listings []ListingObject
+
+	for rows.Next() {
+		var listing ListingObject
+		// Scan the values from the row into the struct fields
+		if err := rows.Scan(&listing.ListingId, &listing.WalletAddress, &listing.SchoolDistrict, &listing.StreetAddress, &listing.City, &listing.State, &listing.Zipcode, &listing.CoordLat, &listing.CoordLong, &listing.Area, &listing.Beds, &listing.Baths, &listing.HouseType, &listing.Price, &listing.ImageKey); err != nil {
+			log.Fatal(err)
+		}
+		// Append the filled struct to the slice
+		listings = append(listings, listing)
+	}
+	if err := rows.Err(); err != nil {
+		log.Println("error while reading from rows", err)
+		return nil, err
+	}
+
+	return &listings, nil
 }
 
 func (dao *ListingsDao) Query(query string, args ...interface{}) (*sql.Rows, error) {
