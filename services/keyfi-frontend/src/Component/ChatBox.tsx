@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './ChatBox.css';
 import { QueryServiceClient } from '../../protos/query/query.client';
 import { GetValuesRequest } from '../../protos/query/query';
@@ -19,14 +19,14 @@ interface Message {
 //   onCloseChat: () => void;
 // }
 
-export default function ChatBox() {
+export default function ChatBox(props) {
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [showInterface, setShowInterface] = useState(true);
   const [messages, setMessages] = useState<Message[]>([]); //should be stored individually in the component
   const [inputValue, setInputValue] = useState<string>(''); // should be stored indiivudally in the component
   // const [chats, setChats] = useState([]); //instead of number it should be array of chatbox components
 
-
+  console.log(props);
     const makeCallToBackend = async () => {
       let transport = new GrpcWebFetchTransport({
         baseUrl: "http://ec2-34-236-81-43.compute-1.amazonaws.com:8080"

@@ -1,9 +1,9 @@
 import './Map.css';
-import React, {useState, useEffect, useRef, useMemo} from 'react';
+import {useState, useEffect, useRef, useMemo} from 'react';
 import Sparkle from '../assets/sparkle.png'
 import mapboxgl from 'mapbox-gl';
 import ListingCard from '../Component/ListingCard';
-import Map, { Popup, Marker } from 'react-map-gl'
+import Map, { Marker } from 'react-map-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'; 
 import { setRealEstateMarketContract, fetchAllListings } from '../utils/tron';
 
@@ -19,7 +19,6 @@ export default function MapComponent() {
   let listings = [{name: 'Ferry Building', position:{lat: 37.7955, lng: -122.3937,}},
   {name: 'Coit Tower', position:{lat: 37.8024, lng: -122.4058}}];
   let listName:any = [];
-  let testListings:any = [];
 
   listings.forEach((listing, idx) => {
     listName.push(<ListingCard key={idx} listing={listing} />)
@@ -35,6 +34,7 @@ export default function MapComponent() {
       return await fetchAllListings();
     };
     let testListings = test();
+    setShowPopup(true);
     console.log(testListings);
   }, [])
 

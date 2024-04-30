@@ -27,7 +27,7 @@ export async function addHomeListing(detailsLink: string, streetAddress: string,
     callValue: 0,
     shouldPollResponse: true,
   });
-
+  console.log(result);
   alert('Listing Posted Successfully');
 }
 
