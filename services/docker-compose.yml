@@ -14,6 +14,7 @@ services:
       dockerfile: Dockerfile-gateway
     ports:
       - '8080:8080'
+      - '8082:8082'
   keyfi-frontend:
     build:
       context: ./keyfi-frontend
