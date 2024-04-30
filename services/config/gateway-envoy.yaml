@@ -42,7 +42,7 @@ static_resources:
         - name: envoy.file_access_log
           config:
             path: "/tmp/listener_0_access.log"
-            format: "[%START_TIME%] %REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL% %RESPONSE_CODE% %RESPONSE_FLAGS% %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% %REQ(ORIGIN)% %REQ(REFERER)% %REQ(USER-AGENT)% %REQ(X-FORWARDED-FOR)% %REQ(:AUTHORITY)%"
+            format: "[%START_TIME%] %REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL% %RESPONSE_CODE% %RESPONSE_FLAGS% %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% %REQ(ORIGIN)% %REQ(REFERER)% %REQ(USER-AGENT)% %REQ(X-FORWARDED-FOR)% %REQ(:AUTHORITY)%\n"
   clusters:
     - name: gateway
       connect_timeout: 0.25s
