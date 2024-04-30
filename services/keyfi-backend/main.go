@@ -25,11 +25,10 @@ const CONFIG_MAPPINGS_PATH = "./config_mappings.key"
 
 func listenOnGrpc() {
 	// set a port for the server
-	port := "50051"
-	formattedPort := fmt.Sprintf(":%s", port)
+	port := ":50051"
 
 	// listen for requests on port
-	listener, err := net.Listen("tcp", formattedPort)
+	listener, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatal("listen error: ", err)
 	}
