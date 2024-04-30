@@ -12,11 +12,11 @@ interface Message {
 }
 
 // interface ChatBoxProps {
-//   ws: WebSocket | null;
-//   messages: Message[];
 //   index: number;
+//   messages: Message[];
 //   onSendMessage: (message: string) => void;
 //   onCloseChat: () => void;
+//   onReceivedMessage: (message: string) => void;
 // }
 
 export default function ChatBox(props) {
@@ -149,4 +149,4 @@ export default function ChatBox(props) {
       </section>
   </>
   );
-}
+};

@@ -11,9 +11,12 @@ export default function Home() {
         <p className='home-description'>Buy, sell, tour virtually, get approved 
           <br /> 
           for loans: all powered by AI 
-          <img src={Sparkle} alt="" className="sparkle" /></p>
-        <input className='home-search' type='search' placeholder="Find your newest property" />
+          <img src={Sparkle} alt="" className="sparkle" />
+        </p>
+        <div className='input-icon'>
+          <input className='home-search' type='search' placeholder="Find your newest property" />
+        </div>
       </div>
     </>
   );
-}
+};

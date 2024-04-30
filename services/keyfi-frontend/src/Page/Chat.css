@@ -54,20 +54,6 @@
   margin-left: auto;
 }
 
-.loan-header {
-  color: #8D8D8D;
-  font-size: 14px;
-  width: 300px;
-  margin-top: 30px;
-  margin-left: 50px;
-}
-
-.loan-header:hover {
-  background-color: rgba(249, 249, 249);
-  border-radius: 5px;
-  cursor: pointer;
-}
-
 @media screen and (max-width: 900px) and (max-height: 700px) {
   .side-menu {
     width: 20%;

@@ -7,13 +7,21 @@ interface Message {
   content: string;
 }
 
-const Chat: React.FC = () => {
+interface ChatBoxProps {
+  index: number;
+  messages: Message[];
+  onSendMessage: (message: string) => void;
+  onCloseChat: () => void;
+  onReceivedMessage: (message: string) => void;
+}
+
+const Chat: React.FC<ChatBoxProps> = () => {
   const [chats, setChats] = useState<Message[][]>([[]]); 
   const [activeIndex, setActiveIndex] = useState<number>(0);
-
-
+  
   const handleNewChat = () => {
     const newChatIndex = chats.length;
+    console.log("Add new chat idx:", newChatIndex);
     setChats(prevChats => [...prevChats, []]); 
     setActiveIndex(newChatIndex);
   }
@@ -40,7 +48,8 @@ const Chat: React.FC = () => {
   };
 
   const handleSetActiveChat = (chatIndex: number) => {
-    setActiveIndex(chatIndex); // Set active index to the clicked chat index
+    console.log("Set active chat:", chatIndex);
+    setActiveIndex(chatIndex);
   };
 
   return (
@@ -55,7 +64,7 @@ const Chat: React.FC = () => {
             key={index} 
             className={`chat-list-item ${index === activeIndex ? 'active-chat' : ''}`}
             onClick={() => handleSetActiveChat(index)}
-            >
+          >
             Chat {index + 1}
             <div className="dropdown">
               <button className="btn btndropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -72,17 +81,15 @@ const Chat: React.FC = () => {
         {/* instead of mapping, dynamically render whichever one is active */}
         {/* active chat and index, you can pass in index as index => you only show the one where teh active index is equal to the current index.... eerything else oyu hide */}
         {/* if active index = current index, show it */}
-        {chats.map((chat, index) => (
+        {chats[activeIndex] && ( // Check if the active chat exists
           <ChatBox
-            key={index}
-            index={index}
-            activeIndex={activeIndex}
-            messages={chat}
-            onSendMessage={(message) => handleSendMessage(message, index)}
-            onCloseChat={() => handleDeleteChat(index)}
-            onReceivedMessage={(message) => handleReceivedMessage(message, index)}
+            index={activeIndex}
+            messages={chats[activeIndex]}
+            onSendMessage={(message: string) => handleSendMessage(message, activeIndex)}
+            onCloseChat={() => handleDeleteChat(activeIndex)}
+            onReceivedMessage={(message: string) => handleReceivedMessage(message, activeIndex)}
           />
-        ))}
+        )}
       </div>
     </div>
   );
