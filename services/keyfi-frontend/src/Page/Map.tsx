@@ -9,6 +9,7 @@ import { setRealEstateMarketContract, fetchAllListings } from '../utils/tron';
 import { GetListingsRequest , GetListingsResponse }  from '../../protos/listing/listing'
 import { ListingServiceClient } from '../../protos/listing/listing.client'
 import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport';
+import MapMarker from '../assets/marker.webp';
 
 export default function MapComponent() {
   const MAPBOX_MAP_API_KEY:any = process.env.MAPBOX_MAP_KEY;
@@ -20,8 +21,10 @@ export default function MapComponent() {
   const [zoom, setZoom] = useState(11);
   const [showPopup, setShowPopup] = useState<boolean>(true);
   let listings = [{name: 'Ferry Building', position:{lat: 37.7955, lng: -122.3937,}},
-  {name: 'Coit Tower', position:{lat: 37.8024, lng: -122.4058}}];
-  let listName:any = [];
+  {name: 'Coit Tower', position:{lat: 37.8024, lng: -122.4058}},
+  {name: 'Boit Tower', position:{lat: 37.8024, lng: -122.4158}},];
+  const [listName, setListName] = useState<any>([]);
+  let markerList:any = [];
 
   const makeCallToBackend = async () => {
     let transport = new GrpcWebFetchTransport({
@@ -40,11 +43,17 @@ export default function MapComponent() {
 
   useEffect(() => {
     makeCallToBackend();
+    listings.forEach((listing, idx) => {
+      setListName(prevListName => [...prevListName, <ListingCard key={idx} listing={listing} />])
+      markerList.push(<Marker longitude={listing.position.lng} latitude={listing.position.lat}
+        anchor="bottom"
+        popup={popup}
+        onClick={() => console.log('test')}>
+        <img className='marker' src={MapMarker} alt='marker'/>
+      </Marker>)
+    });
   }, [])
 
-  listings.forEach((listing, idx) => {
-    listName.push(<ListingCard key={idx} listing={listing} />)
-  });
 
   const popup = useMemo(() => {
     return new mapboxgl.Popup().setText('Hello world!');
@@ -122,11 +131,9 @@ export default function MapComponent() {
           mapStyle="mapbox://styles/mapbox/streets-v9"
         >
           {showPopup && (
-            <Marker longitude={-122.39} latitude={37.79}
-              anchor="bottom"
-              popup={popup}>
-              TEST TEST
-            </Marker>)}
+            <>
+            {markerList}
+          </>)}
         </Map>
         </div>
       </div>
