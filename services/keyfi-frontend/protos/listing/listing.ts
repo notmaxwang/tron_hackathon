@@ -28,13 +28,13 @@ export interface Listing {
      */
     state: string;
     /**
-     * @generated from protobuf field: string zipcode = 4;
+     * @generated from protobuf field: int32 zipcode = 4;
      */
-    zipcode: string;
+    zipcode: number;
     /**
-     * @generated from protobuf field: string price = 5;
+     * @generated from protobuf field: int32 price = 5;
      */
-    price: string;
+    price: number;
     /**
      * @generated from protobuf field: string imageKey = 6;
      */
@@ -43,6 +43,22 @@ export interface Listing {
      * @generated from protobuf field: string listingId = 7;
      */
     listingId: string;
+    /**
+     * @generated from protobuf field: float coordLat = 8;
+     */
+    coordLat: number;
+    /**
+     * @generated from protobuf field: float coordLong = 9;
+     */
+    coordLong: number;
+    /**
+     * @generated from protobuf field: int32 area = 10;
+     */
+    area: number;
+    /**
+     * @generated from protobuf field: string schoolDistrict = 11;
+     */
+    schoolDistrict: string;
 }
 /**
  * @generated from protobuf message keyfi_protos.listing.ListingDetail
@@ -85,6 +101,10 @@ export interface GetListingsRequest {
      * @generated from protobuf field: repeated string zipcodes = 1;
      */
     zipcodes: string[];
+    /**
+     * @generated from protobuf field: repeated string cities = 2;
+     */
+    cities: string[];
 }
 /**
  * @generated from protobuf message keyfi_protos.listing.GetListingsResponse
@@ -138,10 +158,14 @@ class Listing$Type extends MessageType<Listing> {
             { no: 1, name: "address", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "city", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "state", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "zipcode", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 5, name: "price", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "zipcode", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 5, name: "price", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 6, name: "imageKey", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 7, name: "listingId", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 7, name: "listingId", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 8, name: "coordLat", kind: "scalar", T: 2 /*ScalarType.FLOAT*/ },
+            { no: 9, name: "coordLong", kind: "scalar", T: 2 /*ScalarType.FLOAT*/ },
+            { no: 10, name: "area", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 11, name: "schoolDistrict", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<Listing>): Listing {
@@ -149,10 +173,14 @@ class Listing$Type extends MessageType<Listing> {
         message.address = "";
         message.city = "";
         message.state = "";
-        message.zipcode = "";
-        message.price = "";
+        message.zipcode = 0;
+        message.price = 0;
         message.imageKey = "";
         message.listingId = "";
+        message.coordLat = 0;
+        message.coordLong = 0;
+        message.area = 0;
+        message.schoolDistrict = "";
         if (value !== undefined)
             reflectionMergePartial<Listing>(this, message, value);
         return message;
@@ -171,17 +199,29 @@ class Listing$Type extends MessageType<Listing> {
                 case /* string state */ 3:
                     message.state = reader.string();
                     break;
-                case /* string zipcode */ 4:
-                    message.zipcode = reader.string();
+                case /* int32 zipcode */ 4:
+                    message.zipcode = reader.int32();
                     break;
-                case /* string price */ 5:
-                    message.price = reader.string();
+                case /* int32 price */ 5:
+                    message.price = reader.int32();
                     break;
                 case /* string imageKey */ 6:
                     message.imageKey = reader.string();
                     break;
                 case /* string listingId */ 7:
                     message.listingId = reader.string();
+                    break;
+                case /* float coordLat */ 8:
+                    message.coordLat = reader.float();
+                    break;
+                case /* float coordLong */ 9:
+                    message.coordLong = reader.float();
+                    break;
+                case /* int32 area */ 10:
+                    message.area = reader.int32();
+                    break;
+                case /* string schoolDistrict */ 11:
+                    message.schoolDistrict = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -204,18 +244,30 @@ class Listing$Type extends MessageType<Listing> {
         /* string state = 3; */
         if (message.state !== "")
             writer.tag(3, WireType.LengthDelimited).string(message.state);
-        /* string zipcode = 4; */
-        if (message.zipcode !== "")
-            writer.tag(4, WireType.LengthDelimited).string(message.zipcode);
-        /* string price = 5; */
-        if (message.price !== "")
-            writer.tag(5, WireType.LengthDelimited).string(message.price);
+        /* int32 zipcode = 4; */
+        if (message.zipcode !== 0)
+            writer.tag(4, WireType.Varint).int32(message.zipcode);
+        /* int32 price = 5; */
+        if (message.price !== 0)
+            writer.tag(5, WireType.Varint).int32(message.price);
         /* string imageKey = 6; */
         if (message.imageKey !== "")
             writer.tag(6, WireType.LengthDelimited).string(message.imageKey);
         /* string listingId = 7; */
         if (message.listingId !== "")
             writer.tag(7, WireType.LengthDelimited).string(message.listingId);
+        /* float coordLat = 8; */
+        if (message.coordLat !== 0)
+            writer.tag(8, WireType.Bit32).float(message.coordLat);
+        /* float coordLong = 9; */
+        if (message.coordLong !== 0)
+            writer.tag(9, WireType.Bit32).float(message.coordLong);
+        /* int32 area = 10; */
+        if (message.area !== 0)
+            writer.tag(10, WireType.Varint).int32(message.area);
+        /* string schoolDistrict = 11; */
+        if (message.schoolDistrict !== "")
+            writer.tag(11, WireType.LengthDelimited).string(message.schoolDistrict);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -325,12 +377,14 @@ export const ListingDetail = new ListingDetail$Type();
 class GetListingsRequest$Type extends MessageType<GetListingsRequest> {
     constructor() {
         super("keyfi_protos.listing.GetListingsRequest", [
-            { no: 1, name: "zipcodes", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "zipcodes", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "cities", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<GetListingsRequest>): GetListingsRequest {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.zipcodes = [];
+        message.cities = [];
         if (value !== undefined)
             reflectionMergePartial<GetListingsRequest>(this, message, value);
         return message;
@@ -342,6 +396,9 @@ class GetListingsRequest$Type extends MessageType<GetListingsRequest> {
             switch (fieldNo) {
                 case /* repeated string zipcodes */ 1:
                     message.zipcodes.push(reader.string());
+                    break;
+                case /* repeated string cities */ 2:
+                    message.cities.push(reader.string());
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -358,6 +415,9 @@ class GetListingsRequest$Type extends MessageType<GetListingsRequest> {
         /* repeated string zipcodes = 1; */
         for (let i = 0; i < message.zipcodes.length; i++)
             writer.tag(1, WireType.LengthDelimited).string(message.zipcodes[i]);
+        /* repeated string cities = 2; */
+        for (let i = 0; i < message.cities.length; i++)
+            writer.tag(2, WireType.LengthDelimited).string(message.cities[i]);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

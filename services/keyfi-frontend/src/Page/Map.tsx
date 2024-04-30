@@ -6,6 +6,9 @@ import ListingCard from '../Component/ListingCard';
 import Map, { Marker } from 'react-map-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'; 
 import { setRealEstateMarketContract, fetchAllListings } from '../utils/tron';
+import { GetListingsRequest , GetListingsResponse }  from '../../protos/listing/listing'
+import { ListingServiceClient } from '../../protos/listing/listing.client'
+import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport';
 
 export default function MapComponent() {
   const MAPBOX_MAP_API_KEY:any = process.env.MAPBOX_MAP_KEY;
@@ -19,6 +22,25 @@ export default function MapComponent() {
   let listings = [{name: 'Ferry Building', position:{lat: 37.7955, lng: -122.3937,}},
   {name: 'Coit Tower', position:{lat: 37.8024, lng: -122.4058}}];
   let listName:any = [];
+
+  const makeCallToBackend = async () => {
+    let transport = new GrpcWebFetchTransport({
+      baseUrl: "http://ec2-34-236-81-43.compute-1.amazonaws.com:8080"
+    });
+    const client = new ListingServiceClient(transport);
+    const request = GetListingsRequest.create({
+      cities: ["San Francisco"]
+    })
+    const call = client.getListings(request);
+    let response = await call.response;
+    let status = await call.status;
+    console.log("status: " + status)
+    console.log(response);
+  }
+
+  useEffect(() => {
+    makeCallToBackend();
+  }, [])
 
   listings.forEach((listing, idx) => {
     listName.push(<ListingCard key={idx} listing={listing} />)

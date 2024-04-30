@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { setRealEstateMarketContract } from '../utils/tron.ts';
-import ListingCard from '../Component/ListingCard.tsx';
+import Listing from '../Component/Listing.tsx';
 
 import './Payment.css'; // Import your CSS file
 
@@ -24,7 +24,7 @@ const PaymentPage = () => {
       {step === 1 && (
         <div className="step-container">
           <h2>Step 1: Review Listing</h2>
-          <ListingCard listing={{}}/>
+          <Listing listing={{}}/>
           <button onClick={handleNextStep}>Next</button>
         </div>
       )}

@@ -15,7 +15,7 @@ export default function ListingCard(props: any) {
 
   return(
     <>
-      <div className="listing-container" style={props.isPopup ? popupStyle : {}}>
+      <div className="listing-card-container" style={props.isPopup ? popupStyle : {}}>
         <img src="" alt="listing image" />
         <p>{listing.price}</p>
         <p>{listing.address}, {listing.city}, {listing.state}, {listing.zip_code}</p>
