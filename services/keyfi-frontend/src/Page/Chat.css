@@ -21,8 +21,8 @@
 .side-menu-button {
   padding: 12px;
   text-align: left;
-  font-size: 14px;
-  margin-top: 100px;
+  font-size: 17px;
+  margin-top: 7vh;
   transition: ease 0.25s all;
   width: 20vw;
 }
@@ -41,7 +41,6 @@
 .chat-list-item {
   display: flex;
   padding-left: 2vw;
-
 }
 
 .chat-list-item:hover {

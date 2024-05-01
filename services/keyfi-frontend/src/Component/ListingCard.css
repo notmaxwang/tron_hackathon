@@ -11,14 +11,52 @@
 }
 
 .listing-thumbnail {
-  height: 20vh;
-  width: 20vh;
+  height: 25vh;
+  width: 25vh;
   border-radius: 8px;
   align-items: center;
 }
 
+.listing-pd {
+  display: flex;
+  justify-content: space-between;
+}
+
 .listing-price {
   font-size: 25px;
-  display: flex;
+  font-weight: bold;
   margin-top: 1vh;
+}
+
+.listing-detail {
+  font-size: 20px;
+  font-weight: normal;
+  margin-top: 0.3vh;
+  text-decoration: none;
+  color: #525252;
+}
+
+.listing-detail:hover {
+  color: #ccc;
+}
+
+.listing-area {
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  bottom: 0;
+  right: 0;
+  color: #444444;
+}
+
+.listing-sqft {
+  font-size: 20px;
+  font-weight: normal;
+  margin-left: 0.2vw;
+  color: #525252;
+}
+
+.listing-address {
+  display: flex;
+  color: #525252;
 }

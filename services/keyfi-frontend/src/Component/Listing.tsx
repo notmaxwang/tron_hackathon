@@ -26,7 +26,6 @@ export default function Listing(props: any) {
         <p>{listing.price}</p>
         <p>{listing.address}, {listing.city}, {listing.state}, {listing.zip_code}</p>
         <p>Total Area : {listing.sqft_area}</p>
-        <p>{listing.beds} beds, {listing.baths} baths</p>
         <Link to={`/payment/${listing.listingId}`}>Payment</Link>
       </div>
     </>

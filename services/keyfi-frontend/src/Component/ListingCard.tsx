@@ -31,10 +31,14 @@ export default function ListingCard(props: any) {
     <>
       <div className="listing-card-container" style={props.isPopup ? popupStyle : {}}>
         <img className='listing-thumbnail' src={images[0]} alt="listing image" />
-        <p className='listing-price'>${listing.price}</p>
-        <p>{listing.address}, {listing.city}, {listing.state}, {listing.zipcode}</p>
-        <p>Total Area : {listing.area}</p>
-        <Link to={`/listing/${listing.listingId}`}>View Details</Link>
+        <div className='listing-pd'>
+          <p className='listing-price'>${listing.price} <Link className='listing-detail'to={`/listing/${listing.listingId}`}>View Details</Link></p>
+        </div>
+        <p className='listing-area'>
+          {listing.area}
+          <p className='listing-sqft'>sq/ft</p>
+        </p> 
+        <p className='listing-address'>{listing.address}, {listing.city}, {listing.state}, {listing.zipcode}</p>
       </div>
     </>
   );

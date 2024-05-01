@@ -14,6 +14,8 @@ header {
 
 .navbar-container {
   height: auto;
+  position: sticky;
+  top: 0;
 }
 
 nav ul {
