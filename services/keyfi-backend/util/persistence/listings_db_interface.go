@@ -109,8 +109,8 @@ func (dao *ListingsDao) QueryAllListingsInCity(city string) (*[]ListingObject, e
 	for rows.Next() {
 		var listing ListingObject
 		// Scan the values from the row into the struct fields
-		if err := rows.Scan(&listing.ListingId, &listing.WalletAddress, &listing.SchoolDistrict, &listing.StreetAddress, &listing.City, &listing.State, &listing.Zipcode, &listing.CoordLat, &listing.CoordLong, &listing.Area, &listing.Beds, &listing.Baths, &listing.HouseType, &listing.Price, &listing.ImageKey); err != nil {
-			log.Fatal(err)
+		if err := rows.Scan(&listing.ListingId, &listing.WalletAddress, &listing.StreetAddress, &listing.City, &listing.State, &listing.Zipcode, &listing.CoordLat, &listing.CoordLong, &listing.SchoolDistrict, &listing.Area, &listing.Beds, &listing.Baths, &listing.HouseType, &listing.Price, &listing.ImageKey); err != nil {
+			log.Println("failure at scan", err)
 		}
 		// Append the filled struct to the slice
 		listings = append(listings, listing)
