@@ -67,30 +67,42 @@ export default function MapComponent() {
     <div className='map-page-container'>
       <div className='search-bar-container'>
         <div className='search-container'>
-          <input className='home-search' type='search' placeholder="search thing" />
+          <input className='home-search' type='search' placeholder="Search for a house" />
           <button className='ai-button'><img src={Sparkle} alt="" className="sparkle" />Ask AI</button>
         </div>
         <div className='filter-dropdown'>
-          <select className='price-filter' id='price-filter'>
-              <option className='select-item' value='select'>Price</option>
-              <option className='select-item' value='price2'>Price 2</option>
-              <option className='select-item' value='price3'>Price 3</option>
-          </select>
-          <select className='bedbath-filter' id='bedbath-filter'>
-            <option className='select-item' value='select'>Beds & Baths</option>
-            <option className='select-item' value='bedbath2'>BedBath 2</option>
-            <option className='select-item' value='bedbath3'>BedBath 3</option>
-          </select>
-          <select className="style-filter">
-            <option className='select-item' value="all">Housing Style</option>
-            <option className='select-item' value="type1">Type 1</option>
-            <option className='select-item' value="type2">Type 2</option>
-          </select>
-          <select className="filter">
-            <option className='select-item' value="filter">Filter</option>
-            <option className='select-item' value="filter1">Filter 1</option>
-            <option className='select-item' value="filter2">Filter 2</option>
-          </select>
+          <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Price
+          </button>
+          <ul className="dropdown-menu">
+            <li><a className="dropdown-item" href="#">Price 1</a></li>
+            <li><a className="dropdown-item" href="#">Price 2</a></li>
+            <li><a className="dropdown-item" href="#">Price 3</a></li>
+          </ul>
+          <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Beds & Baths
+          </button>
+          <ul className="dropdown-menu">
+            <li><a className="dropdown-item" href="#">Beds & Baths 1</a></li>
+            <li><a className="dropdown-item" href="#">Beds & Baths 2</a></li>
+            <li><a className="dropdown-item" href="#">Beds & Baths 3</a></li>
+          </ul>
+          <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Housing Style
+          </button>
+          <ul className="dropdown-menu">
+            <li><a className="dropdown-item" href="#">Style 1</a></li>
+            <li><a className="dropdown-item" href="#">Style 2</a></li>
+            <li><a className="dropdown-item" href="#">Style 3</a></li>
+          </ul>
+          <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Filter
+          </button>
+          <ul className="dropdown-menu">
+            <li><a className="dropdown-item" href="#">Filter 1</a></li>
+            <li><a className="dropdown-item" href="#">Filter 2</a></li>
+            <li><a className="dropdown-item" href="#">Filter 3</a></li>
+          </ul>
         </div>
       </div>
       <div className='bottom-section'>
@@ -98,9 +110,9 @@ export default function MapComponent() {
           <p className='listing-title'>Real Estate in San Francisco, California for Sale</p>
           <ul className='listings-container'>{listings.map((listing, idx) => (
             <ListingCard key={idx} 
-                         listing={listing} 
-                         x={listing.coordLat} 
-                         y={listing.coordLong} />
+              listing={listing} 
+              x={listing.coordLat} 
+              y={listing.coordLong} />
           ))}</ul>
         </div>
         <div className='map-container'>
@@ -116,7 +128,9 @@ export default function MapComponent() {
           {showPopup && (
             <>
             {listings.map((listing) => (
-            <Marker longitude={listing.coordLong} latitude={listing.coordLat}
+            <Marker 
+              longitude={listing.coordLong} 
+              latitude={listing.coordLat}
               anchor="bottom"
               popup={popup}
               onClick={() => console.log('test')}>

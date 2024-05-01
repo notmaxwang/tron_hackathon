@@ -23,7 +23,13 @@
   margin-top: 1vh;
   margin-bottom: 1vh;
   text-align: center;
+  color: black;
   background-color: rgb(236, 229, 229);
+  border: none;
+}
+
+.ai-button:hover {
+  background-color: #d4bdbd;
 }
 
 .home-search {
@@ -43,46 +49,27 @@
   flex-direction: row;
   width: 20vw;
   margin-left: 1vw;
+  color: #FFFFFF;
 }
 
-.filter-dropdown select {
-  margin-right: 1vw;
+.filter-dropdown .btn {
+  background-color: white; 
+  color: #333;
+  border-color: #ccc;
+  margin-left: 1vw;
+  padding: 10px 20px; /* Adjust padding for height and width */
+  font-size: 25px;
 }
 
-.price-filter {
-  width: 79px;
-  height: 47px;
-  border-radius: 8px;
-  border: 2px solid rgb(212, 212, 212);
-  padding: 16px, 18px, 16px, 18px;
-  text-align: center;
+.filter-dropdown .btn.dropdown-toggle:focus,
+.filter-dropdown .btn.dropdown-toggle:hover {
+  background-color: white; 
+  color: #333; 
+  border-color: #ccc; 
 }
 
-.bedbath-filter {
-  width: 111px;
-  height: 47px;
-  border-radius: 8px;
-  border: 2px solid rgb(212, 212, 212);
-  padding: 16px, 18px, 16px, 18px;
-  text-align: center;
-}
-
-.style-filter {
-  width: 127px;
-  height: 47px;
-  border-radius: 8px;
-  border: 2px solid rgb(212, 212, 212);
-  padding: 16px, 18px, 16px, 18px;
-  text-align: center;
-}
-
-.filter {
-  width: 88px;
-  height: 48px;
-  border-radius: 8px;
-  border: 2px solid rgb(212, 212, 212);
-  padding: 16px, 18px, 16px, 18px;
-  text-align: center;
+.filter-dropdown .dropdown-menu .dropdown-item {
+  font-size: 25px;
 }
 
 .map {
