@@ -22,11 +22,14 @@ export default function Listing(props: any) {
   return(
     <>
       <div className="listing-container">
-        <img src={images[0]} alt="listing image" />
-        <p>{listing.price}</p>
-        <p>{listing.address}, {listing.city}, {listing.state}, {listing.zip_code}</p>
-        <p>Total Area : {listing.sqft_area}</p>
-        <Link to={`/payment/${listing.listingId}`}>Payment</Link>
+        <img className='listing-image' src={images[0]} alt="listing image" />
+        <p className='listing-price'>${listing.price}</p>
+        <p className='listing-sf'>
+          {listing.area}
+          <p className='listing-sqf'>sq/ft</p>
+        </p> 
+        <p className='listing-addy'>{listing.address}, {listing.city}, {listing.state}, {listing.zip_code}</p>
+        <Link className='listing-payment' to={`/payment/${listing.listingId}`}>Payment</Link>
       </div>
     </>
   );

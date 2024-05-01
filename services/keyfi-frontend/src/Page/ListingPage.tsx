@@ -31,7 +31,9 @@ export default function ListingPage () {
     backendCall();
   }, [])
 
-  return(<>
+  return(
+    <>
       {listing&&<Listing listing={listing}/>}
-  </>);
+    </>
+  );
 }
