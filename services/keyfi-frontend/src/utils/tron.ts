@@ -47,3 +47,7 @@ export async function fetchAllListings(): Promise<any[]> {
   }
   return listings;
 }
+
+export async function startSaleContract(): Promise<any> {
+  
+}

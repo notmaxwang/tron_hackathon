@@ -26,7 +26,7 @@ function App() {
               <Route path="/chat" element={<Chat />} />
               <Route path="/map" element={<MapComponent />} />
               <Route path="/wallet" element={<Wallet />} />
-              <Route path="/payment" element={<PaymentPage />} />
+              <Route path="/payment/:id" element={<PaymentPage />} />
               <Route path="/listing/:id" element={<ListingPage />} />
             </Routes>
           </div>

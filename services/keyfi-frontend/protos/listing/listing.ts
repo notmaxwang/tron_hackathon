@@ -61,39 +61,6 @@ export interface Listing {
     schoolDistrict: string;
 }
 /**
- * @generated from protobuf message keyfi_protos.listing.ListingDetail
- */
-export interface ListingDetail {
-    /**
-     * @generated from protobuf field: string listingId = 1;
-     */
-    listingId: string;
-    /**
-     * @generated from protobuf field: string walletAddress = 2;
-     */
-    walletAddress: string;
-    /**
-     * @generated from protobuf field: string area = 3;
-     */
-    area: string;
-    /**
-     * @generated from protobuf field: string schoolDistrict = 4;
-     */
-    schoolDistrict: string;
-    /**
-     * @generated from protobuf field: string bed = 5;
-     */
-    bed: string;
-    /**
-     * @generated from protobuf field: string bath = 6;
-     */
-    bath: string;
-    /**
-     * @generated from protobuf field: string houseType = 7;
-     */
-    houseType: string;
-}
-/**
  * @generated from protobuf message keyfi_protos.listing.GetListingsRequest
  */
 export interface GetListingsRequest {
@@ -147,9 +114,9 @@ export interface GetListingDetailRequest {
  */
 export interface GetListingDetailResponse {
     /**
-     * @generated from protobuf field: keyfi_protos.listing.ListingDetail listingDetails = 1;
+     * @generated from protobuf field: keyfi_protos.listing.Listing listing = 1;
      */
-    listingDetails?: ListingDetail;
+    listing?: Listing;
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class Listing$Type extends MessageType<Listing> {
@@ -278,101 +245,6 @@ class Listing$Type extends MessageType<Listing> {
  * @generated MessageType for protobuf message keyfi_protos.listing.Listing
  */
 export const Listing = new Listing$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class ListingDetail$Type extends MessageType<ListingDetail> {
-    constructor() {
-        super("keyfi_protos.listing.ListingDetail", [
-            { no: 1, name: "listingId", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "walletAddress", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "area", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "schoolDistrict", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 5, name: "bed", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 6, name: "bath", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 7, name: "houseType", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
-        ]);
-    }
-    create(value?: PartialMessage<ListingDetail>): ListingDetail {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.listingId = "";
-        message.walletAddress = "";
-        message.area = "";
-        message.schoolDistrict = "";
-        message.bed = "";
-        message.bath = "";
-        message.houseType = "";
-        if (value !== undefined)
-            reflectionMergePartial<ListingDetail>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ListingDetail): ListingDetail {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* string listingId */ 1:
-                    message.listingId = reader.string();
-                    break;
-                case /* string walletAddress */ 2:
-                    message.walletAddress = reader.string();
-                    break;
-                case /* string area */ 3:
-                    message.area = reader.string();
-                    break;
-                case /* string schoolDistrict */ 4:
-                    message.schoolDistrict = reader.string();
-                    break;
-                case /* string bed */ 5:
-                    message.bed = reader.string();
-                    break;
-                case /* string bath */ 6:
-                    message.bath = reader.string();
-                    break;
-                case /* string houseType */ 7:
-                    message.houseType = reader.string();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: ListingDetail, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string listingId = 1; */
-        if (message.listingId !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.listingId);
-        /* string walletAddress = 2; */
-        if (message.walletAddress !== "")
-            writer.tag(2, WireType.LengthDelimited).string(message.walletAddress);
-        /* string area = 3; */
-        if (message.area !== "")
-            writer.tag(3, WireType.LengthDelimited).string(message.area);
-        /* string schoolDistrict = 4; */
-        if (message.schoolDistrict !== "")
-            writer.tag(4, WireType.LengthDelimited).string(message.schoolDistrict);
-        /* string bed = 5; */
-        if (message.bed !== "")
-            writer.tag(5, WireType.LengthDelimited).string(message.bed);
-        /* string bath = 6; */
-        if (message.bath !== "")
-            writer.tag(6, WireType.LengthDelimited).string(message.bath);
-        /* string houseType = 7; */
-        if (message.houseType !== "")
-            writer.tag(7, WireType.LengthDelimited).string(message.houseType);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message keyfi_protos.listing.ListingDetail
- */
-export const ListingDetail = new ListingDetail$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class GetListingsRequest$Type extends MessageType<GetListingsRequest> {
     constructor() {
@@ -620,7 +492,7 @@ export const GetListingDetailRequest = new GetListingDetailRequest$Type();
 class GetListingDetailResponse$Type extends MessageType<GetListingDetailResponse> {
     constructor() {
         super("keyfi_protos.listing.GetListingDetailResponse", [
-            { no: 1, name: "listingDetails", kind: "message", T: () => ListingDetail }
+            { no: 1, name: "listing", kind: "message", T: () => Listing }
         ]);
     }
     create(value?: PartialMessage<GetListingDetailResponse>): GetListingDetailResponse {
@@ -634,8 +506,8 @@ class GetListingDetailResponse$Type extends MessageType<GetListingDetailResponse
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* keyfi_protos.listing.ListingDetail listingDetails */ 1:
-                    message.listingDetails = ListingDetail.internalBinaryRead(reader, reader.uint32(), options, message.listingDetails);
+                case /* keyfi_protos.listing.Listing listing */ 1:
+                    message.listing = Listing.internalBinaryRead(reader, reader.uint32(), options, message.listing);
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -649,9 +521,9 @@ class GetListingDetailResponse$Type extends MessageType<GetListingDetailResponse
         return message;
     }
     internalBinaryWrite(message: GetListingDetailResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* keyfi_protos.listing.ListingDetail listingDetails = 1; */
-        if (message.listingDetails)
-            ListingDetail.internalBinaryWrite(message.listingDetails, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* keyfi_protos.listing.Listing listing = 1; */
+        if (message.listing)
+            Listing.internalBinaryWrite(message.listing, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

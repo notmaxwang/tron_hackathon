@@ -21,7 +21,6 @@ export default function MapComponent() {
   const [zoom, setZoom] = useState(11);
   const [showPopup, setShowPopup] = useState<boolean>(true);
   const [listings, setListings] = useState<any>([]);
-  const [markerList, setMarkerList] = useState<any>([]);
 
   const makeCallToBackend = async () => {
     let transport = new GrpcWebFetchTransport({
@@ -33,7 +32,6 @@ export default function MapComponent() {
     })
     const call = client.getListings(request);
     let response = await call.response;
-    console.log('second',response);
     setListings(response.listings);
   }
 
@@ -42,10 +40,8 @@ export default function MapComponent() {
   }, [])
 
   useEffect(() => {
-    console.log('first');
     let backendCall = async() => {
       await makeCallToBackend();
-      console.log('third', listings);
     }
     backendCall();
     setShowPopup(true);
@@ -119,7 +115,7 @@ export default function MapComponent() {
         >
           {showPopup && (
             <>
-            {listings.map((listing, idx) => (
+            {listings.map((listing) => (
             <Marker longitude={listing.coordLong} latitude={listing.coordLat}
               anchor="bottom"
               popup={popup}
