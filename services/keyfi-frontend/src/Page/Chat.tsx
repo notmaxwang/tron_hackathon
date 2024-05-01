@@ -8,14 +8,14 @@ interface Message {
 }
 
 interface ChatBoxProps {
-  index: number;
-  messages: Message[];
-  onSendMessage: (message: string) => void;
-  onCloseChat: () => void;
-  onReceivedMessage: (message: string) => void;
+  index?: number;
+  messages?: Message[];
+  onSendMessage?: (message: string) => void;
+  onCloseChat?: () => void;
+  onReceivedMessage?: (message: string) => void;
 }
 
-const Chat: React.FC<ChatBoxProps> = () => {
+const Chat = () => {
   const [chats, setChats] = useState<Message[][]>([[]]); 
   const [activeIndex, setActiveIndex] = useState<number>(0);
   

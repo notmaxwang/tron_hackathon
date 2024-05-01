@@ -6,7 +6,7 @@ import ListingCard from '../Component/ListingCard';
 import Map, { Marker } from 'react-map-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'; 
 import { setRealEstateMarketContract, fetchAllListings } from '../utils/tron';
-import { GetListingsRequest , GetListingsResponse }  from '../../protos/listing/listing'
+import { GetListingsRequest }  from '../../protos/listing/listing'
 import { ListingServiceClient } from '../../protos/listing/listing.client'
 import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport';
 import MapMarker from '../assets/marker.webp';
