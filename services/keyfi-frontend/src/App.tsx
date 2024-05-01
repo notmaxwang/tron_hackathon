@@ -5,6 +5,7 @@ import Home from './Page/Home';
 import MapComponent from './Page/Map';
 import Wallet from './Page/Wallet';
 import PaymentPage from './Page/Payment';
+import ListingPage from './Page/ListingPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import 'bootstrap-icons/font/bootstrap-icons.css'
@@ -26,6 +27,7 @@ function App() {
               <Route path="/map" element={<MapComponent />} />
               <Route path="/wallet" element={<Wallet />} />
               <Route path="/payment" element={<PaymentPage />} />
+              <Route path="/listing/:id" element={<ListingPage />} />
             </Routes>
           </div>
         </Router>

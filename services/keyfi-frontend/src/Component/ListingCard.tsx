@@ -1,5 +1,6 @@
 import './ListingCard.css';
 import React, { useState, useEffect} from 'react';
+import { Link } from 'react-router-dom';
 
 export default function ListingCard(props: any) {
   const listing = props.listing;
@@ -32,6 +33,7 @@ export default function ListingCard(props: any) {
         <img className='listing-thumbnail' src={images[0]} alt="listing image" />
         <p>{listing.address}, {listing.city}, {listing.state}, {listing.zipcode}</p>
         <p>Total Area : {listing.area}</p>
+        <Link to={`/listing/${listing.id}`}>View Details</Link>
       </div>
     </>
   );
