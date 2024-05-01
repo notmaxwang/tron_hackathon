@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './Chat.css'
 import ChatBox from '../Component/ChatBox';
 
@@ -7,13 +7,13 @@ interface Message {
   content: string;
 }
 
-interface ChatBoxProps {
-  index?: number;
-  messages?: Message[];
-  onSendMessage?: (message: string) => void;
-  onCloseChat?: () => void;
-  onReceivedMessage?: (message: string) => void;
-}
+// interface ChatBoxProps {
+//   index?: number;
+//   messages?: Message[];
+//   onSendMessage?: (message: string) => void;
+//   onCloseChat?: () => void;
+//   onReceivedMessage?: (message: string) => void;
+// }
 
 const Chat = () => {
   const [chats, setChats] = useState<Message[][]>([[]]); 
