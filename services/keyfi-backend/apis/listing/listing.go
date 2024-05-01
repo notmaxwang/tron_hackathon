@@ -46,6 +46,10 @@ func (s *Server) GetListingDetail(ctx context.Context, request *pb.GetListingDet
 	}, nil
 }
 
+func (s *Server) GetListingByAddress(ctx context.Context, request *pb.GetListingByAddressRequest) (*pb.GetListingByAddressResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "not implemented yet")
+}
+
 func (s *Server) GetListings(ctx context.Context, request *pb.GetListingsRequest) (*pb.GetListingsResponse, error) {
 	if len(request.Cities) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "no query params")
@@ -67,17 +71,17 @@ func (s *Server) GetListings(ctx context.Context, request *pb.GetListingsRequest
 		}
 		for _, listing := range *listings {
 			convertedListing := &pb.Listing{
-				ListingId: listing.ListingId,
-				Address: listing.StreetAddress,
-				City: listing.City,
-				State: listing.State,
-				Zipcode: listing.Zipcode,
-				Price: listing.Price,
-				CoordLat: listing.CoordLat,
-				CoordLong: listing.CoordLong,
-				Area: listing.Area,
+				ListingId:      listing.ListingId,
+				Address:        listing.StreetAddress,
+				City:           listing.City,
+				State:          listing.State,
+				Zipcode:        listing.Zipcode,
+				Price:          listing.Price,
+				CoordLat:       listing.CoordLat,
+				CoordLong:      listing.CoordLong,
+				Area:           listing.Area,
 				SchoolDistrict: listing.SchoolDistrict,
-				ImageKey: listing.ImageKey,
+				ImageKey:       listing.ImageKey,
 			}
 
 			result = append(result, convertedListing)

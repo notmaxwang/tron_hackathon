@@ -21,11 +21,11 @@ func main() {
 	client := pb.NewListingServiceClient(conn)
 
 	// Contact the server and print out its response.
-	response, err := client.GetListingDetail(context.Background(), &pb.GetListingDetailRequest{ListingId: "listingId"})
+	response, err := client.GetListings(context.Background(), &pb.GetListingsRequest{Cities: []string{"San Francisco"}})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
-	log.Printf("Response: %s", response.ListingDetails)
+	log.Printf("Response: %s", response.Listings)
 
 	client2 := pb2.NewQueryServiceClient(conn)
 
