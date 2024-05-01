@@ -31,18 +31,22 @@ func (s *Server) GetListingDetail(ctx context.Context, request *pb.GetListingDet
 		return nil, status.Errorf(codes.Internal, "failed to query DB")
 	}
 
-	listingDetails := &pb.ListingDetail{
-		ListingId:      request.ListingId,
-		WalletAddress:  listingObject.WalletAddress,
-		Area:           string(listingObject.Area),
+	listing := &pb.Listing{
+		ListingId:      listingObject.ListingId,
+		Address:        listingObject.StreetAddress,
+		City:           listingObject.City,
+		State:          listingObject.State,
+		Zipcode:        listingObject.Zipcode,
+		Price:          listingObject.Price,
+		CoordLat:       listingObject.CoordLat,
+		CoordLong:      listingObject.CoordLong,
+		Area:           listingObject.Area,
 		SchoolDistrict: listingObject.SchoolDistrict,
-		Bed:            string(listingObject.Beds),
-		Bath:           string(listingObject.Baths),
-		HouseType:      listingObject.HouseType,
+		ImageKey:       listingObject.ImageKey,
 	}
 
 	return &pb.GetListingDetailResponse{
-		ListingDetails: listingDetails,
+		Listing: listing,
 	}, nil
 }
 

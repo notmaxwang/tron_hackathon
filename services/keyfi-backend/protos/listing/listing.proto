@@ -16,16 +16,6 @@ message Listing {
     string schoolDistrict = 11;
 }
 
-message ListingDetail {
-  string listingId = 1;
-  string walletAddress = 2;
-  string area = 3;
-  string schoolDistrict = 4;
-  string bed = 5;
-  string bath = 6;
-  string houseType = 7;
-}
-
 message GetListingsRequest {
     repeated string zipcodes = 1;
     repeated string cities = 2;
@@ -48,7 +38,7 @@ message GetListingDetailRequest {
 }
 
 message GetListingDetailResponse {
-    ListingDetail listingDetails = 1;
+    Listing listing = 1;
 }
 
 service ListingService{

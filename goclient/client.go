@@ -12,7 +12,8 @@ import (
 
 func main() {
 	// Set up a connection to the server.
-	conn, err := grpc.Dial("ec2-34-236-81-43.compute-1.amazonaws.com:50051", grpc.WithInsecure())
+	// conn, err := grpc.Dial("ec2-34-236-81-43.compute-1.amazonaws.com:50051", grpc.WithInsecure())
+	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
@@ -21,11 +22,11 @@ func main() {
 	client := pb.NewListingServiceClient(conn)
 
 	// Contact the server and print out its response.
-	response, err := client.GetListings(context.Background(), &pb.GetListingsRequest{Cities: []string{"San Francisco"}})
+	response, err := client.GetListingDetail(context.Background(), &pb.GetListingDetailRequest{ListingId: "1"})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
-	log.Printf("Response: %s", response.Listings)
+	log.Printf("Response: %s", response.Listing)
 
 	client2 := pb2.NewQueryServiceClient(conn)
 
