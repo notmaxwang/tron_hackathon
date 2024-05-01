@@ -95,7 +95,7 @@ export default function MapComponent() {
       </div>
       <div className='bottom-section'>
         <div className='listing'>
-          <p className='listingTitle'>Listings</p>
+          <p className='listing-title'>Real Estate in San Francisco, California for Sale</p>
           <ul className='listings-container'>{listings.map((listing, idx) => (
             <ListingCard key={idx} 
                          listing={listing} 
