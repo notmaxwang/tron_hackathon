@@ -5,7 +5,7 @@ import mapboxgl from 'mapbox-gl';
 import ListingCard from '../Component/ListingCard';
 import Map, { Marker } from 'react-map-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'; 
-import { setRealEstateMarketContract, fetchAllListings } from '../utils/tron';
+// import { setRealEstateMarketContract, fetchAllListings } from '../utils/tron';
 import { GetListingsRequest }  from '../../protos/listing/listing'
 import { ListingServiceClient } from '../../protos/listing/listing.client'
 import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport';
@@ -20,11 +20,8 @@ export default function MapComponent() {
   const [lat, setLat] = useState(37.76);
   const [zoom, setZoom] = useState(11);
   const [showPopup, setShowPopup] = useState<boolean>(true);
-  let listings = [{name: 'Ferry Building', position:{lat: 37.7955, lng: -122.3937,}},
-  {name: 'Coit Tower', position:{lat: 37.8024, lng: -122.4058}},
-  {name: 'Boit Tower', position:{lat: 37.8024, lng: -122.4158}},];
-  const [listName, setListName] = useState<any>([]);
-  let markerList:any = [];
+  const [listings, setListings] = useState<any>([]);
+  const [markerList, setMarkerList] = useState<any>([]);
 
   const makeCallToBackend = async () => {
     let transport = new GrpcWebFetchTransport({
@@ -36,37 +33,22 @@ export default function MapComponent() {
     })
     const call = client.getListings(request);
     let response = await call.response;
-    let status = await call.status;
-    console.log("status: " + status)
-    console.log(response);
+    console.log('second',response);
+    setListings(response.listings);
   }
-
-  useEffect(() => {
-    makeCallToBackend();
-    listings.forEach((listing, idx) => {
-      setListName(prevListName => [...prevListName, <ListingCard key={idx} listing={listing} />])
-      markerList.push(<Marker longitude={listing.position.lng} latitude={listing.position.lat}
-        anchor="bottom"
-        popup={popup}
-        onClick={() => console.log('test')}>
-        <img className='marker' src={MapMarker} alt='marker'/>
-      </Marker>)
-    });
-  }, [])
-
 
   const popup = useMemo(() => {
     return new mapboxgl.Popup().setText('Hello world!');
   }, [])
 
   useEffect(() => {
-    let test = async() => {
-      await setRealEstateMarketContract();
-      return await fetchAllListings();
-    };
-    let testListings = test();
+    console.log('first');
+    let backendCall = async() => {
+      await makeCallToBackend();
+      console.log('third', listings);
+    }
+    backendCall();
     setShowPopup(true);
-    console.log(testListings);
   }, [])
 
   useEffect(() => {
@@ -118,13 +100,18 @@ export default function MapComponent() {
       <div className='bottom-section'>
         <div className='listing'>
           <p className='listingTitle'>Listings</p>
-          <ul className='listings-container'>{listName}</ul>
+          <ul className='listings-container'>{listings.map((listing, idx) => (
+            <ListingCard key={idx} 
+                         listing={listing} 
+                         x={listing.coordLat} 
+                         y={listing.coordLong} />
+          ))}</ul>
         </div>
         <div className='map-container'>
         <Map
           mapboxAccessToken={MAPBOX_MAP_API_KEY}
           initialViewState={{
-            longitude: -122.4,
+            longitude: -122.44,
             latitude: 37.76,
             zoom: 11,
           }}
@@ -132,7 +119,14 @@ export default function MapComponent() {
         >
           {showPopup && (
             <>
-            {markerList}
+            {listings.map((listing, idx) => (
+            <Marker longitude={listing.coordLong} latitude={listing.coordLat}
+              anchor="bottom"
+              popup={popup}
+              onClick={() => console.log('test')}>
+                <img className='marker' src={MapMarker} alt='marker'/>
+            </Marker>
+          ))}
           </>)}
         </Map>
         </div>
