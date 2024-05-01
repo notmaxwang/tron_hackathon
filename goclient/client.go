@@ -12,7 +12,7 @@ import (
 
 func main() {
 	// Set up a connection to the server.
-	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
+	conn, err := grpc.Dial("ec2-34-236-81-43.compute-1.amazonaws.com:50051", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}

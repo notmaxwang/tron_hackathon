@@ -1,12 +1,5 @@
 version: '3.7'
 
-networks:
-  keyfi_network:
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.18.0.0/16
-
 services:
   keyfi-backend:
     build:
@@ -15,9 +8,6 @@ services:
     ports:
       - '50051:50051'
       - '8081:50052'
-    networks:
-      keyfi_network:
-        ipv4_address: 172.18.0.2
   gateway-envoy:
     build:
       context: ./config
