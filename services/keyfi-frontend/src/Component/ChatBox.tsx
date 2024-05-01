@@ -5,26 +5,16 @@ import { GetValuesRequest } from '../../protos/query/query';
 import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport';
 import Sparkle from '../assets/sparkle.png';
 
-
 interface Message {
   sender: 'AI' | 'You';
   content: string;
 }
-
-// interface ChatBoxProps {
-//   index: number;
-//   messages: Message[];
-//   onSendMessage: (message: string) => void;
-//   onCloseChat: () => void;
-//   onReceivedMessage: (message: string) => void;
-// }
 
 export default function ChatBox(props) {
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [showInterface, setShowInterface] = useState(true);
   const [messages, setMessages] = useState<Message[]>([]); //should be stored individually in the component
   const [inputValue, setInputValue] = useState<string>(''); // should be stored indiivudally in the component
-  // const [chats, setChats] = useState([]); //instead of number it should be array of chatbox components
 
   console.log(props);
     const makeCallToBackend = async () => {
