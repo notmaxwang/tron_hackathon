@@ -16,7 +16,11 @@ import (
 	"google.golang.org/api/option"
 )
 
-var messages = make(chan Message)
+var (
+	userMessages = make(chan Message)
+	geminiMessages = make(chan Message)
+	backendMessages = make(chan Message)
+)
 
 type WebSocketHandler struct {
 	Upgrader websocket.Upgrader
@@ -141,7 +145,7 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 
 		msg := Message{
 			Sender:   "user",
-			Receiver: "steve",
+			Receiver: "gemini",
 			Message:  string(msgRaw),
 			Commands: []Command{},
 			Results:  []Result{},
@@ -152,11 +156,9 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleGemini(conn *websocket.Conn, cs *genai.ChatSession, ctx context.Context) {
-	for msg := range messages {
+	for msg := range geminiMessages {
 		log.Println("gemini saw new message")
-		if msg.Receiver != "steve" {
-			messages <- msg
-		} else {
+		if msg.Receiver == "gemini" {
 			// Convert the Message struct to JSON
 			msgJson, err := json.Marshal(msg)
 			if err != nil {
@@ -195,14 +197,12 @@ func handleBackend(conn *websocket.Conn) {
 		return
 	}
 
-	for msg := range messages {
+	for msg := range backendMessages {
 		log.Println("backend saw new message")
-		if msg.Receiver != "backend" {
-			messages <- msg
-		} else {
+		if msg.Receiver == "backend" {
 			responseMsg := Message{
 				Sender:   "backend",
-				Receiver: "steve",
+				Receiver: "gemini",
 				Message:  "",
 				Commands: []Command{},
 				Results:  []Result{},
@@ -241,10 +241,8 @@ func handleBackend(conn *websocket.Conn) {
 }
 
 func handleUser(conn *websocket.Conn) {
-	for msg := range messages {
-		if msg.Receiver != "user" {
-			messages <- msg
-		} else {
+	for msg := range userMessages {
+		if msg.Receiver == "user" {
 			// Send message to client
 			err := conn.WriteMessage(websocket.TextMessage, []byte(msg.Message))
 			if err != nil {
@@ -257,5 +255,12 @@ func handleUser(conn *websocket.Conn) {
 
 func sendMessage(msg Message) {
 	log.Println(msg)
-	messages <- msg
+	switch msg.Receiver {
+	case "user":
+		userMessages <- msg
+	case "backend":
+		backendMessages <- msg
+	case "gemini":
+		geminiMessages <- msg
+	}
 }
