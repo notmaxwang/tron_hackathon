@@ -1,10 +1,15 @@
 import { Link } from 'react-router-dom';
 import './Listing.css'
 import { useState, useEffect } from 'react';
+import { setRealEstateMarketContract, addHomeListing } from '../utils/tron.ts';
 
 export default function Listing(props: any) {
   const [images, setImages] = useState<any>([]);
   const listing = props.listing;
+
+  useEffect(() => {
+    setRealEstateMarketContract();
+  }, [])
 
   useEffect(() => {
     fetch("https://pretentiousbruv.github.io/images/get_image_urls/" + listing.imageKey.toLowerCase() + ".json")
@@ -29,7 +34,10 @@ export default function Listing(props: any) {
           <p className='listing-sqf'>sq/ft</p>
         </p> 
         <p className='listing-addy'>{listing.address}, {listing.city}, {listing.state}, {listing.zip_code}</p>
-        <Link className='listing-payment' to={`/payment/${listing.listingId}`}>Payment</Link>
+        {props.notIsListing ? <></>:<>
+          <button><Link className='listing-payment' to={`/payment/${listing.listingId}`}>Payment</Link></button>
+          <button onClick={() => addHomeListing(listing.id.toString(), listing.address, listing.price)}>Add Listing to Tron</button>
+          </>}
       </div>
     </>
   );

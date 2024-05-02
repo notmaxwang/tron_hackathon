@@ -3,6 +3,10 @@
   width: 90vw; */
   /* border: 1px solid black; */
   margin-bottom: 1vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .listing-image {
@@ -13,7 +17,7 @@
 }
 
 .listing-price {
-  margin-right: 24vw;
+  /* margin-right: 24vw; */
 }
 
 .listing-sf {
@@ -22,13 +26,13 @@
   bottom: 0;
   right: 0;
   color: #444444;
-  margin-right: 25vw;
+  /* margin-right: 25vw; */
 }
 
 .listing-sqf {
   font-size: 20px;
   font-weight: normal;
-  margin-left: 0.2vw;
+  /* margin-left: 0.2vw; */
   color: #525252;
 }
 
@@ -38,7 +42,7 @@
 }
 
 .listing-addy {
-  margin-right: 15vw;
+  /* margin-right: 15vw; */
   font-size: 20px;
 }
 

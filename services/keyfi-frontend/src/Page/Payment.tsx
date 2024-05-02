@@ -48,7 +48,7 @@ const PaymentPage = () => {
       {step === 1 && (
         <div className="step-container">
           <h2>Step 1: Review Listing</h2>
-          {listing&&<Listing listing={listing}/>}
+          {listing&&<Listing notIsListing={true} listing={listing}/>}
           <button onClick={handleNextStep}>Next</button>
         </div>
       )}
@@ -62,7 +62,7 @@ const PaymentPage = () => {
       )}
       {step === 3 && (
         <div className="step-container">
-          <h2>Step 3: Confirmation</h2>
+          <h2>Step 3: Down Payment</h2>
           {/* Content for confirmation */}
           <button onClick={handlePrevStep}>Previous</button>
         </div>

@@ -4,6 +4,7 @@ import  Listing  from '../Component/Listing';
 import { ListingServiceClient } from '../../protos/listing/listing.client';
 import { GetListingDetailRequest }  from '../../protos/listing/listing'
 import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport';
+import './ListingPage.css'
 
 export default function ListingPage () {
 
@@ -32,8 +33,8 @@ export default function ListingPage () {
   }, [])
 
   return(
-    <>
+    <div className='listing-page-container'>
       {listing&&<Listing listing={listing}/>}
-    </>
+    </div>
   );
 }

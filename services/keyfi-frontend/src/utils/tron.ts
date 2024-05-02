@@ -48,6 +48,17 @@ export async function fetchAllListings(): Promise<any[]> {
   return listings;
 }
 
-export async function startSaleContract(): Promise<any> {
-  
+export async function startSaleContract(listingId: number, listingPrice: number): Promise<any> {
+  let OfficialReecorder: any = 'TH9JuMJTTjoQnupHWyAKYVHG5cxebDMbuW';
+  let saleContractId:any = await realEstateMarket.startSaleContract(listingId, OfficialReecorder, listingPrice/1000000);
+  console.log(saleContractId);
+  return saleContractId;
+}
+
+export async function makeDownPayment(listingId:number): Promise<any> {
+  await realEstateMarket.makeDownPayment(listingId);
+}
+
+export async function makePayment(listingId:number): Promise<any> {
+  await realEstateMarket.makePayment(listingId);
 }

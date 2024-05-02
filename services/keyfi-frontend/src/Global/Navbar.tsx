@@ -10,7 +10,6 @@ export default function Navbar() {
           <li><a href="/chat">AI Chatbot</a></li>
           <li><a href="/map">Map</a></li>
           <li><a href="/wallet">Wallet</a></li>
-          <li><a href="/payment">Payment</a></li>
         </ul>
       </nav>
     </header>
