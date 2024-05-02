@@ -59,19 +59,51 @@ export async function startSaleContract(listingId: number, listingPrice: number)
   return saleContractId;
 }
 
-export async function makeDownPayment(listingId:number): Promise<any> {
-  await realEstateMarket.makeDownPayment(listingId);
+export async function makeDownPayment(contractId:number): Promise<any> {
+  await realEstateMarket.makeDownPayment(contractId).send({
+    feeLimit: 100_000_000,
+    callValue: 0,
+    shouldPollResponse: true,
+  });
+  console.log('made downpayment');
 }
 
-export async function makePayment(listingId:number): Promise<any> {
-  await realEstateMarket.makePayment(listingId);
+export async function makePayment(contractId:number): Promise<any> {
+  await realEstateMarket.makePayment(contractId).send({
+    feeLimit: 100_000_000,
+    callValue: 0,
+    shouldPollResponse: true,
+  });
+  console.log('made payment');
 }
 
-export async function confirmOwnershipTransfer(listingId:number): Promise<any> {
-  await realEstateMarket.confirmOwnershipTransfer(listingId);
+export async function confirmOwnershipTransfer(contractId:number): Promise<any> {
+  await realEstateMarket.confirmOwnershipTransfer(contractId).send({
+    feeLimit: 100_000_000,
+    callValue: 0,
+    shouldPollResponse: true,
+  });
 }
 
 export async function getCurrListingId(): Promise<any> {
   const listingId = await realEstateMarket.listingId().call();
   console.log(listingId);
+}
+
+export async function approveBuyer(contractId:number): Promise<any> {
+  await realEstateMarket.approveBuyer(contractId).send({
+    feeLimit: 100_000_000,
+    callValue: 0,
+    shouldPollResponse: true,
+  });
+  console.log('approved by buyer');
+}
+
+export async function approveSeller(contractId:number): Promise<any> {
+  await realEstateMarket.approveSeller(contractId).send({
+    feeLimit: 100_000_000,
+    callValue: 0,
+    shouldPollResponse: true,
+  });
+  console.log('approved by seller');
 }

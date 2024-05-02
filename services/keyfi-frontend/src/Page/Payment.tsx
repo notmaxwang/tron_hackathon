@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react';
-import { setRealEstateMarketContract, startSaleContract } from '../utils/tron.ts';
+import { setRealEstateMarketContract, 
+         startSaleContract, 
+         makeDownPayment, 
+         makePayment,
+         approveBuyer,
+         approveSeller } from '../utils/tron.ts';
 import Listing from '../Component/Listing.tsx';
 import { useParams } from 'react-router-dom';
 import { ListingServiceClient } from '../../protos/listing/listing.client';
@@ -13,6 +18,7 @@ const PaymentPage = () => {
   const [step, setStep] = useState(1); // Default step is 1
   const { id } = useParams();
   const [listing, setListing] = useState<any>(null);
+  const address = 'TRvvyRqsf41C2YABJUdByFsuKrMwZsr3Yr';
 
   const makeCallToBackend = async () => {
     let transport = new GrpcWebFetchTransport({
@@ -36,12 +42,20 @@ const PaymentPage = () => {
     setStep(step - 1);
   };
 
+  const options = {method: 'GET', headers: {accept: 'application/json'}};
   useEffect(() => {
     setRealEstateMarketContract();
     let backendCall = async() => {
       await makeCallToBackend();
     }
     backendCall();
+    fetch('https://nileapi.tronscan.org/api/transaction?count=true&limit=10&address=TRvvyRqsf41C2YABJUdByFsuKrMwZsr3Yr&sort=-timestamp')
+    .then((res) => res.json())
+    .then((res) => {
+      if (res) {
+        console.log(res.data);
+      }
+    })
   }, [])
 
   return (
@@ -66,8 +80,34 @@ const PaymentPage = () => {
       {step === 3 && (
         <div className="step-container">
           <h2>Step 3: Down Payment</h2>
-          {/* Content for confirmation */}
-          <button onClick={handlePrevStep}>Previous</button>
+          <h1>Give us the money hahah😈</h1>
+          <button onClick={() => makeDownPayment(0x01)}>Make DownPayment</button>
+          <div className='buttons'>
+            <button onClick={handlePrevStep}>Previous</button>
+            <button onClick={handleNextStep}>Next</button>
+          </div>
+        </div>
+      )}
+      {step === 4 && (
+        <div className="step-container">
+          <h2>Step 4: Approvals</h2>
+          <button onClick={() => approveBuyer(0x01)}>Buyer Approval</button>
+          <button onClick={() => approveSeller(0x01)}>Seller Approval</button>
+          <div className='buttons'>
+            <button onClick={handlePrevStep}>Previous</button>
+            <button onClick={handleNextStep}>Next</button>
+          </div>
+        </div>
+      )}
+      {step === 5 && (
+        <div className="step-container">
+          <h2>Step 4: Payments</h2>
+          <h1>More money KEKEKEKE💀</h1>
+          <button onClick={() => makePayment(0x01)}>Make Payment</button>
+          <div className='buttons'>
+            <button onClick={handlePrevStep}>Previous</button>
+            <button onClick={handleNextStep}>Next</button>
+          </div>
         </div>
       )}
     </div>

@@ -1,5 +1,5 @@
 import './Map.css';
-import {useState, useEffect, useRef, useMemo} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import Sparkle from '../assets/sparkle.png'
 import mapboxgl from 'mapbox-gl';
 import ListingCard from '../Component/ListingCard';
@@ -34,10 +34,6 @@ export default function MapComponent() {
     let response = await call.response;
     setListings(response.listings);
   }
-
-  const popup = useMemo(() => {
-    return new mapboxgl.Popup().setText('Hello world!');
-  }, [])
 
   useEffect(() => {
     let backendCall = async() => {
@@ -129,10 +125,11 @@ export default function MapComponent() {
             <>
             {listings.map((listing) => (
             <Marker 
+              key={listing.listingId}
               longitude={listing.coordLong} 
               latitude={listing.coordLat}
-              anchor="bottom"
-              popup={popup}
+              anchor="top"
+              popup={new mapboxgl.Popup().setHTML(`<p>${listing.address}</p><p>$${listing.price}</p>`)}
               onClick={() => console.log('test')}>
                 <img className='marker' src={MapMarker} alt='marker'/>
             </Marker>
