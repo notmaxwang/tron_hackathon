@@ -2,19 +2,42 @@ package chat
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"keyfi-backend/util/persistence"
 	"log"
 	"net/http"
 	"os"
+	"sync"
 
 	"github.com/google/generative-ai-go/genai"
 	"github.com/gorilla/websocket"
 	"google.golang.org/api/option"
 )
 
+var messages = make(chan Message)
+
 type WebSocketHandler struct {
 	Upgrader websocket.Upgrader
+}
+
+type Message struct {
+	Sender   string    `json:"sender"`
+	Receiver string    `json:"receiver"`
+	Message  string    `json:"message"`
+	Commands []Command `json:"commands"`
+	Results  []Result  `json:"results"`
+}
+
+type Command struct {
+	Command string   `json:"command"`
+	Args    []string `json:"args"`
+}
+
+type Result struct {
+	Command string   `json:"command"`
+	Results []string `json:"results"`
 }
 
 func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
@@ -48,7 +71,6 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 	cs := model.StartChat()
 
 	sendMessageToGemini := func(msg string) (string, error) {
-		fmt.Printf("== Me: %s\n== Model:\n", msg)
 		res, err := cs.SendMessage(ctx, genai.Text(msg))
 		if err != nil {
 			log.Println("failed to send message", err)
@@ -69,38 +91,171 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	starter, err := sendMessageToGemini(string(starterPrompt))
+	starterJson, err := sendMessageToGemini(string(starterPrompt))
 	if err != nil {
 		log.Println("send message failure", err)
 		return
 	}
 
-	err = conn.WriteMessage(websocket.TextMessage, []byte(starter))
+	// Create a variable of type Message to store the parsed JSON
+	var geminiMsg Message
+	// Parse the JSON data into the 'msg' variable
+	err = json.Unmarshal([]byte(starterJson), &geminiMsg)
+	if err != nil {
+		log.Println("Error parsing JSON:", err)
+		return
+	}
+
+	if geminiMsg.Receiver != "user" {
+		log.Println("probably some error with prompt because the first message not sent to user")
+	}
+
+	err = conn.WriteMessage(websocket.TextMessage, []byte(geminiMsg.Message))
 	if err != nil {
 		log.Println("Write:", err)
 		return
 	}
 
+	var wg sync.WaitGroup
+	wg.Add(3)
+
+	// Create separate goroutines to handle messages for each listener
+	go func() {
+		handleBackend(conn)
+	}()
+	go func() {
+		handleGemini(conn, cs, ctx)
+	}()
+	go func() {
+		handleUser(conn)
+	}()
+
 	// WebSocket connection handling
 	for {
 		// Read message from WebSocket client
-		_, msg, err := conn.ReadMessage()
+		_, msgRaw, err := conn.ReadMessage()
 		if err != nil {
 			log.Println("Read:", err)
 			break
 		}
-		log.Printf("Received message: %s\n", msg)
 
-		reply, err := sendMessageToGemini(string(msg))
-		if err != nil {
-			log.Println("send message failure", err)
-			break
+		msg := Message{
+			Sender:   "user",
+			Receiver: "steve",
+			Message:  string(msgRaw),
+			Commands: []Command{},
+			Results:  []Result{},
 		}
 
-		err = conn.WriteMessage(websocket.TextMessage, []byte(reply))
-		if err != nil {
-			log.Println("Write:", err)
-			break
+		sendMessage(msg)
+	}
+}
+
+func handleGemini(conn *websocket.Conn, cs *genai.ChatSession, ctx context.Context) {
+	for msg := range messages {
+		log.Println("gemini saw new message")
+		if msg.Receiver != "steve" {
+			messages <- msg
+		} else {
+			// Convert the Message struct to JSON
+			msgJson, err := json.Marshal(msg)
+			if err != nil {
+				log.Println("Error marshalling JSON:", err)
+				return
+			}
+
+			res, err := cs.SendMessage(ctx, genai.Text(msgJson))
+			if err != nil {
+				log.Println("failed to send message", err)
+				return
+			}
+
+			reply := ""
+			for i := range res.Candidates[0].Content.Parts {
+				reply = fmt.Sprintf("%s%s", reply, res.Candidates[0].Content.Parts[i])
+			}
+
+			var geminiMsg Message
+			err = json.Unmarshal([]byte(reply), &geminiMsg)
+			if err != nil {
+				log.Println("Error parsing JSON:", err)
+				return
+			}
+
+			sendMessage(geminiMsg)
 		}
 	}
+	log.Println("gemini listener closed")
+}
+
+func handleBackend(conn *websocket.Conn) {
+	dao, err := persistence.GetListingsDao()
+	if err != nil {
+		log.Println("could not access DB", err)
+		return
+	}
+
+	for msg := range messages {
+		log.Println("backend saw new message")
+		if msg.Receiver != "backend" {
+			messages <- msg
+		} else {
+			responseMsg := Message{
+				Sender:   "backend",
+				Receiver: "steve",
+				Message:  "",
+				Commands: []Command{},
+				Results:  []Result{},
+			}
+			for _, command := range msg.Commands {
+				if command.Command == "getListingDetailsFromSqlQuery" {
+					if len(command.Args) != 1 {
+						responseMsg.Results = append(responseMsg.Results, Result{
+							Command: command.Command,
+							Results: []string{"ERROR: expected 1 single SQL query as string"},
+						})
+					}
+
+					results, err := dao.QueryForAI(command.Args[0])
+					if err != nil {
+						responseMsg.Results = append(responseMsg.Results, Result{
+							Command: command.Command,
+							Results: []string{"error querying DB"},
+						})
+					}
+
+					responseMsg.Results = append(responseMsg.Results, Result{
+						Command: command.Command,
+						Results: *results,
+					})
+				} else {
+					responseMsg.Results = append(responseMsg.Results, Result{
+						Command: command.Command,
+						Results: []string{"UNSUPPORTED_COMMAND"},
+					})
+				}
+			}
+			sendMessage(responseMsg)
+		}
+	}
+}
+
+func handleUser(conn *websocket.Conn) {
+	for msg := range messages {
+		if msg.Receiver != "user" {
+			messages <- msg
+		} else {
+			// Send message to client
+			err := conn.WriteMessage(websocket.TextMessage, []byte(msg.Message))
+			if err != nil {
+				log.Println("Error sending message:", err)
+				return
+			}
+		}
+	}
+}
+
+func sendMessage(msg Message) {
+	log.Println(msg)
+	messages <- msg
 }
