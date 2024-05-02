@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { setRealEstateMarketContract,  } from '../utils/tron.ts';
+import { setRealEstateMarketContract, startSaleContract } from '../utils/tron.ts';
 import Listing from '../Component/Listing.tsx';
 import { useParams } from 'react-router-dom';
 import { ListingServiceClient } from '../../protos/listing/listing.client';
 import { GetListingDetailRequest }  from '../../protos/listing/listing'
 import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport';
+
 
 import './Payment.css'; // Import your CSS file
 
@@ -55,9 +56,11 @@ const PaymentPage = () => {
       {step === 2 && (
         <div className="step-container">
           <h2>Step 2: Payment</h2>
-          <button onClick={handlePrevStep}>Previous</button>
-          <button onClick={() => console.log('test')}>sign</button>
-          <button onClick={handleNextStep}>Next</button>
+          <button onClick={() => startSaleContract(0x01, listing.price)}>Make Offer</button>
+          <div className='buttons'>
+            <button onClick={handlePrevStep}>Previous</button>
+            <button onClick={handleNextStep}>Next</button>
+          </div>
         </div>
       )}
       {step === 3 && (
