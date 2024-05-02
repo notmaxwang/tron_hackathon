@@ -18,7 +18,7 @@ const PaymentPage = () => {
   const [step, setStep] = useState(1); // Default step is 1
   const { id } = useParams();
   const [listing, setListing] = useState<any>(null);
-  const address = 'TRvvyRqsf41C2YABJUdByFsuKrMwZsr3Yr';
+  // const address = 'TRvvyRqsf41C2YABJUdByFsuKrMwZsr3Yr';
 
   const makeCallToBackend = async () => {
     let transport = new GrpcWebFetchTransport({
@@ -42,7 +42,6 @@ const PaymentPage = () => {
     setStep(step - 1);
   };
 
-  const options = {method: 'GET', headers: {accept: 'application/json'}};
   useEffect(() => {
     setRealEstateMarketContract();
     let backendCall = async() => {
