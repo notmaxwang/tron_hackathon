@@ -3,6 +3,7 @@ package chat
 import (
 	"context"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -38,29 +39,41 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_AI_KEY")))
 	if err != nil {
-		log.Fatal(err)
+		log.Println("failed to create new client", err)
+		return
 	}
 	defer client.Close()
 
 	model := client.GenerativeModel("gemini-1.0-pro")
 	cs := model.StartChat()
 
-	sendMessageToGemini := func(msg string) string {
+	sendMessageToGemini := func(msg string) (string, error) {
 		fmt.Printf("== Me: %s\n== Model:\n", msg)
 		res, err := cs.SendMessage(ctx, genai.Text(msg))
 		if err != nil {
-			log.Fatal(err)
+			log.Println("failed to send message", err)
+			return "", err
 		}
 
 		result := ""
 		for i := range res.Candidates[0].Content.Parts {
 			result = fmt.Sprintf("%s%s", result, res.Candidates[0].Content.Parts[i])
 		}
-		return result
+		return result, nil
 	}
 
-	starterPrompt := "you are a real estate chat bot, who answers questions real estate questions for users. your response will be sent directly to the user, so please format it as such. now, please welcome the user."
-	starter := sendMessageToGemini(starterPrompt)
+	// Read file into a string
+	starterPrompt, err := ioutil.ReadFile("./chat/prompt_context.txt")
+	if err != nil {
+		log.Println("Error reading file:", err)
+		return
+	}
+
+	starter, err := sendMessageToGemini(string(starterPrompt))
+	if err != nil {
+		log.Println("send message failure", err)
+		return
+	}
 
 	err = conn.WriteMessage(websocket.TextMessage, []byte(starter))
 	if err != nil {
@@ -78,7 +91,11 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 		}
 		log.Printf("Received message: %s\n", msg)
 
-		reply := sendMessageToGemini(string(msg))
+		reply, err := sendMessageToGemini(string(msg))
+		if err != nil {
+			log.Println("send message failure", err)
+			break
+		}
 
 		err = conn.WriteMessage(websocket.TextMessage, []byte(reply))
 		if err != nil {

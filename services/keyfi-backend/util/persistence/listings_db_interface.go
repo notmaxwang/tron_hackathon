@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"sync"
+	"encoding/json"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -121,6 +122,37 @@ func (dao *ListingsDao) QueryAllListingsInCity(city string) (*[]ListingObject, e
 	}
 
 	return &listings, nil
+}
+
+func (dao *ListingsDao) QueryForAI(query string) (*[]string, error) {
+	rows, err := dao.connection.Query(query)
+	if err != nil {
+		return nil, err
+	}
+
+	var listings []string
+
+	for rows.Next() {
+		var listing ListingObject
+		// Scan the values from the row into the struct fields
+		if err := rows.Scan(&listing.ListingId, &listing.WalletAddress, &listing.StreetAddress, &listing.City, &listing.State, &listing.Zipcode, &listing.CoordLat, &listing.CoordLong, &listing.SchoolDistrict, &listing.Area, &listing.Beds, &listing.Baths, &listing.HouseType, &listing.Price, &listing.ImageKey); err != nil {
+			log.Println("failure at scan", err)
+		}
+
+		// Serialize ListingObject to JSON
+		jsonData, err := json.Marshal(listing)
+		if err != nil {
+			log.Println("error with json serialization", err)
+		}
+
+		// Convert JSON data to string
+		jsonString := string(jsonData)
+
+		// Append the filled struct to the slice
+		listings = append(listings, jsonString)
+	}
+
+	return &listings, err
 }
 
 func (dao *ListingsDao) Query(query string, args ...interface{}) (*sql.Rows, error) {
