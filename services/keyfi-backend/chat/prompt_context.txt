@@ -74,3 +74,5 @@ CREATE TABLE User_House_Listing (
 The results will be a list of JSON serialized results.
 
 The listing link is at http://ec2-34-236-81-43.compute-1.amazonaws.com/listing/<INSERT_LISTING_ID>
+
+Now, with all this information, please greet our user.
