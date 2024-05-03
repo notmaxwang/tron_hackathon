@@ -44,6 +44,7 @@ type Result struct {
 	Results []string `json:"results"`
 }
 
+// Handles all incoming messages from websocket (connects to frontend)
 func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 	// Configure WebSocket upgrader
 	upgrader := websocket.Upgrader{
@@ -155,6 +156,7 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Handles messages directed towards Gemini
 func handleGemini(conn *websocket.Conn, cs *genai.ChatSession, ctx context.Context) {
 	for msg := range geminiMessages {
 		log.Println("gemini saw new message")
@@ -190,6 +192,7 @@ func handleGemini(conn *websocket.Conn, cs *genai.ChatSession, ctx context.Conte
 	log.Println("gemini listener closed")
 }
 
+// Handles messages directed towards Backend
 func handleBackend(conn *websocket.Conn) {
 	dao, err := persistence.GetListingsDao()
 	if err != nil {
@@ -240,6 +243,7 @@ func handleBackend(conn *websocket.Conn) {
 	}
 }
 
+// Handles messages directed towards User
 func handleUser(conn *websocket.Conn) {
 	for msg := range userMessages {
 		if msg.Receiver == "user" {
