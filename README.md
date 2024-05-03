@@ -4,8 +4,11 @@
 This is KeyFi, a real-estate website that incorporates Generative AI and Blockchain technology to democratize home buying process and reduce overall transaction fees from 5% down to 1%.
 
 ## Try it out!!!
-At the time of writing this README, the Google ChatSession API is broken. However, it may be fixed by the time you click on it. So try it out!
+At the time of writing this README, the Google ChatSession API is broken (because they added a new field in their API response which broke our protobufs). However, it may be fixed by the time you click on it. So try it out!
 http://ec2-34-236-81-43.compute-1.amazonaws.com
+
+But it worked at some point. Here is a terminal log from right before the API response change:
+![working chat](https://github.com/buzzcrackle/google_ai_hackathon/blob/main/working_chat.png?raw=true)
 
 ## Note for Google AI Hackathon Judges
 The Gemini code exists in ```./services/keyfi-backend/chat/ws_interface.go```
