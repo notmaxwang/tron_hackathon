@@ -15,6 +15,7 @@ export default function ChatBox(props) {
   const [showInterface, setShowInterface] = useState(true);
   const [messages, setMessages] = useState<Message[]>([]); //should be stored individually in the component
   const [inputValue, setInputValue] = useState<string>(''); // should be stored indiivudally in the component
+  const [key, setKey] = useState("");
 
   console.log(props);
     const makeCallToBackend = async () => {
@@ -73,6 +74,21 @@ export default function ChatBox(props) {
       setInputValue('');
     }
   };
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key == 'Enter') {
+      if (ws && inputValue.trim() !== '') {
+        if (showInterface) {
+          // Hide the initial interface when the user sends the first message
+          setShowInterface(false);
+        }
+        // Send the message through the WebSocket connection
+        ws.send(inputValue);
+        setMessages((prevMessages) => [...prevMessages, {sender: 'You', content: inputValue}]);
+        setInputValue('');
+      }
+    }
+  }
 
   return (
     <>
@@ -133,8 +149,9 @@ export default function ChatBox(props) {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Ask me anything..."
+            onKeyDown={handleKeyPress}
           />
-          <button onClick={sendMessage}>Send</button>
+          <button className='input-button' onClick={sendMessage}>Send</button>
         </div>
       </section>
   </>

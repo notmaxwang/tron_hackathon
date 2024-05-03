@@ -15,6 +15,8 @@ import {
     WalletSelectButton,
 } from '@tronweb3/tronwallet-adapter-react-ui';
 import { Button } from '@tronweb3/tronwallet-adapter-react-ui';
+import './Wallet.css'
+
 
 export default function Wallet() {
     function onError(e: WalletError) {
