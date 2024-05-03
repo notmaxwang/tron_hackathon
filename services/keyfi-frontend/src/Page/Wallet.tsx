@@ -153,9 +153,9 @@ function SignDemo() {
             placeholder="input message to signed"
         ></TextField>
         <Button style={{ marginRight: '20px', }} onClick={onSignMessage}>
-            SignMessage
+            Sign Message
         </Button>
-        {signedMessage?<p>Your sigedMessage is: {signedMessage}</p>:<></>}
+        {signedMessage?<p>Your signed message is: {signedMessage}</p>:<></>}
         <h2>Sign a Transaction</h2>
         <p style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', wordBreak: 'break-all', margin: '15px' }}>
             You can transfer 0.001 Trx to &nbsp;<i>{receiver}</i>&nbsp;by click the button.
