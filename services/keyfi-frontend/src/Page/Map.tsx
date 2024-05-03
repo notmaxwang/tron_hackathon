@@ -129,7 +129,7 @@ export default function MapComponent() {
               longitude={listing.coordLong} 
               latitude={listing.coordLat}
               anchor="top"
-              popup={new mapboxgl.Popup().setHTML(`<p>${listing.address}</p><p>$${listing.price}</p>`)}
+              popup={new mapboxgl.Popup().setHTML(`<p style='margin-top:2vh'>${listing.address}</p><p>$${listing.price}</p>`)}
               onClick={() => console.log('test')}>
                 <img className='marker' src={MapMarker} alt='marker'/>
             </Marker>
