@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import './Listing.css'
 import { useState, useEffect } from 'react';
-import { setRealEstateMarketContract, addHomeListing, getCurrListingId } from '../utils/tron.ts';
+import { setRealEstateMarketContract } from '../utils/tron.ts';
 
 export default function Listing(props: any) {
   const [images, setImages] = useState<any>([]);
