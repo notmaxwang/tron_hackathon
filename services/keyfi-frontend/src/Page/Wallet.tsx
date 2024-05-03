@@ -145,12 +145,12 @@ function SignDemo() {
       <div style={{ marginBottom: 200 }}>
         <h2>Sign a message</h2>
         <p style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', wordBreak: 'break-all' }}>
-            You can sign a message by click the button.
+            You can sign a message by clicking the button.
         </p>
         <TextField
             size="small"
             onChange={(e:any) => setMessage(e.target.value)}
-            placeholder="input message to signed"
+            placeholder="Sign"
         ></TextField>
         <Button style={{ marginRight: '20px', }} onClick={onSignMessage}>
             Sign Message

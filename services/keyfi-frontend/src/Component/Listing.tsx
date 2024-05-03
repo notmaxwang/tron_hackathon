@@ -36,8 +36,8 @@ export default function Listing(props: any) {
         <p className='listing-addy'>{listing.address}, {listing.city}, {listing.state}, {listing.zip_code}</p>
         {props.notIsListing ? <></>:<>
           <button><Link className='listing-payment' to={`/payment/${listing.listingId}`}>Payment</Link></button>
-          <button onClick={() => addHomeListing('http://ec2-34-236-81-43.compute-1.amazonaws.com/listing/'+listing.listingId, listing.address, listing.price)}>Add Listing to Tron</button>
-          <button onClick={() => getCurrListingId()}>getListing</button>
+          {/* <button onClick={() => addHomeListing('http://ec2-34-236-81-43.compute-1.amazonaws.com/listing/'+listing.listingId, listing.address, listing.price)}>Add Listing to Tron</button> */}
+          {/* <button onClick={() => getCurrListingId()}>getListing</button> */}
           </>}
       </div>
     </>

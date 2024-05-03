@@ -15,7 +15,6 @@ export default function ChatBox(props) {
   const [showInterface, setShowInterface] = useState(true);
   const [messages, setMessages] = useState<Message[]>([]); //should be stored individually in the component
   const [inputValue, setInputValue] = useState<string>(''); // should be stored indiivudally in the component
-  const [key, setKey] = useState("");
 
   console.log(props);
     const makeCallToBackend = async () => {
