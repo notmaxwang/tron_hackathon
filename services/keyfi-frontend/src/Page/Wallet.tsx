@@ -76,7 +76,7 @@ function UIComponent() {
                 <Table sx={{  }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Wallet</TableCell>
+                            <TableCell></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
