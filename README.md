@@ -7,6 +7,9 @@ This is KeyFi, a real-estate website that incorporates Generative AI and Blockch
 At the time of writing this README, the Google ChatSession API is broken. However, it may be fixed by the time you click on it. So try it out!
 http://ec2-34-236-81-43.compute-1.amazonaws.com
 
+## Note for Google AI Hackathon Judges
+The Gemini code exists in ```./services/keyfi-backend/chat/ws_interface.go```
+
 ## How to run everything
 ```
 // need to be in this directory
