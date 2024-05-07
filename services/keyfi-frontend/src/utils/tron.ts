@@ -40,6 +40,7 @@ export async function fetchAllListings(): Promise<any[]> {
   for (let i = 0; i < listingId; i++) {
     const listing = await realEstateMarket.homeListings(i).call();
     if (listing.detailsLink !== "") {
+      console.log("listing " + i + ":\nowner: " + listing.owner + ",\ndetailsLink: " + listing.detailsLink + ",\nstreetAddress: " + listing.streetAddress + ",\nprice: " + (window as any).tronWeb.fromSun(listing.listingPrice))
       listings.push(
         { id: i, owner: listing.owner, link: listing.detailsLink, streetAddress: listing.streetAddress, price: (window as any).tronWeb.fromSun(listing.listingPrice) }
       );

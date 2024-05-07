@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { setRealEstateMarketContract, 
+         fetchAllListings,
          startSaleContract, 
          makeDownPayment, 
          makePayment,
@@ -42,12 +43,21 @@ const PaymentPage = () => {
     setStep(step - 1);
   };
 
+  const fetchListings = async () => {
+    console.log("starting fetch")
+    await setRealEstateMarketContract();
+    console.log("finished init")
+    await fetchAllListings();
+    console.log("finished fetch")
+  }
+
   useEffect(() => {
-    setRealEstateMarketContract();
+    fetchListings();
     let backendCall = async() => {
       await makeCallToBackend();
     }
     backendCall();
+
     fetch('https://nileapi.tronscan.org/api/transaction?count=true&limit=10&address=TRvvyRqsf41C2YABJUdByFsuKrMwZsr3Yr&sort=-timestamp')
     .then((res) => res.json())
     .then((res) => {
