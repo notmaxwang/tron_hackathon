@@ -18,9 +18,7 @@ import { Button } from '@tronweb3/tronwallet-adapter-react-ui';
 import './Wallet.css'
 
 
-export default function Wallet( props ) {
-
-    let setWalletAddress = props.setWalletAddress;
+export default function Wallet( ) {
 
     function onError(e: WalletError) {
         if (e instanceof WalletNotFoundError || e instanceof WalletDisconnectedError) {
@@ -58,7 +56,7 @@ export default function Wallet( props ) {
         <WalletProvider onError={onError} autoConnect={true} disableAutoConnectOnLoad={true} adapters={adapters}>
             <WalletModalProvider>
                 <UIComponent/>
-                <Profile setWalletAddress = {setWalletAddress}/>
+                <Profile />
                 <SignDemo />
             </WalletModalProvider>
             <Toaster />

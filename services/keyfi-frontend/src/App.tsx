@@ -11,19 +11,10 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import './App.css'
 
-import {useEffect, useState} from 'react';
-
 
 
 function App() {
-  
-  const [walletAddress, setWalletAddress] = useState(' ');
 
-  useEffect(() => {
-    if (walletAddress) {
-      console.log(walletAddress);
-    }
-  })
   return (
     <>
       <Navbar />
@@ -31,10 +22,10 @@ function App() {
           <div>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/wallet" element={<Wallet setWalletAddress={setWalletAddress}/>} />
+              <Route path="/wallet" element={<Wallet />} />
               <Route path="/chat" element={<Chat />} />
               <Route path="/map" element={<MapComponent />} />
-              <Route path="/payment/:id" element={<PaymentPage walletAddress={walletAddress}/>} />
+              <Route path="/payment/:id" element={<PaymentPage />} />
               <Route path="/listing/:id" element={<ListingPage />} />
             </Routes>
           </div>

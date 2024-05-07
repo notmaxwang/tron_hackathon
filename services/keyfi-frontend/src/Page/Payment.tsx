@@ -5,8 +5,7 @@ import { setRealEstateMarketContract,
          makeDownPayment, 
          makePayment,
          approveBuyer,
-         approveSeller,
-         accountAddress } from '../utils/tron.ts';
+         approveSeller} from '../utils/tron.ts';
 import Listing from '../Component/Listing.tsx';
 import { useParams } from 'react-router-dom';
 import { ListingServiceClient } from '../../protos/listing/listing.client';
@@ -16,14 +15,13 @@ import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport';
 
 import './Payment.css'; // Import your CSS file
 
-const PaymentPage = (props) => {
-  const { address } = useWallet();
+const PaymentPage = () => {
   const [step, setStep] = useState(1); // Default step is 1
   const { id } = useParams();
   const [listing, setListing] = useState<any>(null);
-  // let address = props.walletAddress;
-  console.log(address);
-  // const address = 'TRvvyRqsf41C2YABJUdByFsuKrMwZsr3Yr';
+  const [transaction, setTransaction] = useState('');
+  const [listingId, setListigId] = useState(0);
+  let address = window.tronWeb ? window.tronWeb!.defaultAddress!.base58 : '';
 
   const makeCallToBackend = async () => {
     let transport = new GrpcWebFetchTransport({
@@ -51,7 +49,12 @@ const PaymentPage = (props) => {
     console.log("starting fetch")
     await setRealEstateMarketContract();
     console.log("finished init")
-    await fetchAllListings();
+    let storeListings = await fetchAllListings();
+    for(let i = 0; i < storeListings.length; i++) {
+      if(storeListings[i].streetAddress === listing.address){
+        setListigId(i);
+      };
+    }
     console.log("finished fetch")
   }
 
@@ -62,11 +65,12 @@ const PaymentPage = (props) => {
     }
     backendCall();
 
-    fetch('https://nileapi.tronscan.org/api/transaction?count=true&limit=10&address=TRvvyRqsf41C2YABJUdByFsuKrMwZsr3Yr&sort=-timestamp')
+    fetch(`https://nileapi.tronscan.org/api/transaction?count=true&limit=10&address=${address}&sort=-timestamp`)
     .then((res) => res.json())
     .then((res) => {
       if (res) {
         console.log(res.data);
+        setTransaction(res.data[0].hash);
       }
     })
   }, [])
@@ -83,7 +87,7 @@ const PaymentPage = (props) => {
       {step === 2 && (
         <div className="step-container">
           <h2>Step 2: Payment</h2>
-          <button onClick={() => startSaleContract(0x01, listing.price)}>Make Offer</button>
+          <button onClick={() => startSaleContract(listingId, listing.price)}>Make Offer</button>
           <div className='buttons'>
             <button onClick={handlePrevStep}>Previous</button>
             <button onClick={handleNextStep}>Next</button>
@@ -93,8 +97,8 @@ const PaymentPage = (props) => {
       {step === 3 && (
         <div className="step-container">
           <h2>Step 3: Down Payment</h2>
-          <h1>Give us the money hahah😈</h1>
-          <button onClick={() => makeDownPayment(0x01)}>Make DownPayment</button>
+          <p>This is your Transaction Hash: {transaction}</p>
+          <button onClick={() => makeDownPayment(listingId)}>Make DownPayment</button>
           <div className='buttons'>
             <button onClick={handlePrevStep}>Previous</button>
             <button onClick={handleNextStep}>Next</button>
@@ -104,8 +108,8 @@ const PaymentPage = (props) => {
       {step === 4 && (
         <div className="step-container">
           <h2>Step 4: Approvals</h2>
-          <button onClick={() => approveBuyer(0x01)}>Buyer Approval</button>
-          <button onClick={() => approveSeller(0x01)}>Seller Approval</button>
+          <button onClick={() => approveBuyer(listingId)}>Buyer Approval</button>
+          <button onClick={() => approveSeller(listingId)}>Seller Approval</button>
           <div className='buttons'>
             <button onClick={handlePrevStep}>Previous</button>
             <button onClick={handleNextStep}>Next</button>
@@ -115,7 +119,6 @@ const PaymentPage = (props) => {
       {step === 5 && (
         <div className="step-container">
           <h2>Step 4: Payments</h2>
-          <h1>More money KEKEKEKE💀</h1>
           <button onClick={() => makePayment(0x01)}>Make Payment</button>
           <div className='buttons'>
             <button onClick={handlePrevStep}>Previous</button>
