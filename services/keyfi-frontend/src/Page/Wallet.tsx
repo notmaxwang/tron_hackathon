@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import type { WalletError } from '@tronweb3/tronwallet-abstract-adapter';
 import { WalletDisconnectedError, WalletNotFoundError } from '@tronweb3/tronwallet-abstract-adapter';
 import { useWallet, WalletProvider } from '@tronweb3/tronwallet-adapter-react-hooks';
@@ -18,7 +18,10 @@ import { Button } from '@tronweb3/tronwallet-adapter-react-ui';
 import './Wallet.css'
 
 
-export default function Wallet() {
+export default function Wallet( props ) {
+
+    let setWalletAddress = props.setWalletAddress;
+
     function onError(e: WalletError) {
         if (e instanceof WalletNotFoundError || e instanceof WalletDisconnectedError) {
             toast.error(e.message);
@@ -55,7 +58,7 @@ export default function Wallet() {
         <WalletProvider onError={onError} autoConnect={true} disableAutoConnectOnLoad={true} adapters={adapters}>
             <WalletModalProvider>
                 <UIComponent/>
-                <Profile />
+                <Profile setWalletAddress = {setWalletAddress}/>
                 <SignDemo />
             </WalletModalProvider>
             <Toaster />
@@ -94,8 +97,14 @@ function UIComponent() {
     );
 }
 
-function Profile() {
+function Profile( props ) {
+    let setWalletAddress = props.setWalletAddress;
     const { address, connected, wallet } = useWallet();
+    useEffect(() => {
+        if (address) {
+            setWalletAddress(address);
+        }
+    })
     return (
         <div>
             <h2>Wallet Connection Info</h2>

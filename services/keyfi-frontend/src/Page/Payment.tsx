@@ -5,7 +5,8 @@ import { setRealEstateMarketContract,
          makeDownPayment, 
          makePayment,
          approveBuyer,
-         approveSeller } from '../utils/tron.ts';
+         approveSeller,
+         accountAddress } from '../utils/tron.ts';
 import Listing from '../Component/Listing.tsx';
 import { useParams } from 'react-router-dom';
 import { ListingServiceClient } from '../../protos/listing/listing.client';
@@ -15,10 +16,13 @@ import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport';
 
 import './Payment.css'; // Import your CSS file
 
-const PaymentPage = () => {
+const PaymentPage = (props) => {
+  const { address } = useWallet();
   const [step, setStep] = useState(1); // Default step is 1
   const { id } = useParams();
   const [listing, setListing] = useState<any>(null);
+  // let address = props.walletAddress;
+  console.log(address);
   // const address = 'TRvvyRqsf41C2YABJUdByFsuKrMwZsr3Yr';
 
   const makeCallToBackend = async () => {
